@@ -1,5 +1,5 @@
 #include "../include/ERender.h"
-#include "OpenGL.h"
+#include "ERenderOpenGL.h"
 
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
@@ -39,72 +39,6 @@ PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
 PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   = NULL;
 PFNGLUNIFORM1FPROC   		glUniform1f		     = NULL;
 PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
-
-bool _initOpenGLProc(void);
-
-bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi)
-{
-	printf(
-		"Init gApi(%ix%i)\n",
-		options->width,
-		options->height
-	);
-
-	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "edit", options->title, WS_VISIBLE|WS_POPUP, 0, 0, options->width, options->height, 0, 0, 0, 0);
-	gApi->hdc = GetDC(gApi->hWnd);
-
-	PIXELFORMATDESCRIPTOR ppfd;
-	ppfd.dwFlags = PFD_DRAW_TO_WINDOW+PFD_SUPPORT_OPENGL+PFD_DOUBLEBUFFER;
-	ppfd.iPixelType = PFD_TYPE_RGBA;
-	ppfd.cColorBits = 32;
-	ppfd.dwLayerMask = PFD_MAIN_PLANE;
-	int iPixelFormat = ChoosePixelFormat(gApi->hdc, &ppfd);
-	SetPixelFormat(gApi->hdc, iPixelFormat, &ppfd);
-
-	HGLRC hGLRC = wglCreateContext(gApi->hdc);
-	wglMakeCurrent(gApi->hdc, hGLRC);
-
-	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-
-	if(!wglCreateContextAttribsARB){
-		printf("wglCreateContextAttribsARB fail (%d)\n", GetLastError());
-		return false;
-	}
-
-	int maj, min;
-	glGetIntegerv(GL_MAJOR_VERSION, &maj);
-	glGetIntegerv(GL_MINOR_VERSION, &min);
-	printf("OpengGL      : %i.%i\n", maj, min);
-
-	int attr[] = {
-		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-		WGL_CONTEXT_MINOR_VERSION_ARB, 1,
-		WGL_CONTEXT_FLAGS_ARB,         WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-		WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-		0
-	};
-
-	wglDeleteContext(hGLRC);
-	hGLRC = wglCreateContextAttribsARB(gApi->hdc, 0, attr);
-
-	if(!hGLRC || !wglMakeCurrent(gApi->hdc, hGLRC)){
-		printf("Creating gApi context fail (%d)\n", GetLastError());
-		return false;
-	}
-
-
-	if(! _initOpenGLProc() ){
-		return false;
-	}
-
-	printf("OpenGL gApi context information:\n");
-
-	printf("Renderer     : %s\n", (const char*)glGetString(GL_RENDERER));
-	printf("Version      : %s\n", (const char*)glGetString(GL_VERSION));
-	printf("GLSL version : %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-	return true;
-}
 
 bool _initOpenGLProc(void)
 {
@@ -146,3 +80,68 @@ bool _initOpenGLProc(void)
 
 	return true;
 }
+
+bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi)
+{
+	printf(
+		"Init gApi(%ix%i)\n",
+		options->width,
+		options->height
+	);
+
+	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "edit", options->title, WS_VISIBLE|WS_POPUP, 0, 0, options->width, options->height, 0, 0, 0, 0);
+	gApi->hdc = GetDC(gApi->hWnd);
+
+	PIXELFORMATDESCRIPTOR ppfd;
+	ppfd.dwFlags = PFD_DRAW_TO_WINDOW+PFD_SUPPORT_OPENGL+PFD_DOUBLEBUFFER;
+	ppfd.iPixelType = PFD_TYPE_RGBA;
+	ppfd.cColorBits = 32;
+	ppfd.dwLayerMask = PFD_MAIN_PLANE;
+	int iPixelFormat = ChoosePixelFormat(gApi->hdc, &ppfd);
+	SetPixelFormat(gApi->hdc, iPixelFormat, &ppfd);
+
+	HGLRC hGLRC = wglCreateContext(gApi->hdc);
+	wglMakeCurrent(gApi->hdc, hGLRC);
+
+	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+
+	if(!wglCreateContextAttribsARB){
+		printf("wglCreateContextAttribsARB fail (%d)\n", GetLastError());
+		return false;
+	}
+
+	int maj, min;
+	glGetIntegerv(GL_MAJOR_VERSION, &maj);
+	glGetIntegerv(GL_MINOR_VERSION, &min);
+	printf("Avaible OpengGL      : %i.%i\n", maj, min);
+
+	int attr[] = {
+		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+		WGL_CONTEXT_MINOR_VERSION_ARB, 1,
+		WGL_CONTEXT_FLAGS_ARB,         WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+		WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+		0
+	};
+
+	wglDeleteContext(hGLRC);
+	hGLRC = wglCreateContextAttribsARB(gApi->hdc, 0, attr);
+
+	if(!hGLRC || !wglMakeCurrent(gApi->hdc, hGLRC)){
+		printf("Creating gApi context fail (%d)\n", GetLastError());
+		return false;
+	}
+
+
+	if(! _initOpenGLProc() ){
+		return false;
+	}
+
+	printf("OpenGL gApi context information:\n");
+
+	printf("Renderer     : %s\n", (const char*)glGetString(GL_RENDERER));
+	printf("Version      : %s\n", (const char*)glGetString(GL_VERSION));
+	printf("GLSL version : %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+	return true;
+}
+

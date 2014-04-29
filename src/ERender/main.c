@@ -11,8 +11,6 @@ int main(void)
 	};
 	render = ERender.create(&renderOptions);
 
-	
-
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
 

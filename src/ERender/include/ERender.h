@@ -3,10 +3,11 @@
 
 // INCLUDES
 #include "../../ELib/include/ELib.h"
+#include "../src/ERenderScene.h"
+#include "../src/ERenderObject.h"
 
 // TYPES
 typedef int ERenderHandler;
-typedef EArray EScene;
 
 typedef struct {
 	int width;

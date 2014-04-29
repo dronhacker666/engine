@@ -1,11 +1,11 @@
 #ifndef opengl_h
 #define opengl_h
 
+#include "../include/ERender.h"
 #include <windows.h>
 #include <GL/GL.h>
 #include <GL/wglext.h>
 #include <GL/glext.h>
-
 
 typedef struct {
 	// Base
@@ -13,6 +13,7 @@ typedef struct {
 	HDC hdc;
 } GAPI;
 
+bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi);
 
 /* OPENGL EXTENSIONS */
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
@@ -53,7 +54,5 @@ extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 extern PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv;
 extern PFNGLUNIFORM1FPROC   	   glUniform1f;
 extern PFNGLUNIFORM2FVPROC		   glUniform2fv;
-
-bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi);
 
 #endif
