@@ -29,6 +29,7 @@ void ERenderSetScene(EScene* scene)
 
 void ERenderRender(void)
 {
+
 	glClearColor(0.8, 0.8, 0.8, 0.0);
 	glShadeModel(GL_FLAT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

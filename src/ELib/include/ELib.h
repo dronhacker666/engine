@@ -73,8 +73,16 @@ extern _eArray eArray;
 /**
 *	Tools
 */
+
 typedef struct {
-	unsigned int (*hashString)(char *);
+	char* content;
+	unsigned int length;
+	bool success;
+} FileResult;
+
+typedef struct {
+	unsigned int 	(*hashString)	(char *);
+	FileResult 		(*loadFile)		(const char* filename);
 } _eTools;
 extern _eTools eTools;
 

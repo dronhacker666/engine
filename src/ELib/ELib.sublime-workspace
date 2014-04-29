@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"con",
+				"content"
+			],
+			[
 				"new",
 				"newArray"
 			],
@@ -246,10 +250,6 @@
 			[
 				"c",
 				"criteria"
-			],
-			[
-				"con",
-				"confirm"
 			],
 			[
 				"inlin",
@@ -539,7 +539,23 @@
 			"file": "include/ELib.h",
 			"settings":
 			{
-				"buffer_size": 1169,
+				"buffer_size": 1308,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/ETools.c",
+			"settings":
+			{
+				"buffer_size": 836,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "tests/main.c",
+			"settings":
+			{
+				"buffer_size": 500,
 				"line_ending": "Windows"
 			}
 		},
@@ -644,9 +660,10 @@
 	},
 	"file_history":
 	[
+		"/D/github/engine/src/ELib/bin/testfile",
+		"/D/github/engine/src/ELib/tests/EStack.c",
 		"/D/github/engine/src/ELib/include/ELib.h",
 		"/D/github/engine/src/ELib/src/ETools.c",
-		"/D/github/engine/src/ELib/tests/EStack.c",
 		"/D/github/engine/src/ELib/makefile",
 		"/D/github/engine/src/ELib/src/EArray.c",
 		"/D/github/engine/src/ELib/tests/main.c",
@@ -770,8 +787,7 @@
 		"/D/www/releases/0.9.6/frontend/protected/views/creatives/tabs/_modalGridHTML5.php",
 		"/D/www/releases/0.9.6/frontend/protected/controllers/OffersController.php",
 		"/D/www/releases/0.9.6/frontend/protected/views/creatives/index.php",
-		"/D/www/releases/0.9.6/frontend/protected/views/offers/new/index.php",
-		"/D/www/releases/0.9.5/deploy_web/dbautochanges/AutoChange.txt"
+		"/D/www/releases/0.9.6/frontend/protected/views/offers/new/index.php"
 	],
 	"find":
 	{
@@ -977,7 +993,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1006,7 +1022,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -1023,7 +1039,7 @@
 						[
 							[
 								66,
-								66
+								50
 							]
 						],
 						"settings":
@@ -1031,11 +1047,11 @@
 							"syntax": "Packages/C++/C++.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 420.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -1044,15 +1060,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1169,
+						"buffer_size": 1308,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								108,
-								108
+								1266,
+								1266
 							]
 						],
 						"settings":
@@ -1060,15 +1076,73 @@
 							"syntax": "Packages/C++/C++.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
+						"translation.x": 0.0,
 						"translation.y": 588.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/ETools.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 836,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								715,
+								715
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
+					"file": "tests/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 500,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								461,
+								461
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
 					"file": "makefile",
 					"semi_transient": false,
 					"settings":
@@ -1092,7 +1166,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1166,7 +1240,11 @@
 		[
 			[
 				"",
-				"D:\\github\\engine\\src\\ERender\\ERender.sublime-project"
+				"D:\\github\\script\\script.sublime-project"
+			],
+			[
+				"sc",
+				"D:\\github\\script\\script.sublime-project"
 			],
 			[
 				"ren",
