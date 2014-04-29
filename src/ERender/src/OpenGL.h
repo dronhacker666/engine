@@ -6,6 +6,14 @@
 #include <GL/wglext.h>
 #include <GL/glext.h>
 
+
+typedef struct {
+	// Base
+	HWND hWnd;
+	HDC hdc;
+} GAPI;
+
+
 /* OPENGL EXTENSIONS */
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 
@@ -46,6 +54,6 @@ extern PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv;
 extern PFNGLUNIFORM1FPROC   	   glUniform1f;
 extern PFNGLUNIFORM2FVPROC		   glUniform2fv;
 
-bool ERenderOGLInit(ERenderCreateOptions* options);
+bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi);
 
 #endif

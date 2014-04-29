@@ -1,4 +1,5 @@
 #include "include/ERender.h"
+#include <windows.h>
 
 ERenderHandler render;
 
@@ -10,7 +11,13 @@ int main(void)
 	};
 	render = ERender.create(&renderOptions);
 
-	ERender.render();
+	
+
+	while(!GetAsyncKeyState(VK_ESCAPE)){
+
+
+		ERender.render();
+	}
 
 	return 0;
 }

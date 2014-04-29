@@ -42,27 +42,27 @@ PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
 
 bool _initOpenGLProc(void);
 
-bool ERenderOGLInit(ERenderCreateOptions* options)
+bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi)
 {
 	printf(
-		"Init Render(%ix%i)\n",
+		"Init gApi(%ix%i)\n",
 		options->width,
 		options->height
 	);
 
-	HWND hWnd = CreateWindowEx(WS_EX_TOPMOST, "edit", options->title, WS_VISIBLE|WS_POPUP, 0, 0, options->width, options->height, 0, 0, 0, 0);
-	HDC hdc = GetDC(hWnd);
+	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "edit", options->title, WS_VISIBLE|WS_POPUP, 0, 0, options->width, options->height, 0, 0, 0, 0);
+	gApi->hdc = GetDC(gApi->hWnd);
 
 	PIXELFORMATDESCRIPTOR ppfd;
 	ppfd.dwFlags = PFD_DRAW_TO_WINDOW+PFD_SUPPORT_OPENGL+PFD_DOUBLEBUFFER;
 	ppfd.iPixelType = PFD_TYPE_RGBA;
 	ppfd.cColorBits = 32;
 	ppfd.dwLayerMask = PFD_MAIN_PLANE;
-	int iPixelFormat = ChoosePixelFormat(hdc, &ppfd);
-	SetPixelFormat(hdc, iPixelFormat, &ppfd);
+	int iPixelFormat = ChoosePixelFormat(gApi->hdc, &ppfd);
+	SetPixelFormat(gApi->hdc, iPixelFormat, &ppfd);
 
-	HGLRC hGLRC = wglCreateContext(hdc);
-	wglMakeCurrent(hdc, hGLRC);
+	HGLRC hGLRC = wglCreateContext(gApi->hdc);
+	wglMakeCurrent(gApi->hdc, hGLRC);
 
 	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
 
@@ -85,10 +85,10 @@ bool ERenderOGLInit(ERenderCreateOptions* options)
 	};
 
 	wglDeleteContext(hGLRC);
-	hGLRC = wglCreateContextAttribsARB(hdc, 0, attr);
+	hGLRC = wglCreateContextAttribsARB(gApi->hdc, 0, attr);
 
-	if(!hGLRC || !wglMakeCurrent(hdc, hGLRC)){
-		printf("Creating render context fail (%d)\n", GetLastError());
+	if(!hGLRC || !wglMakeCurrent(gApi->hdc, hGLRC)){
+		printf("Creating gApi context fail (%d)\n", GetLastError());
 		return false;
 	}
 
@@ -97,7 +97,7 @@ bool ERenderOGLInit(ERenderCreateOptions* options)
 		return false;
 	}
 
-	printf("OpenGL render context information:\n");
+	printf("OpenGL gApi context information:\n");
 
 	printf("Renderer     : %s\n", (const char*)glGetString(GL_RENDERER));
 	printf("Version      : %s\n", (const char*)glGetString(GL_VERSION));
