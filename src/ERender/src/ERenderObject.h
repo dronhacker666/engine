@@ -1,14 +1,14 @@
-#ifndef erender_object_h
-#define erender_object_h
+#ifndef ERENDEROBJECT_H
+#define ERENDEROBJECT_H
 
-#include <GL/GL.h>
+#include "../src/ERenderShader.h"
 
 typedef struct {
-	GLuint fragmentShader;
-	GLuint vertexShader;
+	ERenderShaderInstance_p fragmentShader;
+	ERenderShaderInstance_p vertexShader;
 
 	GLuint vbo;
 
-} ERenderObject, *ERenderObject_p;
+} ERenderObjectInstance, *ERenderObjectInstance_p;
 
 #endif

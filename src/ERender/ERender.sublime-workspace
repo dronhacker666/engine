@@ -520,18 +520,10 @@
 	"buffers":
 	[
 		{
-			"file": "src/ERender.c",
+			"file": "main.c",
 			"settings":
 			{
-				"buffer_size": 1069,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/ERenderOpenGL.c",
-			"settings":
-			{
-				"buffer_size": 6495,
+				"buffer_size": 402,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,23 +531,31 @@
 			"file": "include/ERender.h",
 			"settings":
 			{
-				"buffer_size": 603,
+				"buffer_size": 915,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/ERenderObject.h",
+			"file": "src/ERender.c",
 			"settings":
 			{
-				"buffer_size": 191,
+				"buffer_size": 1179,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/ERenderScene.h",
+			"file": "src/ERenderShader.c",
 			"settings":
 			{
-				"buffer_size": 65,
+				"buffer_size": 951,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/ERenderShader.h",
+			"settings":
+			{
+				"buffer_size": 290,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,7 +563,7 @@
 			"file": "src/ERenderOpenGL.h",
 			"settings":
 			{
-				"buffer_size": 2060,
+				"buffer_size": 1918,
 				"line_ending": "Windows"
 			}
 		}
@@ -668,9 +668,12 @@
 	},
 	"file_history":
 	[
+		"/D/github/engine/src/ERender/src/ERenderScene.h",
+		"/D/github/engine/src/ERender/src/ERenderObject.h",
+		"/D/github/engine/src/ERender/src/ERenderOpenGL.c",
+		"/D/github/engine/src/ERender/src/ERenderOpenGL.h",
 		"/D/github/engine/src/ERender/src/ERenderShaders.c",
 		"/D/github/engine/src/ERender/src/ERenderShaders.h",
-		"/D/github/engine/src/ERender/src/ERenderObject.h",
 		"/D/github/engine/src/ERender/makefile",
 		"/D/github/engine/src/ERender/main.c",
 		"/D/github/engine/src/ERender/include/ERender.h",
@@ -792,10 +795,7 @@
 		"/D/www/releases/0.9.6/admin/protected/models/Advertisers.php",
 		"/D/www/releases/0.9.6/admin/protected/controllers/advertisers/UpdateAction.php",
 		"/D/www/releases/0.9.6/admin/protected/controllers/offer_permissions/ViewAction.php",
-		"/D/www/releases/0.9.6/admin/protected/controllers/affiliates/ViewAction.php",
-		"/D/www/releases/0.9.6/admin/protected/controllers/affiliates/ListAction.php",
-		"/D/www/releases/0.9.6/frontend/protected/controllers/WizardController.php",
-		"/D/www/releases/0.9.6/frontend/protected/views/offers/new/editable/_main.php"
+		"/D/www/releases/0.9.6/admin/protected/controllers/affiliates/ViewAction.php"
 	],
 	"find":
 	{
@@ -1002,138 +1002,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 5,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/ERender.c",
+					"file": "main.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1069,
+						"buffer_size": 402,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								531,
-								531
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 210.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/ERenderOpenGL.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6495,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								43,
-								43
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "include/ERender.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 603,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								110,
-								110
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/ERenderObject.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 191,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								147,
-								147
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/ERenderScene.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 65,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								57,
-								57
+								321,
+								321
 							]
 						],
 						"settings":
@@ -1148,20 +1034,78 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "src/ERenderOpenGL.h",
+					"buffer": 1,
+					"file": "include/ERender.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2060,
+						"buffer_size": 915,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								129,
-								129
+								234,
+								234
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/ERender.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1179,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								127,
+								127
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/ERenderShader.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 951,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								505,
+								482
 							]
 						],
 						"settings":
@@ -1172,7 +1116,63 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/ERenderShader.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 290,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								80,
+								80
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/ERenderOpenGL.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1918,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								584,
+								584
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1249,20 +1249,20 @@
 		"selected_items":
 		[
 			[
-				"li",
-				"D:\\github\\engine\\src\\ELib\\ELib.sublime-project"
+				"cpa",
+				"C:\\Users\\andrey\\Documents\\cpa.sublime-project"
 			],
 			[
 				"",
 				"D:\\github\\engine\\src\\ELib\\ELib.sublime-project"
 			],
 			[
-				"lib",
+				"li",
 				"D:\\github\\engine\\src\\ELib\\ELib.sublime-project"
 			],
 			[
-				"cpa",
-				"C:\\Users\\andrey\\Documents\\cpa.sublime-project"
+				"lib",
+				"D:\\github\\engine\\src\\ELib\\ELib.sublime-project"
 			],
 			[
 				"ca",

@@ -1,7 +1,7 @@
-#include "include/ERender.h"
+#include "include/ERenderAPI.h"
 #include <windows.h>
 
-ERenderHandler render;
+ERenderInstance_p render;
 
 int main(void)
 {
@@ -11,10 +11,12 @@ int main(void)
 	};
 	render = ERender.create(&renderOptions);
 
+	ERenderShaderInstance_p fshader = ERenderShader.create("data\\test.fs");
+
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
 
-		ERender.render();
+		ERender.render(render);
 	}
 
 	return 0;

@@ -1,4 +1,3 @@
-#include "../include/ERender.h"
 #include "ERenderOpenGL.h"
 
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
@@ -130,7 +129,6 @@ bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi)
 		printf("Creating gApi context fail (%d)\n", GetLastError());
 		return false;
 	}
-
 
 	if(! _initOpenGLProc() ){
 		return false;

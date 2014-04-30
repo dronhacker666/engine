@@ -1,6 +1,10 @@
-#ifndef escene_h
-#define escene_h
+#ifndef ESCENE_H
+#define ESCENE_H
 
-typedef EArray EScene;
+#include "../../ELib/include/ELib.h"
+
+typedef struct {
+	EArray child;
+} ESceneInstance, *ESceneInstance_p;
 
 #endif

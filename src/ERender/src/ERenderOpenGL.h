@@ -1,17 +1,7 @@
-#ifndef opengl_h
-#define opengl_h
+#ifndef OPENGL_H
+#define OPENGL_H
 
-#include "../include/ERender.h"
-#include <windows.h>
-#include <GL/GL.h>
-#include <GL/wglext.h>
-#include <GL/glext.h>
-
-typedef struct {
-	// Base
-	HWND hWnd;
-	HDC hdc;
-} GAPI;
+#include "ERender.h"
 
 bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi);
 
