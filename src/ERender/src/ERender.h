@@ -6,6 +6,7 @@
 #include <GL/GL.h>
 #include <GL/wglext.h>
 #include <GL/glext.h>
+#include "../src/ERenderObject.h"
 #include "../src/ERenderScene.h"
 #include "../src/ERenderShader.h"
 
@@ -23,10 +24,11 @@ typedef struct {
 
 typedef struct {
 	GAPI gAPI;
-	ESceneInstance_p scene;
 
-	//Shaders
-	ERenderShaderProgram_p shader;
+	// Rendered Scene
+	ERenderSceneInstance_p scene;
+	// Shaders
+	ERenderShaderManagerInstance_p shaderManager;
 
 	// ViewPort
 	int viewport_x;
@@ -38,8 +40,8 @@ typedef struct {
 typedef struct {
 	ERenderInstance_p 	(*create)		(ERenderCreateOptions_p);
 	void 				(*render)		(ERenderInstance_p);
-	void 				(*setScene)		(ERenderInstance_p, ESceneInstance_p);
-	ESceneInstance_p	(*createScene)	(void);
+	void 				(*renderObject)	(ERenderInstance_p, ERenderObjectInstance_p);
+	void 				(*setScene)		(ERenderInstance_p, ERenderSceneInstance_p);
 } _ERender;
 extern _ERender ERender;
 

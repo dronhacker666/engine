@@ -2,9 +2,10 @@
 #define ESCENE_H
 
 #include "../../ELib/include/ELib.h"
+#include "../src/ERenderObject.h"
 
 typedef struct {
 	EArray child;
-} ESceneInstance, *ESceneInstance_p;
+} ERenderSceneInstance, *ERenderSceneInstance_p;
 
 #endif

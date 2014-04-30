@@ -1,22 +1,14 @@
-#version 140
+#version 330 core
 
 uniform mat4 projectionMatrix;
-uniform float time;
 
 in vec3 position;
-in vec3 normal;
+in vec3 color;
 
-out vec3 t_normal;
+out vec3 fragmentColor;
 
 void main(void)
 {
-    // перевод вершинных координат в однородные
-    vec4 res = vec4(position, 1.0 );
-    res.x += 2.0 * sin(time+res.y);
-    res.y += 2.0 * sin(time+res.z);
-    res.z += 2.0 * sin(time+res.x);
-
-
-    gl_Position = projectionMatrix * res;
-
+	gl_Position   = projectionMatrix * vec4(position, 1.0);
+	fragmentColor = color;
 }

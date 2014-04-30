@@ -7,6 +7,10 @@
 #include <GL/glext.h>
 #include "../../ELib/include/ELib.h"
 
+/**
+*	Shader Instance
+*/
+
 typedef struct {
 	GLuint _gl_id;
 	unsigned int _hash;
@@ -15,14 +19,29 @@ typedef struct {
 } ERenderShaderInstance, *ERenderShaderInstance_p;
 
 typedef struct {
+	ERenderShaderInstance_p (*load) (char*);
+} _ERenderShader;
+extern _ERenderShader ERenderShader;
+
+
+
+/**
+*	Shader Manager
+*/
+
+typedef struct {
 	GLuint shader_id;
 	ERenderShaderInstance_p fragmentShader;
 	ERenderShaderInstance_p vertexShader;
-} ERenderShaderProgram, *ERenderShaderProgram_p;
+
+	bool needRelink;
+
+} ERenderShaderManagerInstance, *ERenderShaderManagerInstance_p;
 
 typedef struct {
-	ERenderShaderInstance_p (*create) (char*);
-} _ERenderShader;
-extern _ERenderShader ERenderShader;
+	ERenderShaderManagerInstance_p 	(*create) 			(void);
+	void							(*prepareShaders) 	(ERenderShaderManagerInstance_p);
+} _ERenderShaderManager;
+extern _ERenderShaderManager ERenderShaderManager;
 
 #endif

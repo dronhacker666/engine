@@ -14,85 +14,64 @@ ERenderInstance_p ERenderCreate(ERenderCreateOptions_p options){
 	render->viewport_width = options->width;
 	render->viewport_height = options->height;
 
-	render->shader = malloc(sizeof(ERenderShaderProgram));
+	render->shaderManager = ERenderShaderManager.create();
+
+	// TODO: create scene manager
+	render->scene = malloc(sizeof(ERenderSceneInstance));
+	render->scene->child = eArray.create(sizeof(ERenderObjectInstance_p));
 
 	return render;
 }
 
-ESceneInstance_p ERenderCreateScene(void)
-{
-	return (ESceneInstance_p)eArray.create(sizeof(int));
-}
 
-void ERenderSetScene(ERenderInstance_p render, ESceneInstance_p scene)
+void ERenderSetScene(ERenderInstance_p render, ERenderSceneInstance_p scene)
 {
 	render->scene = scene;
 }
 
-/*void ERenderPrepareShaders(ERenderInstance_p render){
-	if(render->shadersHasChanged){
 
-		GLint status;
-		char* buffer;
+void ERenderRenderObject(ERenderInstance_p render, ERenderObjectInstance_p object)
+{
+	ERenderShaderManager.prepareShaders(render->shaderManager);
 
-		GLuint shaderProgram = glCreateProgram();
-		if(render->fragmentShader){
-			glAttachShader(shaderProgram, render->fragmentShader->_gl_id);
-		}
-		if(render->vertexShader){
-			glAttachShader(shaderProgram, render->vertexShader->_gl_id);
-		}
+	Matrix4f projectionMatrix;
+	float aspectRatio = (float)800 / (float)600;
+	ERenderMatrix.perspective4f(projectionMatrix, 45.0f, aspectRatio, 0.1f, 500.0f);
 
-		glLinkProgram(shaderProgram);
-		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
-		if (status != GL_TRUE){
-			glGetProgramInfoLog(shaderProgram, 1024, 0, buffer);
-			printf("Shader Program Link Error: %s\n", buffer);
-			exit(1);
-		}
+	GLint projectionMatrixLocation = glGetUniformLocation(render->shaderManager->shader_id, "projectionMatrix");
 
-		glValidateProgram(shaderProgram);
-		glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &status);
-		if (status != GL_TRUE){
-			glGetProgramInfoLog(shaderProgram, 1024, 0, buffer);
-			printf("Shader Program Validate Error: %s\n", buffer);
-			exit(1);
-		}
+	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
 
-		glUseProgram(shaderProgram);
-
-		render->shadersHasChanged = true;
+	GLint positionLocation = glGetAttribLocation(render->shaderManager->shader_id, "position");
+	if (positionLocation != -1)
+	{
+		glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 12, 0);
+		glEnableVertexAttribArray(positionLocation);
 	}
-}*/
+
+	glBindVertexArray(object->meshVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, object->meshVBO);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+}
 
 void ERenderRender(ERenderInstance_p render)
 {
-	//ERenderPrepareShaders(render);
-
 	glClearColor(0.8, 0.8, 0.8, 0.0);
 	glShadeModel(GL_FLAT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glColor3f(0.0, 0.0, 0.0);
-
-	glBegin(GL_LINES);
-	glVertex3f(100.0f, 100.0f, 0.0f);
-	glVertex3f(200.0f, 140.0f, 5.0f);
-	glEnd( );
-
-	glBegin(GL_TRIANGLES);
-	glVertex3f(10.0f, 10.0f, 0.0f);
-	glVertex3f(15.0f, 10.0f, 0.0f);
-	glVertex3f(12.0f, 5.0f, 0.0f);
-	glEnd();
+	int i;
+	for(i=0; i<render->scene->child->length; i++){
+		ERenderRenderObject(render, (ERenderObjectInstance_p)*(void**)eArray.get(render->scene->child, i) );
+	}
 
 	SwapBuffers(render->gAPI.hdc);
 }
 
 
 _ERender ERender = {
-	create: ERenderCreate,
-	render: ERenderRender,
-	setScene: ERenderSetScene,
-	createScene: ERenderCreateScene,
+	create: 		ERenderCreate,
+	render: 		ERenderRender,
+	renderObject: 	ERenderRenderObject,
+	setScene: 		ERenderSetScene,
 };

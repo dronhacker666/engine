@@ -11,7 +11,20 @@ int main(void)
 	};
 	render = ERender.create(&renderOptions);
 
-	ERenderShaderInstance_p fshader = ERenderShader.create("data\\test.fs");
+	// количество вершин в нашей геометрии, у нас простой треугольник
+	const int vertexCount = 3;
+
+	// размер одной вершины меша в байтах - 6 float на позицию и на цвет вершины
+	const int vertexSize = 3 * sizeof(float);
+	float triangleMesh[9] = {
+		-1.0f, -1.0f, -2.0f,
+		 0.0f,  1.0f, -2.0f,
+		 1.0f, -1.0f, -2.0f
+	};
+
+	ERenderObjectInstance_p object = ERenderObject.createFromMesh(triangleMesh, vertexCount*vertexSize);
+
+	eArray.push(render->scene->child, &object);
 
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
