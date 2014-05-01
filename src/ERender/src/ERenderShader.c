@@ -60,7 +60,7 @@ ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 	shaderManager->shader_id = glCreateProgram();
 
 	char vertex_src[] = "\
-		#version 140 core\n\
+		#version 140\n\
 		uniform mat4 projectionMatrix;\n\
 		in vec3 position;\n\
 		void main(void)\n\
@@ -71,7 +71,7 @@ ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 	shaderManager->vertexShader = ERenderShaderCreate(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
 
 	char fragment_src[] = "\
-		#version 140 core\n\
+		#version 140\n\
 		out vec4 gl_FragColor;\n\
 		void main(void)\n\
 		{\n\

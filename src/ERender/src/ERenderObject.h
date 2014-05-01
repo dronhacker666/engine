@@ -4,7 +4,7 @@
 #include "ERenderMatrix.h"
 #include "ERenderShader.h"
 
-typedef float* CRenderMesh;
+typedef float *CRenderMesh;
 
 typedef struct {
 	ERenderShaderInstance_p fragmentShader;
@@ -19,7 +19,7 @@ typedef struct {
 
 
 typedef struct {
-	ERenderObjectInstance_p (*createFromMesh) (CRenderMesh, int);
+	ERenderObjectInstance_p (*createFromMesh) (CRenderMesh, unsigned int);
 } _ERenderObject;
 extern _ERenderObject ERenderObject;
 
