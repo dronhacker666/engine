@@ -34,13 +34,14 @@ ERenderShaderInstance_p ERenderShaderCreate(char* src, int length, GLenum type)
 
 ERenderShaderInstance_p ERenderShaderLoad(char* filename)
 {
-	FileResult shader_src = eTools.loadFile(filename);
-	if(shader_src.success)
-	{
-		return ERenderShaderCreate(shader_src.content, shader_src.length, getShaderType(filename));
-	}else{
+	char* buffer;
+	int length;
+
+	if( !eTools.loadFile(filename, &buffer, &length) ){
 		return NULL;
 	}
+
+	return ERenderShaderCreate(buffer, length, getShaderType(filename));
 }
 
 _ERenderShader ERenderShader = {
@@ -63,21 +64,25 @@ ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 		#version 140\n\
 		uniform mat4 viewMatrix;\n\
 		uniform mat4 modelMatrix;\n\
-		in vec3 position;\n\
+		in vec3 iPosition;\n\
+		in vec2 iTexcoord;\n\
+		out vec2 fragTexcoord;\n\
 		void main(void)\n\
 		{\n\
-			vec4 vertex   = modelMatrix * vec4(position, 1.0);\n\
-			gl_Position   = viewMatrix * vertex;\n\
+			gl_Position   =  viewMatrix * (modelMatrix * vec4(iPosition, 1.0));\n\
+			fragTexcoord  = iTexcoord;\n\
 		}\n\
 	";
 	shaderManager->vertexShader = ERenderShaderCreate(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
 
 	char fragment_src[] = "\
 		#version 140\n\
-		out vec4 gl_FragColor;\n\
+		uniform sampler2D iTex0;\n\
+		in vec2 fragTexcoord;\n\
+		out vec4 color;\n\
 		void main(void)\n\
 		{\n\
-			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n\
+			color = texture(iTex0, fragTexcoord);\n\
 		}\n\
 	";
 	shaderManager->fragmentShader = ERenderShaderCreate(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);

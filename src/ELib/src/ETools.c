@@ -1,5 +1,4 @@
 #include "../include/ELib.h"
-#include <malloc.h>
 
 unsigned int eToolsHashString(char* str){
 	unsigned int res = 0;
@@ -9,27 +8,29 @@ unsigned int eToolsHashString(char* str){
 	return res;
 }
 
-FileResult eToolsLoadFile(const char* filename)
+bool eToolsLoadFile(char* filename, char** content, int* length)
 {
-	FileResult res = {success:true};
 	FILE* fp = fopen (filename, "rb+");
+	int size;
 	if(fp==NULL){
-		res.success = false;
 		printf("ERROR: LoadFile('%s', ..., ...) - cannot read this file\n", filename);
+		return false;
 	}else{
 		fseek(fp, 0, SEEK_END);
-		res.length = ftell(fp);
+		size = ftell(fp);
 		rewind(fp);
-		res.content = (char*)malloc( sizeof(char)*res.length );
-		if(res.content==NULL){
+		*content = malloc( sizeof(char)*size );
+		if(*content==NULL){
 			printf("%s\n", "No memory");
-			res.success = false;
+			return false;
 		}
-		fread(res.content, sizeof(char) , res.length, fp);
-		res.content[res.length] = 0;
+		fread(*content, sizeof(char)*size , 1, fp);
+
+		(*content)[size] = 0;
+		*length = size;
 		fclose(fp);
 	}
-	return res;
+	return true;
 }
 
 

@@ -12,6 +12,8 @@ bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi);
 /* OPENGL EXTENSIONS */
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 
+extern PFNGLACTIVETEXTUREPROC glActiveTexture;
+
 // VAO
 extern PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays;
 extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays;
@@ -47,6 +49,7 @@ extern PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 extern PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv;
 extern PFNGLUNIFORM1FPROC   	   glUniform1f;
+extern PFNGLUNIFORM1IPROC   	   glUniform1i;
 extern PFNGLUNIFORM2FVPROC		   glUniform2fv;
 
 #endif

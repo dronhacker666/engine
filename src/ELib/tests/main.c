@@ -21,9 +21,10 @@ int main(void){
 
 	CHECK(eStackTest);
 
-	FileResult res = eTools.loadFile("bin/testfile");
-	if(res.success){
-		printf("%s \nlength %i\n", res.content, res.length);
+	char* content;
+	int length;
+	if(eTools.loadFile("bin/testfile", &content, &length)){
+		printf("%s \nlength %i\n", content, length);
 	}
 
 	return 0;

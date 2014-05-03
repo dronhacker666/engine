@@ -5,11 +5,12 @@
 *	INCLUDES
 */
 #include <stdio.h>
+#include <malloc.h>
 
 /**
 *	Base Types
 **/
-#define bool int
+typedef int bool;
 #define true 1
 #define false 0
 
@@ -82,7 +83,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int 	(*hashString)	(char *);
-	FileResult 		(*loadFile)		(const char* filename);
+	bool	 		(*loadFile)		(char*, char**, int*);
 } _eTools;
 extern _eTools eTools;
 

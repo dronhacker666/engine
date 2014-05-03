@@ -2,6 +2,8 @@
 
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
+PFNGLACTIVETEXTUREPROC glActiveTexture = NULL;
+
 // VAO
 PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays = NULL;
@@ -37,10 +39,14 @@ PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = NULL;
 PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
 PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   = NULL;
 PFNGLUNIFORM1FPROC   		glUniform1f		     = NULL;
+PFNGLUNIFORM1IPROC   		glUniform1i		     = NULL;
 PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
 
 bool _initOpenGLProc(void)
 {
+	glActiveTexture = (PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
+
+	
 	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
 	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)wglGetProcAddress("glDeleteVertexArrays");
 	glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)wglGetProcAddress("glBindVertexArray");
@@ -75,6 +81,7 @@ bool _initOpenGLProc(void)
 	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)wglGetProcAddress("glGetUniformLocation");
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)wglGetProcAddress("glUniformMatrix4fv");
 	glUniform1f = (PFNGLUNIFORM1FPROC)wglGetProcAddress("glUniform1f");
+	glUniform1i = (PFNGLUNIFORM1IPROC)wglGetProcAddress("glUniform1i");
 	glUniform2fv = (PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform2fv");
 
 	return true;
@@ -139,6 +146,11 @@ bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi)
 	printf("Renderer     : %s\n", (const char*)glGetString(GL_RENDERER));
 	printf("Version      : %s\n", (const char*)glGetString(GL_VERSION));
 	printf("GLSL version : %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+	glClearDepth(1.0f);
+	glClearColor(0.8, 0.8, 0.8, 0.0);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	return true;
 }

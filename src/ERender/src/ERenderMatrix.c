@@ -2,9 +2,9 @@
 
 void ERenderMatrixPerspective4f(Matrix4f M, float fovy, float aspect, float znear, float zfar)
 {
-	float f = 1 / tanf(fovy * M_PI / 360),
-		  A = (zfar + znear) / (znear - zfar),
-		  B = (2 * zfar * znear) / (znear - zfar);
+	float f = 1 / tanf(fovy / 2),
+	      A = (zfar + znear) / (znear - zfar),
+	      B = (2 * zfar * znear) / (znear - zfar);
 
 	M[ 0] = f / aspect; M[ 1] =  0; M[ 2] =  0; M[ 3] =  0;
 	M[ 4] = 0;          M[ 5] =  f; M[ 6] =  0; M[ 7] =  0;
@@ -15,7 +15,7 @@ void ERenderMatrixPerspective4f(Matrix4f M, float fovy, float aspect, float znea
 void ERenderMatrixRotation4f(Matrix4f M, float x, float y, float z)
 {
 	const float A = cosf(x), B = sinf(x), C = cosf(y),
-				D = sinf(y), E = cosf(z), F = sinf(z);
+	            D = sinf(y), E = cosf(z), F = sinf(z);
 	const float AD = A * D, BD = B * D;
 
 	M[ 0] = C * E;           M[ 1] = -C * F;          M[ 2] = D;      M[ 3] = 0;
