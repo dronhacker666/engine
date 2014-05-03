@@ -61,11 +61,13 @@ ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 
 	char vertex_src[] = "\
 		#version 140\n\
-		uniform mat4 projectionMatrix;\n\
+		uniform mat4 viewMatrix;\n\
+		uniform mat4 modelMatrix;\n\
 		in vec3 position;\n\
 		void main(void)\n\
 		{\n\
-			gl_Position   = projectionMatrix * vec4(position, 1.0);\n\
+			vec4 vertex   = modelMatrix * vec4(position, 1.0);\n\
+			gl_Position   = viewMatrix * vertex;\n\
 		}\n\
 	";
 	shaderManager->vertexShader = ERenderShaderCreate(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
