@@ -22,28 +22,28 @@ typedef union{
 	int i;
 	float f;
 	void* p;
-} _EStackItem;
+} EStackItem;
 
 typedef struct{
 	int _head;
 	int _depth;
-	_EStackItem* _data;
-} _EStack, *EStack;
+	EStackItem* _data;
+} EStackInstance, *EStackInstance_p;
 
 typedef struct {
-	EStack 	(*create)	(int);
-	int 	(*isEmpty)	(EStack);
-	void 	(*push1i)	(EStack, int);
-	void 	(*push1f)	(EStack, float);
-	void 	(*push1p)	(EStack, void*);
-	int 	(*pop1i)	(EStack);
-	float 	(*pop1f)	(EStack);
-	void* 	(*pop1p)	(EStack);
-	int 	(*head1i)	(EStack);
-	float 	(*head1f)	(EStack);
-	void* 	(*head1p)	(EStack);
-} _eStack;
-extern _eStack eStack;
+	EStackInstance_p 	(*create)	(int);
+	int 				(*isEmpty)	(EStackInstance_p);
+	void 				(*push1i)	(EStackInstance_p, int);
+	void 				(*push1f)	(EStackInstance_p, float);
+	void 				(*push1p)	(EStackInstance_p, void*);
+	int 				(*pop1i)	(EStackInstance_p);
+	float 				(*pop1f)	(EStackInstance_p);
+	void* 				(*pop1p)	(EStackInstance_p);
+	int 				(*head1i)	(EStackInstance_p);
+	float 				(*head1f)	(EStackInstance_p);
+	void* 				(*head1p)	(EStackInstance_p);
+} _EStack;
+extern _EStack EStack;
 
 
 /**

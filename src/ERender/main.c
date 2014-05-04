@@ -5,11 +5,7 @@ ERenderInstance_p render;
 
 int main(void)
 {
-	ERenderCreateOptions renderOptions = {
-		width: 800,
-		height: 600,
-	};
-	render = ERender.create(&renderOptions);
+	render = ERender.create(800, 600);
 
 
 	// описание геометрии куба для всех его сторон
@@ -73,10 +69,10 @@ int main(void)
 		GetCursorPos(&mouse);
 
 
-		if(GetAsyncKeyState(VK_UP)){ object1->pos.z+=0.1; }
-		if(GetAsyncKeyState(VK_DOWN)){ object1->pos.z-=0.1; }
-		if(GetAsyncKeyState(VK_LEFT)){ object1->pos.rz-=1; }
-		if(GetAsyncKeyState(VK_RIGHT)){ object1->pos.rx-=1; }
+
+		if(GetAsyncKeyState(VK_LBUTTON)){
+
+		}
 
 
 		render->camera->pos.ry = mouse.x;

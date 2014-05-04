@@ -1,19 +1,23 @@
 #include "ERender.h"
 #include "ERenderOpenGL.h"
 
-ERenderInstance_p ERenderCreate(ERenderCreateOptions_p options){
+ERenderInstance_p ERenderCreate(int width, int height){
 
 	ERenderInstance_p render = malloc(sizeof(ERenderInstance));
+	render->width = width;
+	render->height = height;
 
-	if( !ERenderOGLInit(options, &render->gAPI) ){
+	render->events = EEvents.create();
+
+	if( !ERenderOGLInit(render) ){
 		return false;
 	}
+
+	render->camera = ERenderCamera.create();
 
 	// TODO: create scene manager
 	render->scene = malloc(sizeof(ERenderSceneInstance));
 	render->scene->child = eArray.create(sizeof(ERenderObjectInstance_p));
-
-	render->camera = ERenderCamera.create();
 
 	return render;
 }
@@ -27,9 +31,9 @@ void ERenderSetScene(ERenderInstance_p render, ERenderSceneInstance_p scene)
 
 void ERenderRender(ERenderInstance_p render)
 {
+	EEvents.addEvent(render->events, beforeRender, render);
 	ERenderCamera.renderScene(render->camera, render->scene);
-
-	SwapBuffers(render->gAPI.hdc);
+	EEvents.addEvent(render->events, afterRender, render);
 }
 
 

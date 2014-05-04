@@ -34,12 +34,12 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 	float aspectRatio = (float)800 / (float)600;
 	ERenderMatrix.perspective4f(projectionMatrix, 45.0f, aspectRatio, 0.01f, 500.0f);
 	ERenderMatrix.translation4f(translationView, camera->pos.x, camera->pos.y, camera->pos.z);
-	ERenderMatrix.rotation4f(rotationView, camera->pos.rx/100, camera->pos.ry/100, camera->pos.rz/100);
+	ERenderMatrix.rotation4f(rotationView, camera->pos.rx, camera->pos.ry, camera->pos.rz);
 	ERenderMatrix.mul4f(rotationView, rotationView, translationView);
 	ERenderMatrix.mul4f(viewProjectionMatrix, projectionMatrix, rotationView);
 
 	ERenderMatrix.translation4f(translationModel, object->pos.x, object->pos.y, object->pos.z);
-	ERenderMatrix.rotation4f(rotationModel, object->pos.rx/100, object->pos.ry/100, object->pos.rz/100);
+	ERenderMatrix.rotation4f(rotationModel, object->pos.rx, object->pos.ry, object->pos.rz);
 	ERenderMatrix.mul4f(modelMatrix, translationModel, rotationModel);
 
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);

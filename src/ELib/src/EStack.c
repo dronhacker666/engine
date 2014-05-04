@@ -2,15 +2,15 @@
 
 #include <malloc.h>
 
-inline EStack eStackCreate(int depth){
-	EStack stack = malloc(sizeof(_EStack));
+inline EStackInstance_p eStackCreate(int depth){
+	EStackInstance_p stack = malloc(sizeof(EStackInstance));
 	if(stack==NULL){
 		printf("No memory for stack\n");
 		return NULL;
 	}
 	stack->_head = 0;
 	stack->_depth = depth;
-	stack->_data = malloc(sizeof(_EStackItem)*(depth+1));
+	stack->_data = malloc(sizeof(EStackItem)*(depth+1));
 	if(stack->_data==NULL){
 		printf("No memory for stack\n");
 		return NULL;
@@ -18,60 +18,60 @@ inline EStack eStackCreate(int depth){
 	return stack;
 }
 
-inline void _eStackCheckForOutOnPush(EStack stack){
+inline void _eStackCheckForOutOnPush(EStackInstance_p stack){
 	if(stack->_head+1 > stack->_depth){
 		printf("Stack out of range\n");
 		exit(1);
 	}
 }
-inline void _eStackCheckForOutOnPop(EStack stack){
+inline void _eStackCheckForOutOnPop(EStackInstance_p stack){
 	if(stack->_head-1 < 0){
 		printf("Stack is empty\n");
 		exit(1);
 	}
 }
 
-inline int eStackIsEmpty(EStack stack){
+inline int eStackIsEmpty(EStackInstance_p stack){
 	return stack->_head == 0;
 }
 
-inline void eStackPush1i(EStack stack, int value){
+inline void eStackPush1i(EStackInstance_p stack, int value){
 	_eStackCheckForOutOnPush(stack);
 	stack->_data[++stack->_head].i = value;
 }
-inline void eStackPush1f(EStack stack, float value){
+inline void eStackPush1f(EStackInstance_p stack, float value){
 	_eStackCheckForOutOnPush(stack);
 	stack->_data[++stack->_head].f = value;
 }
-inline void eStackPush1p(EStack stack, void* value){
+inline void eStackPush1p(EStackInstance_p stack, void* value){
 	_eStackCheckForOutOnPush(stack);
 	stack->_data[++stack->_head].p = value;
 }
 
-inline int eStackPop1i(EStack stack){
+inline int eStackPop1i(EStackInstance_p stack){
 	_eStackCheckForOutOnPop(stack);
 	return stack->_data[stack->_head--].i;
 }
-inline float eStackPop1f(EStack stack){
+inline float eStackPop1f(EStackInstance_p stack){
 	_eStackCheckForOutOnPop(stack);
 	return stack->_data[stack->_head--].f;
 }
-inline void* eStackPop1p(EStack stack){
+inline void* eStackPop1p(EStackInstance_p stack){
 	_eStackCheckForOutOnPop(stack);
 	return stack->_data[stack->_head--].p;
 }
 
-inline int eStackHead1i(EStack stack){
+inline int eStackHead1i(EStackInstance_p stack){
 	return stack->_data[stack->_head].i;
 }
-inline float eStackHead1f(EStack stack){
+inline float eStackHead1f(EStackInstance_p stack){
 	return stack->_data[stack->_head].f;
 }
-inline void* eStackHead1p(EStack stack){
+inline void* eStackHead1p(EStackInstance_p stack){
 	return stack->_data[stack->_head].p;
 }
 
-_eStack eStack = {
+_EStack EStack = {
 	create: eStackCreate,
 	isEmpty: eStackIsEmpty,
 	push1i: eStackPush1i,

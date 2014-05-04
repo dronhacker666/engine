@@ -7,21 +7,20 @@
 #include "ERenderCamera.h"
 #include "ERenderScene.h"
 #include "ERenderShader.h"
-
-typedef struct {
-	int width;
-	int height;
-	char* title;
-} ERenderCreateOptions, *ERenderCreateOptions_p;
+#include "ERenderEvents.h"
 
 typedef struct {
 	// Base
 	HWND hWnd;
 	HDC hdc;
-} GAPI;
+} GAPI, *GAPI_p;
 
 typedef struct {
 	GAPI gAPI;
+	int width;
+	int height;
+
+	EEventManager_p events;
 
 	// Camera
 	ERenderCameraInstance_p camera;
@@ -31,7 +30,7 @@ typedef struct {
 } ERenderInstance, *ERenderInstance_p;
 
 typedef struct {
-	ERenderInstance_p 	(*create)		(ERenderCreateOptions_p);
+	ERenderInstance_p 	(*create)		(int, int);
 	void 				(*render)		(ERenderInstance_p);
 	void 				(*setScene)		(ERenderInstance_p, ERenderSceneInstance_p);
 } _ERender;

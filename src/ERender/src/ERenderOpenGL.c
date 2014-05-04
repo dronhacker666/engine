@@ -1,4 +1,5 @@
 #include "ERenderOpenGL.h"
+#include "ERenderEvents.h"
 
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
@@ -87,19 +88,72 @@ bool _initOpenGLProc(void)
 	return true;
 }
 
-bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi)
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+	}
+	return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+
+void onBeforeRender(void* _render)
+{
+	MSG msg;
+	ERenderInstance_p render = _render;
+	while (PeekMessage(&msg, render->gAPI.hWnd, 0, 0, PM_NOREMOVE))
+	{
+		GetMessage(&msg, render->gAPI.hWnd, 0, 0);
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+}
+
+void onAfterRender(void* _render)
+{
+	ERenderInstance_p render = _render;
+	SwapBuffers(render->gAPI.hdc);
+}
+
+
+bool ERenderOGLInit(ERenderInstance_p render)
 {
 	printf(
 		"Init gApi(%ix%i)\n",
-		options->width,
-		options->height
+		render->width,
+		render->height
 	);
 
-	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "edit", options->title, WS_VISIBLE|WS_POPUP, 0, 0, options->width, options->height, 0, 0, 0, 0);
+	EEvents.addListener(render->events, beforeRender, &onBeforeRender);
+	EEvents.addListener(render->events, afterRender, &onAfterRender);
+
+	GAPI* gApi = &render->gAPI;
+
+	WNDCLASSEX wc = {
+		cbSize: sizeof(WNDCLASSEX),
+		style: CS_VREDRAW | CS_HREDRAW,
+		lpfnWndProc: &WindowProc,
+		cbClsExtra: 0,
+		cbWndExtra: 0,
+		hInstance: GetModuleHandle(NULL),
+		hIcon: NULL,
+		hCursor: NULL,
+		hbrBackground: NULL,
+		lpszMenuName: NULL,
+		lpszClassName: "myclass",
+		hIconSm: NULL,
+	};
+	RegisterClassEx(&wc);
+
+	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "myclass", "Game", WS_VISIBLE|WS_TILEDWINDOW, 0, 0, render->width, render->height, 0, 0, 0, 0);
 	gApi->hdc = GetDC(gApi->hWnd);
 
 	PIXELFORMATDESCRIPTOR ppfd;
-	ppfd.dwFlags = PFD_DRAW_TO_WINDOW+PFD_SUPPORT_OPENGL+PFD_DOUBLEBUFFER;
+	ppfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
 	ppfd.iPixelType = PFD_TYPE_RGBA;
 	ppfd.cColorBits = 32;
 	ppfd.dwLayerMask = PFD_MAIN_PLANE;

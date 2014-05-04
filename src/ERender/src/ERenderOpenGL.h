@@ -7,7 +7,7 @@
 #include <GL/glext.h>
 #include <GL/wglext.h>
 
-bool ERenderOGLInit(ERenderCreateOptions* options, GAPI* gApi);
+bool ERenderOGLInit(ERenderInstance_p);
 
 /* OPENGL EXTENSIONS */
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
