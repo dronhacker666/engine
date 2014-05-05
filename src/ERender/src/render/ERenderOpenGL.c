@@ -127,6 +127,7 @@ void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 
 void ERenderOpenGL_onAfterRender(RenderEvent_p event)
 {
+	glFlush();
 	SwapBuffers(render->gAPI.hdc);
 }
 

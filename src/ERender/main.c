@@ -1,5 +1,6 @@
 #include "include/ERenderAPI.h"
 #include <windows.h>
+#include <time.h>
 
 ERenderInstance_p render;
 
@@ -32,14 +33,12 @@ void onMouseUp(MouseEvent_p _event)
 
 int main(void)
 {
-
 	EGuiManager_p gui = EGui.create();
 	EGuiTextInstance_p text = EGuiText.create("Hello World");
 	EGui.addItem(gui, (EGuiItem_p)text);
 
 	EGui.render(gui);
 
-	exit(0);
 
 
 	render = ERender.create(800, 600);
@@ -56,7 +55,6 @@ int main(void)
 
 	// описание геометрии куба для всех его сторон
 	// координаты вершин куба
-	const float s = 1.0f; // половина размера куба
 	const float cubePositions[24][3] = {
 		{-1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f, 1.0f}, { 1.0f,-1.0f, 1.0f}, {-1.0f,-1.0f, 1.0f}, // front
 		{ 1.0f, 1.0f,-1.0f}, {-1.0f, 1.0f,-1.0f}, {-1.0f,-1.0f,-1.0f}, { 1.0f,-1.0f,-1.0f}, // back
@@ -109,23 +107,27 @@ int main(void)
 
 	POINT mouse;
 
+	int fps = 0;
+	int s = 0;
+
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
 		GetCursorPos(&mouse);
 
+		render->camera->pos.rx = (float)mouse.y/1000;
+		render->camera->pos.ry = (float)mouse.x/1000;
 
+		ERender.render(render);
 
-		if(GetAsyncKeyState(VK_LBUTTON)){
-
+		fps++;
+		if(clock()-s>1000){
+			printf("fps: %i\n", fps);
+			s = clock();
+			fps = 0;
 		}
 
 
-		render->camera->pos.ry = mouse.x;
-		render->camera->pos.rx = mouse.y;
 
-
-
-		ERender.render(render);
 	}
 
 	return 0;

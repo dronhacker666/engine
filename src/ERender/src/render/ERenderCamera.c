@@ -7,8 +7,12 @@ ERenderCameraInstance_p ERenderCameraCreate(void)
 
 	camera->shaderManager = ERenderShaderManager.create();
 
-	camera->pos.z = -10;
-	camera->pos.rx = 0.1;
+	camera->pos.x = 0;
+	camera->pos.y = 0;
+	camera->pos.z = 0;
+	camera->pos.rx = 0;
+	camera->pos.ry = 0;
+	camera->pos.rz = 0;
 
 	return camera;
 }

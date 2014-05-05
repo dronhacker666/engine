@@ -22,6 +22,13 @@ ERenderObjectInstance_p ERenderObjectCreateFromMesh(MeshData_p data)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->_sys.indexVBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data->index.length * sizeof(uint32_t), data->index.data, GL_STATIC_DRAW);
 
+	object->pos.x = 0;
+	object->pos.y = 0;
+	object->pos.z = 0;
+	object->pos.rx = 0;
+	object->pos.ry = 0;
+	object->pos.rz = 0;
+
 	return object;
 }
 
