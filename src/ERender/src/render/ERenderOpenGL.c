@@ -4,6 +4,7 @@
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
 PFNGLACTIVETEXTUREPROC glActiveTexture = NULL;
+PFNGLGENERATEMIPMAPPROC glGenerateMipmap = NULL;
 
 // VAO
 PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    = NULL;
@@ -46,7 +47,7 @@ PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
 BOOL _initOpenGLProc(void)
 {
 	glActiveTexture = (PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
-
+	glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)wglGetProcAddress("glGenerateMipmap");
 	
 	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
 	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)wglGetProcAddress("glDeleteVertexArrays");
@@ -113,7 +114,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-void ERenderOpenGL_onBeforeRender(Event_p event)
+void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 {
 	MSG msg;
 	while (PeekMessage(&msg, render->gAPI.hWnd, 0, 0, PM_NOREMOVE))
@@ -124,7 +125,7 @@ void ERenderOpenGL_onBeforeRender(Event_p event)
 	}
 }
 
-void ERenderOpenGL_onAfterRender(Event_p event)
+void ERenderOpenGL_onAfterRender(RenderEvent_p event)
 {
 	SwapBuffers(render->gAPI.hdc);
 }
@@ -138,8 +139,8 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 		render->height
 	);
 
-	EEvents.addListener(render->events, beforeRender, &ERenderOpenGL_onBeforeRender);
-	EEvents.addListener(render->events, afterRender, &ERenderOpenGL_onAfterRender);
+	EEvents.addListener(render->events, beforeRender, (void*)ERenderOpenGL_onBeforeRender);
+	EEvents.addListener(render->events, afterRender, (void*)ERenderOpenGL_onAfterRender);
 
 	GAPI* gApi = &render->gAPI;
 
@@ -214,7 +215,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	glClearDepth(1.0f);
 	glClearColor(0.8, 0.8, 0.8, 0.0);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 
 	return TRUE;
 }

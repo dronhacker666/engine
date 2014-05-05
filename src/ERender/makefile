@@ -5,7 +5,7 @@ CC=gcc
 MAKE=mingw32-make
 SOURCES=src/*/*.c
 PARAMS= -s
-INCLUDE=-I ../ELib/include -I src/render -I src/input
+INCLUDE=-I ../ELib/include -I src/render -I src/input -I src/gui
 LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib
 
 run:

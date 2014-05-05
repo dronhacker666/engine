@@ -13,6 +13,7 @@ BOOL ERenderOGLInit(ERenderInstance_p);
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 
 extern PFNGLACTIVETEXTUREPROC glActiveTexture;
+extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
 // VAO
 extern PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays;

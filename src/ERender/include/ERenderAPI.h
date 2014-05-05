@@ -8,4 +8,7 @@
 #include "ERenderObject.h"
 #include "ERenderOpenGL.h"
 
+//GUI
+#include "EGui.h"
+
 #endif

@@ -12,12 +12,12 @@ GLuint ERenderTextureLoad(char* filename)
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// установим параметры "оборачивания" текстуры - отсутствие оборачивания
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); 
 
 	// загрузим данные о цвете в текущую автивную текстуру
 	glTexImage2D(
@@ -31,8 +31,9 @@ GLuint ERenderTextureLoad(char* filename)
 		GL_UNSIGNED_BYTE,
 		image.data
 	);
-
 	free(image.data);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	return texture;
 }

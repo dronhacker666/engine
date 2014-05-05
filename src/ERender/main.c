@@ -3,46 +3,55 @@
 
 ERenderInstance_p render;
 
-void onKeyDown(Event_p _event)
+void onKeyDown(KeyboardEvent_p event)
 {
-	KeyboardEvent_p event = (KeyboardEvent_p)_event;
 	printf("%i\n", event->keyCode );
 }
 
-void onBeforeRender(Event_p _event)
+void onBeforeRender(RenderEvent_p _event)
 {
-	if(EInput.keyPress('W')){ render->camera->pos.z+=0.1; }
-	if(EInput.keyPress('S')){ render->camera->pos.z-=0.1; }
-	if(EInput.keyPress('A')){ render->camera->pos.x+=0.1; }
-	if(EInput.keyPress('D')){ render->camera->pos.x-=0.1; }
+	if(EInput.keyPress('W')){ render->camera->pos.z+=0.01; }
+	if(EInput.keyPress('S')){ render->camera->pos.z-=0.01; }
+	if(EInput.keyPress('A')){ render->camera->pos.x+=0.01; }
+	if(EInput.keyPress('D')){ render->camera->pos.x-=0.01; }
 }
 
-void onMouseMove(Event_p _event)
+void onMouseMove(MouseEvent_p _event)
 {
 
 }
-void onMouseDown(Event_p _event)
+void onMouseDown(MouseEvent_p _event)
 {
-	EEvents.addListener(render->events, mouseMove, &onMouseMove);
+	EEvents.addListener(render->events, mouseMove, (void*)onMouseMove);
 }
-void onMouseUp(Event_p _event)
+void onMouseUp(MouseEvent_p _event)
 {
-	EEvents.removeListener(render->events, &onMouseMove);
+	EEvents.removeListener(render->events, (void*)onMouseMove);
 }
 
 
 int main(void)
 {
+
+	EGuiManager_p gui = EGui.create();
+	EGuiTextInstance_p text = EGuiText.create("Hello World");
+	EGui.addItem(gui, (EGuiItem_p)text);
+
+	EGui.render(gui);
+
+	exit(0);
+
+
 	render = ERender.create(800, 600);
 
 	EInput.init();
 
-	EEvents.addListener(render->events, keyDown, &onKeyDown);
-	EEvents.addListener(render->events, beforeRender, &onBeforeRender);
+	EEvents.addListener(render->events, keyDown, (void*)onKeyDown);
+	EEvents.addListener(render->events, beforeRender, (void*)onBeforeRender);
 
 
-	EEvents.addListener(render->events, mouseDown, &onMouseDown);
-	EEvents.addListener(render->events, mouseUp, &onMouseUp);
+	EEvents.addListener(render->events, mouseDown, (void*)onMouseDown);
+	EEvents.addListener(render->events, mouseUp, (void*)onMouseUp);
 
 
 	// описание геометрии куба для всех его сторон
