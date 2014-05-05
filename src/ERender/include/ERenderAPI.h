@@ -2,10 +2,10 @@
 #define ERENDERAPI_H
 
 // INCLUDES
-#include "../src/ERender.h"
-#include "../src/ERenderScene.h"
-#include "../src/ERenderShader.h"
-#include "../src/ERenderObject.h"
-#include "../src/ERenderOpenGL.h"
+#include "ERender.h"
+#include "ERenderScene.h"
+#include "ERenderShader.h"
+#include "ERenderObject.h"
+#include "ERenderOpenGL.h"
 
 #endif

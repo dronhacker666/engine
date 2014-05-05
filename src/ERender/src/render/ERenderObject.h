@@ -4,7 +4,7 @@
 #include "ERenderTypes.h"
 #include "ERenderMatrix.h"
 #include "ERenderShader.h"
-#include "../../ELib/include/ELib.h"
+#include "ELib.h"
 
 typedef float *CRenderMesh;
 
@@ -40,7 +40,7 @@ typedef struct {
 
 typedef struct {
 	ERenderObjectInstance_p 	(*createFromMesh) 	(MeshData_p);
-	bool						(*loadTexture)		(ERenderObjectInstance_p, char*, int);
+	BOOL						(*loadTexture)		(ERenderObjectInstance_p, char*, int);
 } _ERenderObject;
 extern _ERenderObject ERenderObject;
 

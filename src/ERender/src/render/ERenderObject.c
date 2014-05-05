@@ -30,11 +30,11 @@ ERenderObjectInstance_p ERenderObjectLoad(char* filename)
 
 }
 
-bool ERenderObjectLoadTexture(ERenderObjectInstance_p object, char* filename, int index)
+BOOL ERenderObjectLoadTexture(ERenderObjectInstance_p object, char* filename, int index)
 {
 	GLuint texture = ERenderTexture.load(filename);
 	if(!texture){
-		return false;
+		return FALSE;
 	}
 	switch(index){
 		case 0: object->texture0 = texture; break;
@@ -43,7 +43,7 @@ bool ERenderObjectLoadTexture(ERenderObjectInstance_p object, char* filename, in
 
 		//default: // error
 	}
-	return true;
+	return TRUE;
 }
 
 

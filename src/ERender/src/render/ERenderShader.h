@@ -5,7 +5,7 @@
 #include <GL/GL.h>
 #include <GL/wglext.h>
 #include <GL/glext.h>
-#include "../../ELib/include/ELib.h"
+#include "ELib.h"
 
 /**
 *	Shader Instance
@@ -34,7 +34,7 @@ typedef struct {
 	ERenderShaderInstance_p fragmentShader;
 	ERenderShaderInstance_p vertexShader;
 
-	bool needRelink;
+	BOOL needRelink;
 
 } ERenderShaderManagerInstance, *ERenderShaderManagerInstance_p;
 

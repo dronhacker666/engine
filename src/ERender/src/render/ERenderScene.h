@@ -1,7 +1,7 @@
 #ifndef ERENDERSCENE_H
 #define ERENDERSCENE_H
 
-#include "../../ELib/include/ELib.h"
+#include "ELib.h"
 
 typedef struct {
 	EArray child;

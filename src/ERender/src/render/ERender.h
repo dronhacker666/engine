@@ -1,8 +1,8 @@
 #ifndef ERENDER_H
 #define ERENDER_H
 
-
 #include <windows.h>
+#include "EInput.h"
 #include "ERenderObject.h"
 #include "ERenderCamera.h"
 #include "ERenderScene.h"

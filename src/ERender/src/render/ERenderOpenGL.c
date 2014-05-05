@@ -43,7 +43,7 @@ PFNGLUNIFORM1FPROC   		glUniform1f		     = NULL;
 PFNGLUNIFORM1IPROC   		glUniform1i		     = NULL;
 PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
 
-bool _initOpenGLProc(void)
+BOOL _initOpenGLProc(void)
 {
 	glActiveTexture = (PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
 
@@ -85,14 +85,26 @@ bool _initOpenGLProc(void)
 	glUniform1i = (PFNGLUNIFORM1IPROC)wglGetProcAddress("glUniform1i");
 	glUniform2fv = (PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform2fv");
 
-	return true;
+	return TRUE;
 }
 
+ERenderInstance_p render;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	KeyboardEvent event;
 	switch (uMsg)
 	{
+		case WM_KEYDOWN:
+			event.type = keyDown;
+			event.keyCode = wParam;
+			EEvents.addEvent(render->events, &event);
+		break;
+		case WM_KEYUP:
+			event.type = keyUp;
+			event.keyCode = wParam;
+			EEvents.addEvent(render->events, &event);
+		break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
@@ -101,10 +113,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-void onBeforeRender(void* _render)
+void ERenderOpenGL_onBeforeRender(Event_p event)
 {
 	MSG msg;
-	ERenderInstance_p render = _render;
 	while (PeekMessage(&msg, render->gAPI.hWnd, 0, 0, PM_NOREMOVE))
 	{
 		GetMessage(&msg, render->gAPI.hWnd, 0, 0);
@@ -113,14 +124,13 @@ void onBeforeRender(void* _render)
 	}
 }
 
-void onAfterRender(void* _render)
+void ERenderOpenGL_onAfterRender(Event_p event)
 {
-	ERenderInstance_p render = _render;
 	SwapBuffers(render->gAPI.hdc);
 }
 
 
-bool ERenderOGLInit(ERenderInstance_p render)
+BOOL ERenderOGLInit(ERenderInstance_p render)
 {
 	printf(
 		"Init gApi(%ix%i)\n",
@@ -128,8 +138,8 @@ bool ERenderOGLInit(ERenderInstance_p render)
 		render->height
 	);
 
-	EEvents.addListener(render->events, beforeRender, &onBeforeRender);
-	EEvents.addListener(render->events, afterRender, &onAfterRender);
+	EEvents.addListener(render->events, beforeRender, &ERenderOpenGL_onBeforeRender);
+	EEvents.addListener(render->events, afterRender, &ERenderOpenGL_onAfterRender);
 
 	GAPI* gApi = &render->gAPI;
 
@@ -167,7 +177,7 @@ bool ERenderOGLInit(ERenderInstance_p render)
 
 	if(!wglCreateContextAttribsARB){
 		printf("wglCreateContextAttribsARB fail (%d)\n", GetLastError());
-		return false;
+		return FALSE;
 	}
 
 	int maj, min;
@@ -188,11 +198,11 @@ bool ERenderOGLInit(ERenderInstance_p render)
 
 	if(!hGLRC || !wglMakeCurrent(gApi->hdc, hGLRC)){
 		printf("Creating gApi context fail (%d)\n", GetLastError());
-		return false;
+		return FALSE;
 	}
 
 	if(! _initOpenGLProc() ){
-		return false;
+		return FALSE;
 	}
 
 	printf("OpenGL gApi context information:\n");
@@ -206,6 +216,6 @@ bool ERenderOGLInit(ERenderInstance_p render)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	return true;
+	return TRUE;
 }
 

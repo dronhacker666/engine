@@ -1,8 +1,8 @@
 #ifndef ERENDERTEXTURE_H
 #define ERENDERTEXTURE_H
 
-#include "imageDecoder/Image.h"
-#include "imageDecoder/TGA.h"
+#include "../imageDecoder/Image.h"
+#include "../imageDecoder/TGA.h"
 #include "ERenderOpenGL.h"
 
 typedef struct {

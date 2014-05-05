@@ -87,7 +87,7 @@ ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 	";
 	shaderManager->fragmentShader = ERenderShaderCreate(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
 
-	shaderManager->needRelink = true;
+	shaderManager->needRelink = TRUE;
 
 	return shaderManager;
 }
@@ -124,7 +124,7 @@ void ERenderShaderManagerPrepareShaders(ERenderShaderManagerInstance_p shaderMan
 
 		glUseProgram(shaderManager->shader_id);
 
-		shaderManager->needRelink = false;
+		shaderManager->needRelink = FALSE;
 	}
 }
 

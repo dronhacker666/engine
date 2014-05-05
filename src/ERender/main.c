@@ -3,9 +3,46 @@
 
 ERenderInstance_p render;
 
+void onKeyDown(Event_p _event)
+{
+	KeyboardEvent_p event = (KeyboardEvent_p)_event;
+	printf("%i\n", event->keyCode );
+}
+
+void onBeforeRender(Event_p _event)
+{
+	if(EInput.keyPress('W')){ render->camera->pos.z+=0.1; }
+	if(EInput.keyPress('S')){ render->camera->pos.z-=0.1; }
+	if(EInput.keyPress('A')){ render->camera->pos.x+=0.1; }
+	if(EInput.keyPress('D')){ render->camera->pos.x-=0.1; }
+}
+
+void onMouseMove(Event_p _event)
+{
+
+}
+void onMouseDown(Event_p _event)
+{
+	EEvents.addListener(render->events, mouseMove, &onMouseMove);
+}
+void onMouseUp(Event_p _event)
+{
+	EEvents.removeListener(render->events, &onMouseMove);
+}
+
+
 int main(void)
 {
 	render = ERender.create(800, 600);
+
+	EInput.init();
+
+	EEvents.addListener(render->events, keyDown, &onKeyDown);
+	EEvents.addListener(render->events, beforeRender, &onBeforeRender);
+
+
+	EEvents.addListener(render->events, mouseDown, &onMouseDown);
+	EEvents.addListener(render->events, mouseUp, &onMouseUp);
 
 
 	// описание геометрии куба для всех его сторон
@@ -61,7 +98,6 @@ int main(void)
 
 	ERenderObject.loadTexture(object1, "../data/texture.tga", 0);
 
-
 	POINT mouse;
 
 	while(!GetAsyncKeyState(VK_ESCAPE)){
@@ -78,10 +114,7 @@ int main(void)
 		render->camera->pos.ry = mouse.x;
 		render->camera->pos.rx = mouse.y;
 
-		if(GetAsyncKeyState('W')){ render->camera->pos.z+=0.1; }
-		if(GetAsyncKeyState('S')){ render->camera->pos.z-=0.1; }
-		if(GetAsyncKeyState('A')){ render->camera->pos.x+=0.1; }
-		if(GetAsyncKeyState('D')){ render->camera->pos.x-=0.1; }
+
 
 		ERender.render(render);
 	}

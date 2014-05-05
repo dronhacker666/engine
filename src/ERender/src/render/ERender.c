@@ -10,7 +10,7 @@ ERenderInstance_p ERenderCreate(int width, int height){
 	render->events = EEvents.create();
 
 	if( !ERenderOGLInit(render) ){
-		return false;
+		return FALSE;
 	}
 
 	render->camera = ERenderCamera.create();
@@ -31,9 +31,12 @@ void ERenderSetScene(ERenderInstance_p render, ERenderSceneInstance_p scene)
 
 void ERenderRender(ERenderInstance_p render)
 {
-	EEvents.addEvent(render->events, beforeRender, render);
+	RenderEvent event_beforeRender = {type: beforeRender};
+	RenderEvent event_afterRender = {type: afterRender};
+
+	EEvents.addEvent(render->events, &event_beforeRender);
 	ERenderCamera.renderScene(render->camera, render->scene);
-	EEvents.addEvent(render->events, afterRender, render);
+	EEvents.addEvent(render->events, &event_afterRender);
 }
 
 
