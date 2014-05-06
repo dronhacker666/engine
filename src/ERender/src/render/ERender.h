@@ -19,12 +19,9 @@ typedef struct ERenderInstance{
 	int width;
 	int height;
 
-	EEventManager_p events;
-
-	// Camera
+	EEventManager_p 		events;
 	ERenderCameraInstance_p camera;
-	// Rendered Scene
-	ERenderSceneInstance_p scene;
+	ERenderSceneInstance_p 	scene;
 
 } ERenderInstance, *ERenderInstance_p;
 

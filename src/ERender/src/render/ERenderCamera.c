@@ -6,7 +6,7 @@ ERenderCameraInstance_p ERenderCameraCreate(void)
 	new(camera, ERenderCameraInstance);
 
 	camera->shaderManager = ERenderShaderManager.create();
-	
+
 	return camera;
 }
 
@@ -30,6 +30,7 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 
 	float aspectRatio = (float)800 / (float)600;
 	ERenderMatrix.perspective4f(projectionMatrix, 45.0f, aspectRatio, 0.01f, 500.0f);
+
 	ERenderMatrix.translation4f(translationView, camera->pos.x, camera->pos.y, camera->pos.z);
 	ERenderMatrix.rotation4f(rotationView, camera->pos.rx, camera->pos.ry, camera->pos.rz);
 	ERenderMatrix.mul4f(rotationView, rotationView, translationView);

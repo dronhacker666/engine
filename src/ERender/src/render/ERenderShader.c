@@ -45,6 +45,7 @@ ERenderShaderInstance_p ERenderShaderLoad(char* filename)
 }
 
 _ERenderShader ERenderShader = {
+	create: ERenderShaderCreate,
 	load: ERenderShaderLoad,
 };
 
@@ -56,7 +57,7 @@ _ERenderShader ERenderShader = {
 
 ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 {
-	ERenderShaderManagerInstance_p shaderManager = malloc(sizeof(ERenderShaderManagerInstance));
+	new(shaderManager, ERenderShaderManagerInstance);
 
 	shaderManager->shader_id = glCreateProgram();
 

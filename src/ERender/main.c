@@ -33,15 +33,22 @@ void onMouseUp(MouseEvent_p _event)
 
 int main(void)
 {
+	render = ERender.create(800, 600);
+
+
 	EGuiManager_p gui = EGui.create();
 	EGuiTextInstance_p text = EGuiText.create("Hello World");
+	EGuiButtonInstance_p button = EGuiButton.create();
 	EGui.addItem(gui, (EGuiItem_p)text);
+	EGui.addItem(gui, (EGuiItem_p)button);
 
 	EGui.render(gui);
 
+	SwapBuffers(render->gAPI.hdc);
+
+	while(!GetAsyncKeyState(VK_ESCAPE)){}
 
 
-	render = ERender.create(800, 600);
 
 	EInput.init();
 

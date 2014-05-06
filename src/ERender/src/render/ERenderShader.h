@@ -21,7 +21,8 @@ typedef struct {
 } ERenderShaderInstance, *ERenderShaderInstance_p;
 
 typedef struct {
-	ERenderShaderInstance_p (*load) (char*);
+	ERenderShaderInstance_p (*create)	(char* src, int length, GLenum type);
+	ERenderShaderInstance_p (*load) 	(char*);
 } _ERenderShader;
 extern _ERenderShader ERenderShader;
 

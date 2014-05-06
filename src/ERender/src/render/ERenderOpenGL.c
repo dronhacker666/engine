@@ -42,8 +42,11 @@ PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = NULL;
 PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
 PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   = NULL;
 PFNGLUNIFORM1FPROC   		glUniform1f		     = NULL;
+PFNGLUNIFORM2FPROC   		glUniform2f		     = NULL;
 PFNGLUNIFORM1IPROC   		glUniform1i		     = NULL;
+PFNGLUNIFORM2IPROC   		glUniform2i		     = NULL;
 PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
+PFNGLUNIFORM2IVPROC			glUniform2iv		 = NULL;
 
 BOOL _initOpenGLProc(void)
 {
@@ -84,8 +87,11 @@ BOOL _initOpenGLProc(void)
 	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)wglGetProcAddress("glGetUniformLocation");
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)wglGetProcAddress("glUniformMatrix4fv");
 	glUniform1f = (PFNGLUNIFORM1FPROC)wglGetProcAddress("glUniform1f");
+	glUniform2f = (PFNGLUNIFORM2FPROC)wglGetProcAddress("glUniform2f");
 	glUniform1i = (PFNGLUNIFORM1IPROC)wglGetProcAddress("glUniform1i");
+	glUniform2i = (PFNGLUNIFORM2IPROC)wglGetProcAddress("glUniform2i");
 	glUniform2fv = (PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform2fv");
+	glUniform2iv = (PFNGLUNIFORM2IVPROC)wglGetProcAddress("glUniform2iv");
 
 	return TRUE;
 }

@@ -4,8 +4,16 @@
 #include <mem.h>
 #include <malloc.h>
 #include <stdio.h>
+#include "ERenderAPI.h"
 #include "ERenderMacro.h"
 #include "EGuiMacro.h"
+
+#define _EGuiItemPrototype\
+	struct EGuiItem* _next;\
+	struct EGuiItem* _prev;\
+	void(*render)(void*);\
+	int x, y, zIndex, width, heigth, rotate;
+
 
 typedef struct EGuiItem{
 	_EGuiItemPrototype;
@@ -13,6 +21,8 @@ typedef struct EGuiItem{
 } EGuiItem, *EGuiItem_p;
 
 typedef struct {
+	ERenderShaderManagerInstance_p shaderManager;
+
 	EGuiItem_p _head;
 	EGuiItem_p _current;
 } EGuiManager, *EGuiManager_p;
@@ -26,5 +36,6 @@ extern _EGui EGui;
 
 //WIDGETS
 #include "EGuiText.h"
+#include "EGuiButton.h"
 
 #endif

@@ -1,6 +1,6 @@
 #include "ERender.h"
 
-ERenderInstance_p ERenderCreate(int width, int height){
+ERenderInstance_p ERenderCreate(const int width, const int height){
 
 	new(render, ERenderInstance);
 
@@ -20,13 +20,13 @@ ERenderInstance_p ERenderCreate(int width, int height){
 }
 
 
-void ERenderSetScene(ERenderInstance_p render, ERenderSceneInstance_p scene)
+void ERenderSetScene(const ERenderInstance_p render, const ERenderSceneInstance_p scene)
 {
 	render->scene = scene;
 }
 
 
-void ERenderRender(ERenderInstance_p render)
+void ERenderRender(const ERenderInstance_p render)
 {
 	RenderEvent event_beforeRender = {type: beforeRender, render: render};
 	RenderEvent event_afterRender = {type: afterRender, render: render};
