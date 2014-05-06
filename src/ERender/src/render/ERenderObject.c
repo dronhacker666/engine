@@ -4,7 +4,7 @@
 
 ERenderObjectInstance_p ERenderObjectCreateFromMesh(MeshData_p data)
 {
-	ERenderObjectInstance_p object = malloc(sizeof(ERenderObjectInstance));
+	new(object, ERenderObjectInstance);
 
 	glGenVertexArrays(1, &object->_sys.VAO);
 	glBindVertexArray(object->_sys.VAO);

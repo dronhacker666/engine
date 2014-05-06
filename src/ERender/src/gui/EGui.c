@@ -3,8 +3,7 @@
 EGuiManager_p EGui_create(void)
 {
 	EGuiManager_p manager = malloc(sizeof(EGuiManager));
-	manager->_head = NULL;
-	manager->_current = NULL;
+	memset(manager, 0, sizeof(EGuiManager));
 	return manager;
 }
 

@@ -1,6 +1,7 @@
 #ifndef ERENDEROBJECT_H
 #define ERENDEROBJECT_H
 
+#include "ERenderMacro.h"
 #include "ERenderTypes.h"
 #include "ERenderMatrix.h"
 #include "ERenderShader.h"

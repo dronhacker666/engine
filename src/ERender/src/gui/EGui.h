@@ -3,14 +3,11 @@
 
 #include <malloc.h>
 #include <mem.h>
+#include "ERenderMacro.h"
+#include "EGuiMacro.h"
 
-#include "EGuiText.h"
-
-
-typedef struct {
-	void* _next;
-	void* _prev;
-	void(*render)(void*);
+typedef struct EGuiItem{
+	_EGuiItemPrototype;
 	// some fields: use in gui elements
 } EGuiItem, *EGuiItem_p;
 
@@ -25,5 +22,8 @@ typedef struct {
 	void 			(*addItem) 	(EGuiManager_p, EGuiItem_p);
 } _EGui;
 extern _EGui EGui;
+
+//WIDGETS
+#include "EGuiText.h"
 
 #endif

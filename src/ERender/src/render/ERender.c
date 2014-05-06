@@ -3,7 +3,8 @@
 
 ERenderInstance_p ERenderCreate(int width, int height){
 
-	ERenderInstance_p render = malloc(sizeof(ERenderInstance));
+	new(render, ERenderInstance);
+
 	render->width = width;
 	render->height = height;
 

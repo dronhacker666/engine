@@ -5,9 +5,7 @@
 
 EEventManager_p EEvents_create(void)
 {
-	EEventManager_p manager = malloc(sizeof(EEventManager));
-	manager->_head = NULL;
-	manager->_current = NULL;
+	new(manager, EEventManager);
 	return manager;
 }
 
@@ -25,7 +23,7 @@ void EEvents_addEvent(EEventManager_p manager, void* _event)
 
 void EEvents_addListener(EEventManager_p manager, EventType type, EventListener listener)
 {
-	EEventListener_p item = malloc(sizeof(EEventListener));
+	new(item, EEventListener);
 	item->type = type;
 	item->listener = listener;
 	item->_next = NULL;
@@ -56,8 +54,8 @@ void EEvents_removeListener(EEventManager_p manager, EventListener _listener)
 				manager->_current = listener->_prev;
 			}
 
-			((EEventListener_p)listener->_next)->_prev = listener->_prev;
-			((EEventListener_p)listener->_prev)->_next = listener->_next;
+			listener->_next->_prev = listener->_prev;
+			listener->_prev->_next = listener->_next;
 
 			free(listener);
 			break;

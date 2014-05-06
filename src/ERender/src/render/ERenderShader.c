@@ -10,7 +10,7 @@ GLenum getShaderType(char* filename)
 
 ERenderShaderInstance_p ERenderShaderCreate(char* src, int length, GLenum type)
 {
-	ERenderShaderInstance_p shader = malloc(sizeof(ERenderShaderInstance));
+	new(shader, ERenderShaderInstance);
 
 	shader->type = type;
 	shader->_hash = eTools.hashString(src);

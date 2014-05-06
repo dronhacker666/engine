@@ -1,6 +1,8 @@
 #ifndef ERENDEREVENTS_H
 #define ERENDEREVENTS_H
 
+#include "ERenderMacro.h"
+
 typedef enum 
 {
 	// Render
@@ -49,12 +51,12 @@ typedef struct {
 
 typedef void(*EventListener)(Event_p);
 
-typedef struct {
+typedef struct EEventListener{
 	EventType type;
 	EventListener listener;
 
-	void* _next;
-	void* _prev;
+	struct EEventListener* _next;
+	struct EEventListener* _prev;
 } EEventListener, *EEventListener_p;
 
 typedef struct {

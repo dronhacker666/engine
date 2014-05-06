@@ -3,17 +3,10 @@
 
 ERenderCameraInstance_p ERenderCameraCreate(void)
 {
-	ERenderCameraInstance_p camera = malloc(sizeof(ERenderCameraInstance));
+	new(camera, ERenderCameraInstance);
 
 	camera->shaderManager = ERenderShaderManager.create();
-
-	camera->pos.x = 0;
-	camera->pos.y = 0;
-	camera->pos.z = 0;
-	camera->pos.rx = 0;
-	camera->pos.ry = 0;
-	camera->pos.rz = 0;
-
+	
 	return camera;
 }
 

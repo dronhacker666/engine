@@ -1,11 +1,13 @@
 #ifndef ERENDERSHADER_H
 #define ERENDERSHADER_H
 
+
 #include <windows.h>
 #include <GL/GL.h>
 #include <GL/wglext.h>
 #include <GL/glext.h>
 #include "ELib.h"
+#include "ERenderMacro.h"
 
 /**
 *	Shader Instance

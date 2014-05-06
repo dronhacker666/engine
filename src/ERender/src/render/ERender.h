@@ -1,6 +1,8 @@
 #ifndef ERENDER_H
 #define ERENDER_H
 
+#include "ERenderMacro.h"
+
 #include <windows.h>
 #include "EInput.h"
 #include "ERenderObject.h"
