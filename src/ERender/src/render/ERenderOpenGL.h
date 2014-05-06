@@ -1,11 +1,11 @@
 #ifndef OPENGL_H
 #define OPENGL_H
 
-#include "ERender.h"
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GL/wglext.h>
+#include "ERender.h"
 
 BOOL ERenderOGLInit(ERenderInstance_p);
 

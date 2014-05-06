@@ -1,6 +1,10 @@
 #ifndef ERENDERMACRO_H
 #define ERENDERMACRO_H
 
+#include <malloc.h>
+#include <mem.h>
+#include <stdio.h>
+
 #define new(NAME,TYPE)\
 	TYPE##_p NAME = malloc(sizeof(TYPE));\
 	if( NAME==NULL ){\

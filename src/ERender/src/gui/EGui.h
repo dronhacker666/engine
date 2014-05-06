@@ -1,8 +1,9 @@
 #ifndef EGUI_H
 #define EGUI_H
 
-#include <malloc.h>
 #include <mem.h>
+#include <malloc.h>
+#include <stdio.h>
 #include "ERenderMacro.h"
 #include "EGuiMacro.h"
 

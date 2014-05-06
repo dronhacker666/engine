@@ -1,15 +1,12 @@
 #ifndef ERENDER_H
 #define ERENDER_H
 
-#include "ERenderMacro.h"
+struct ERenderInstance;
 
 #include <windows.h>
-#include "EInput.h"
-#include "ERenderObject.h"
-#include "ERenderCamera.h"
-#include "ERenderScene.h"
-#include "ERenderShader.h"
 #include "ERenderEvents.h"
+#include "ERenderScene.h"
+#include "ERenderCamera.h"
 
 typedef struct {
 	// Base
@@ -17,7 +14,7 @@ typedef struct {
 	HDC hdc;
 } GAPI, *GAPI_p;
 
-typedef struct {
+typedef struct ERenderInstance{
 	GAPI gAPI;
 	int width;
 	int height;
@@ -30,6 +27,13 @@ typedef struct {
 	ERenderSceneInstance_p scene;
 
 } ERenderInstance, *ERenderInstance_p;
+
+// EVENTS
+typedef struct {
+	EventPrototype;
+	ERenderInstance* render;
+} RenderEvent, *RenderEvent_p;
+
 
 typedef struct {
 	ERenderInstance_p 	(*create)		(int, int);

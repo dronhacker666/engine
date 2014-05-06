@@ -1,5 +1,6 @@
 #include "ERenderOpenGL.h"
 #include "ERenderEvents.h"
+#include "EInput.h"
 
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
@@ -117,9 +118,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 {
 	MSG msg;
-	while (PeekMessage(&msg, render->gAPI.hWnd, 0, 0, PM_NOREMOVE))
+	while (PeekMessage(&msg, event->render->gAPI.hWnd, 0, 0, PM_NOREMOVE))
 	{
-		GetMessage(&msg, render->gAPI.hWnd, 0, 0);
+		GetMessage(&msg, event->render->gAPI.hWnd, 0, 0);
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
@@ -128,7 +129,7 @@ void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 void ERenderOpenGL_onAfterRender(RenderEvent_p event)
 {
 	glFlush();
-	SwapBuffers(render->gAPI.hdc);
+	SwapBuffers(event->render->gAPI.hdc);
 }
 
 

@@ -1,7 +1,4 @@
 #include "EGuiText.h"
-#include "ERenderOpenGL.h"
-
-#include <stdio.h>
 
 void EGuiText_render(EGuiTextInstance_p widget)
 {

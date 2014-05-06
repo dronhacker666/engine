@@ -1,7 +1,4 @@
 #include "ERenderEvents.h"
-#include <malloc.h>
-#include <mem.h>
-#include <stdio.h>
 
 EEventManager_p EEvents_create(void)
 {

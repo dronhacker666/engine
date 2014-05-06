@@ -1,5 +1,4 @@
 #include "ERender.h"
-#include "ERenderOpenGL.h"
 
 ERenderInstance_p ERenderCreate(int width, int height){
 
@@ -15,10 +14,7 @@ ERenderInstance_p ERenderCreate(int width, int height){
 	}
 
 	render->camera = ERenderCamera.create();
-
-	// TODO: create scene manager
-	render->scene = malloc(sizeof(ERenderSceneInstance));
-	render->scene->child = eArray.create(sizeof(ERenderObjectInstance_p));
+	render->scene = ERenderScene.create();
 
 	return render;
 }
@@ -32,8 +28,8 @@ void ERenderSetScene(ERenderInstance_p render, ERenderSceneInstance_p scene)
 
 void ERenderRender(ERenderInstance_p render)
 {
-	RenderEvent event_beforeRender = {type: beforeRender};
-	RenderEvent event_afterRender = {type: afterRender};
+	RenderEvent event_beforeRender = {type: beforeRender, render: render};
+	RenderEvent event_afterRender = {type: afterRender, render: render};
 
 	EEvents.addEvent(render->events, &event_beforeRender);
 	ERenderCamera.renderScene(render->camera, render->scene);

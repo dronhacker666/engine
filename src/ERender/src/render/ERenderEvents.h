@@ -22,30 +22,12 @@ typedef enum
 
 // Events
 
-typedef struct {
+#define EventPrototype\
 	EventType type;
+
+typedef struct {
+	EventPrototype;
 } Event, *Event_p;
-
-typedef struct {
-	EventType type;
-} RenderEvent, *RenderEvent_p;
-
-typedef struct {
-	EventType 		type;
-	unsigned int 	keyCode;
-} KeyboardEvent, *KeyboardEvent_p;
-
-typedef struct {
-	EventType 		type;
-	unsigned int 	x;
-	unsigned int 	y;
-	unsigned int 	dx;
-	unsigned int 	dy;
-	unsigned int 	lbutton;
-	unsigned int 	rbutton;
-	unsigned int 	mbutton;
-	int 			wheel;
-} MouseEvent, *MouseEvent_p;
 
 //-------------------------------------
 
