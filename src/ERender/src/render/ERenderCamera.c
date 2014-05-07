@@ -90,9 +90,10 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 
 void ERenderCameraRenderScene(ERenderCameraInstance_p camera, ERenderSceneInstance_p scene)
 {
-	int i;
-	for(i=0; i<scene->child->length; i++){
-		ERenderCameraRenderObject(camera, (ERenderObjectInstance_p)*(void**)eArray.get(scene->child, i) );
+	ERenderObjectInstance_p object = scene->_objects_head;
+	while(object){
+		ERenderCameraRenderObject(camera, object);
+		object = object->_next;
 	}
 }
 

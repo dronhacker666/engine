@@ -9,7 +9,10 @@
 
 typedef float *CRenderMesh;
 
-typedef struct {
+typedef struct ERenderObjectInstance {
+	struct ERenderObjectInstance* _next;
+	struct ERenderObjectInstance* _prev;
+
 	ERenderPos pos;
 
 	GLuint texture0;

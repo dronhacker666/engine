@@ -102,7 +102,7 @@ int main(void)
 
 
 	ERenderObjectInstance_p object1 = ERenderObject.createFromMesh(&mesh);
-	eArray.push(render->scene->child, &object1);
+	ERenderScene.addObject(render->scene, object1);
 
 	ERenderObject.loadTexture(object1, "../data/texture.tga", 0);
 
