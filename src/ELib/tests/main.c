@@ -20,6 +20,7 @@ int main(void){
 	printf("%i\n", eTools.hashString("some string"));
 
 	CHECK(eStackTest);
+	CHECK(eHashTest);
 
 	char* content;
 	int length;

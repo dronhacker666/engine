@@ -5,15 +5,13 @@
 *	INCLUDES
 */
 #include <stdio.h>
+#include <mem.h>
 #include <malloc.h>
 
 /**
 *	Base Types
 **/
-typedef int bool;
-#define true 1
-#define false 0
-
+typedef enum {false, true} bool;
 
 /**
 *	Stack		
@@ -57,19 +55,69 @@ typedef struct {
 	int current;
 	int _alloc;
 	int _item_size;
-} _EArray;
-typedef _EArray *EArray;
+} EArrayInstance, *EArrayInstance_p;
 
 typedef struct {
-	EArray 	(*create)	(int);
-	void 	(*free)		(EArray);
-	int 	(*push)		(EArray, void*);
-	void 	(*reset)	(EArray);
-	void* 	(*next)		(EArray);
-	void* 	(*get)		(EArray, int);
-} _eArray;
-extern _eArray eArray;
+	EArrayInstance_p 	(*create)	(int);
+	void 				(*free)		(EArrayInstance_p);
+	int 				(*push)		(EArrayInstance_p, void*);
+	void 				(*reset)	(EArrayInstance_p);
+	void* 				(*next)		(EArrayInstance_p);
+	void* 				(*get)		(EArrayInstance_p, int);
+} _EArray;
+extern _EArray EArray;
 
+/**
+* Hash
+*/
+typedef enum{
+	HashItem_point,
+	HashItem_int,
+	HashItem_float,
+} EHashItemType;
+
+#define HASHITEMID 0x1234567
+typedef struct EHashItem {
+	int __id__;
+	unsigned int hash;
+	EHashItemType type;
+	const char* key;
+
+	union{
+		void* p_value;
+		int i_value;
+		float f_value;
+	};
+
+	struct EHashItem* _prev;
+	struct EHashItem* _next;
+} EHashItem, *EHashItem_p;
+
+#define HASHINSTANCEID 0x1234567
+typedef struct {
+	int __id__;
+	EHashItem_p _head;
+	EHashItem_p _current;
+	unsigned int length;
+} EHashInstance, *EHashInstance_p;
+
+typedef struct {
+	EHashInstance_p 	(*create)	(void);
+	void 				(*remove) 	(EHashInstance_p, const char*);
+	bool 				(*typeIs) 	(EHashInstance_p, const char*, EHashItemType);
+
+	EHashItem_p 		(*get) 		(EHashInstance_p, const char*);
+
+	void 				(*set1p) 	(EHashInstance_p, const char*, void*);
+	void*				(*get1p) 	(EHashInstance_p, const char*);
+
+	void 				(*set1i) 	(EHashInstance_p, const char*, int);
+	int					(*get1i) 	(EHashInstance_p, const char*);
+
+	void				(*dump)		(EHashInstance_p);
+
+} _EHash;
+extern _EHash EHash;
 
 /**
 *	Tools

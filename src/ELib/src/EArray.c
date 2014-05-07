@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <mem.h>
 
-EArray eArrayCreate(int item_size){
-	EArray array = malloc(sizeof(_EArray));
+EArrayInstance_p EArray_create(int item_size){
+	EArrayInstance_p array = malloc(sizeof(EArrayInstance));
 	array->_item_size = item_size;
 	array->_alloc = 0;
 	array->length = 0;
@@ -12,7 +12,7 @@ EArray eArrayCreate(int item_size){
 	return array;
 }
 
-int eArrayPush(EArray array, void *data){
+int EArray_push(EArrayInstance_p array, void *data){
 	if(array->length >= array->_alloc){
 		array->_alloc += ARRAY_PART_COUNT;
 		void* newMemory = malloc(array->_item_size*array->_alloc);
@@ -26,11 +26,11 @@ int eArrayPush(EArray array, void *data){
 	return array->length-1;
 }
 
-void eArrayReset(EArray array){
+void EArray_reset(EArrayInstance_p array){
 	array->current = 0;
 }
 
-void* eArrayNext(EArray array){
+void* EArray_next(EArrayInstance_p array){
 	if(array->current < array->length){
 		return array->_data + (array->_item_size*array->current++);
 	}else{
@@ -38,11 +38,11 @@ void* eArrayNext(EArray array){
 	}
 }
 
-void* eArrayGet(EArray array, int index){
+void* EArray_get(EArrayInstance_p array, int index){
 	return array->_data + (index*array->_item_size);
 }
 
-void eArrayFree(EArray array){
+void EArray_free(EArrayInstance_p array){
 	if(array->length>0){
 		free(array->_data);
 	}
@@ -50,11 +50,11 @@ void eArrayFree(EArray array){
 }
 
 
-_eArray eArray = {
-	create: eArrayCreate,
-	free: eArrayFree,
-	push: eArrayPush,
-	reset: eArrayReset,
-	next: eArrayNext,
-	get: eArrayGet,
+_EArray EArray = {
+	create: EArray_create,
+	free: EArray_free,
+	push: EArray_push,
+	reset: EArray_reset,
+	next: EArray_next,
+	get: EArray_get,
 };

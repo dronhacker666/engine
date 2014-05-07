@@ -5,20 +5,16 @@ CC=gcc
 MAKE=mingw32-make
 SOURCES=src/*.c
 PARAMS= -s
-LIBS=-L ${LIB_DIR} -l${NAME}
-
-all: static
-	${CC} -o run ${SOURCES} main.c ${PARAMS} ${LIBS}
-	run.exe
-	${MAKE} clean
+INCLUDE=-I ../ELib/include -I src
+LIBS=-L elib
 
 run:
-	${CC} -o run ${SOURCES} main.c ${PARAMS} ${LIBS}
+	${CC} -o run ${SOURCES} main.c ${INCLUDE} ${PARAMS} ${LIBS}
 	run.exe
 
 lib:
 	mkdir -p ${LIB_DIR}
-	${CC} -c ${SOURCES}
+	${CC} -c ${SOURCES} ${INCLUDE}
 	ar rc ${LIB_DIR}/lib${NAME}.a *.o
 	ranlib ${LIB_DIR}/lib${NAME}.a
 	${MAKE} clean

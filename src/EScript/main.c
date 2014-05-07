@@ -1,9 +1,13 @@
-#include "include/EScript.h"
+#include "EScript.h"
 
 int main(void){
 
-	EScriptHandler eScript = EScript_create();
+	char source[] = "\
+		var_a = 20;\
+	";
 
+	EScriptInstance_p script = EScript.create();
+	EScript.exec(source);
 
 	return 0;
 }

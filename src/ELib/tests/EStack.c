@@ -1,4 +1,4 @@
-#include "../include/ELib.h"
+#include "ELib.h"
 
 int eStackTest(){
 	int i;
