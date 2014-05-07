@@ -7,7 +7,11 @@ EScriptInstance_p EScript_create(void)
 
 bool EScript_exec(const char* source)
 {
+	/*
+	
+	EScriptParser.parse(source);
 
+	*/
 }
 
 _EScript EScript = {

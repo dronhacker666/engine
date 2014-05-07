@@ -14,8 +14,6 @@ typedef struct ERenderSceneInstance{
 	ERenderLightInstance_p _lights_head;
 	ERenderLightInstance_p _lights_current;
 	*/
-
-	EArray child;
 } ERenderSceneInstance, *ERenderSceneInstance_p;
 
 typedef struct{

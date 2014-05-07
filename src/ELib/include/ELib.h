@@ -93,7 +93,7 @@ typedef struct EHashItem {
 	struct EHashItem* _next;
 } EHashItem, *EHashItem_p;
 
-#define HASHINSTANCEID 0x1234567
+#define HASHINSTANCEID 0x93867737
 typedef struct {
 	int __id__;
 	EHashItem_p _head;

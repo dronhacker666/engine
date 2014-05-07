@@ -5,8 +5,6 @@
 #include "Image.h"
 #include "../../../ELib/include/ELib.h"
 
-typedef int bool;
-
 typedef struct
 {
 	uint8_t  idlength;
