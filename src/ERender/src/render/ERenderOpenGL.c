@@ -43,6 +43,7 @@ PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
 PFNGLUNIFORMMATRIX4FVPROC   glUniformMatrix4fv   = NULL;
 PFNGLUNIFORM1FPROC   		glUniform1f		     = NULL;
 PFNGLUNIFORM2FPROC   		glUniform2f		     = NULL;
+PFNGLUNIFORM4FPROC   		glUniform4f		     = NULL;
 PFNGLUNIFORM1IPROC   		glUniform1i		     = NULL;
 PFNGLUNIFORM2IPROC   		glUniform2i		     = NULL;
 PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
@@ -88,6 +89,7 @@ BOOL _initOpenGLProc(void)
 	glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)wglGetProcAddress("glUniformMatrix4fv");
 	glUniform1f = (PFNGLUNIFORM1FPROC)wglGetProcAddress("glUniform1f");
 	glUniform2f = (PFNGLUNIFORM2FPROC)wglGetProcAddress("glUniform2f");
+	glUniform4f = (PFNGLUNIFORM4FPROC)wglGetProcAddress("glUniform4f");
 	glUniform1i = (PFNGLUNIFORM1IPROC)wglGetProcAddress("glUniform1i");
 	glUniform2i = (PFNGLUNIFORM2IPROC)wglGetProcAddress("glUniform2i");
 	glUniform2fv = (PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform2fv");
@@ -130,6 +132,7 @@ void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void ERenderOpenGL_onAfterRender(RenderEvent_p event)
@@ -221,7 +224,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	printf("GLSL version : %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	glClearDepth(1.0f);
-	glClearColor(0.8, 0.8, 0.8, 0.0);
+	glClearColor(0.6, 0.6, 0.6, 0.0);
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 

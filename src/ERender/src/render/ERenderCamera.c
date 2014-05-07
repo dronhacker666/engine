@@ -1,6 +1,8 @@
 #include "ERenderCamera.h"
 #include "ERenderOpenGL.h"
 
+int some=1;
+
 ERenderCameraInstance_p ERenderCameraCreate(void)
 {
 	new(camera, ERenderCameraInstance);
@@ -14,6 +16,26 @@ ERenderCameraInstance_p ERenderCameraCreate(void)
 void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInstance_p object)
 {
 	ERenderShaderManager.prepareShaders(camera->shaderManager);
+
+	// TODO: move out this from render loop
+	if(some==1){
+		glBindBuffer(GL_ARRAY_BUFFER, object->_sys.positionVBO);
+		GLint positionLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iPosition");
+		if(positionLocation !=-1 ){
+			glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
+			glEnableVertexAttribArray(positionLocation);
+		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, object->_sys.texcoordVBO);
+		GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iTexcoord");
+		if(texcoordLocation !=-1 ){
+			glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
+			glEnableVertexAttribArray(texcoordLocation);
+		}
+
+		some=2;
+	}
+
 
 	Matrix4f 
 		projectionMatrix,
@@ -43,21 +65,6 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "modelMatrix"), 1, GL_TRUE, modelMatrix);
 
-
-	glBindBuffer(GL_ARRAY_BUFFER, object->_sys.positionVBO);
-	GLint positionLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iPosition");
-	if(positionLocation !=-1 ){
-		glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
-		glEnableVertexAttribArray(positionLocation);
-	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, object->_sys.texcoordVBO);
-	GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iTexcoord");
-	if(texcoordLocation !=-1 ){
-		glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
-		glEnableVertexAttribArray(texcoordLocation);
-	}
-
 	glBindVertexArray(object->_sys.VAO);
 
 	// Textures
@@ -83,8 +90,6 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 
 void ERenderCameraRenderScene(ERenderCameraInstance_p camera, ERenderSceneInstance_p scene)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	int i;
 	for(i=0; i<scene->child->length; i++){
 		ERenderCameraRenderObject(camera, (ERenderObjectInstance_p)*(void**)eArray.get(scene->child, i) );

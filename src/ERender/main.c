@@ -37,17 +37,11 @@ int main(void)
 
 
 	EGuiManager_p gui = EGui.create();
-	EGuiTextInstance_p text = EGuiText.create("Hello World");
 	EGuiButtonInstance_p button = EGuiButton.create();
-	EGui.addItem(gui, (EGuiItem_p)text);
 	EGui.addItem(gui, (EGuiItem_p)button);
-
-	EGui.render(gui);
-
-	SwapBuffers(render->gAPI.hdc);
-
-	while(!GetAsyncKeyState(VK_ESCAPE)){}
-
+	//EGui.render(gui);
+	//SwapBuffers(render->gAPI.hdc);
+	//while(!GetAsyncKeyState(VK_ESCAPE)){}
 
 
 	EInput.init();
@@ -117,6 +111,9 @@ int main(void)
 	int fps = 0;
 	int s = 0;
 
+	RenderEvent event_beforeRender = {type: beforeRender, render: render};
+	RenderEvent event_afterRender = {type: afterRender, render: render};
+
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
 		GetCursorPos(&mouse);
@@ -124,7 +121,12 @@ int main(void)
 		render->camera->pos.rx = (float)mouse.y/1000;
 		render->camera->pos.ry = (float)mouse.x/1000;
 
+		EEvents.addEvent(render->events, &event_beforeRender);
+
 		ERender.render(render);
+		EGui.render(gui);
+
+		EEvents.addEvent(render->events, &event_afterRender);
 
 		fps++;
 		if(clock()-s>1000){

@@ -28,12 +28,7 @@ void ERenderSetScene(const ERenderInstance_p render, const ERenderSceneInstance_
 
 void ERenderRender(const ERenderInstance_p render)
 {
-	RenderEvent event_beforeRender = {type: beforeRender, render: render};
-	RenderEvent event_afterRender = {type: afterRender, render: render};
-
-	EEvents.addEvent(render->events, &event_beforeRender);
 	ERenderCamera.renderScene(render->camera, render->scene);
-	EEvents.addEvent(render->events, &event_afterRender);
 }
 
 

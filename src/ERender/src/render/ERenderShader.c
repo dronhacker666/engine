@@ -123,10 +123,9 @@ void ERenderShaderManagerPrepareShaders(ERenderShaderManagerInstance_p shaderMan
 			exit(1);
 		}
 
-		glUseProgram(shaderManager->shader_id);
-
 		shaderManager->needRelink = FALSE;
 	}
+	glUseProgram(shaderManager->shader_id);
 }
 
 _ERenderShaderManager ERenderShaderManager = {
