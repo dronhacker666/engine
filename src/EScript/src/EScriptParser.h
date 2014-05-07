@@ -1,0 +1,4 @@
+#ifndef ESCRIPTPARSER_H
+#define ESCRIPTPARSER_H
+
+#endif
