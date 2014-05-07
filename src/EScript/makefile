@@ -6,7 +6,7 @@ MAKE=mingw32-make
 SOURCES=src/*.c
 PARAMS= -s
 INCLUDE=-I ../ELib/include -I src
-LIBS=-L elib
+LIBS=-L ../ELib/lib -lelib
 
 run:
 	${CC} -o run ${SOURCES} main.c ${INCLUDE} ${PARAMS} ${LIBS}

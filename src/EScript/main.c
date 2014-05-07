@@ -6,8 +6,8 @@ int main(void){
 		var_a = 20;\
 	";
 
-	EScriptInstance_p script = EScript.create();
-	EScript.exec(source);
+	EScriptInstance_p scope = EScript.create();
+	EScript.exec(scope, source);
 
 	return 0;
 }

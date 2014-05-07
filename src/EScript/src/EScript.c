@@ -5,13 +5,11 @@ EScriptInstance_p EScript_create(void)
 	new(script, EScriptInstance);
 }
 
-bool EScript_exec(const char* source)
+bool EScript_exec(EScriptInstance_p scope, const char* source)
 {
-	/*
-	
-	EScriptParser.parse(source);
+	EArrayInstance_p lexems = EArray.create(sizeof(int));
+	EScriptParser.parse(lexems, source);
 
-	*/
 }
 
 _EScript EScript = {
