@@ -20,6 +20,7 @@ typedef enum {
 	LEX_COMMA, // ,
 	LEX_DOT, // .
 	LEX_COLON, // :
+	LEX_SEMICOLON, // ;
 	LEX_BKT_OPEN, // (
 	LEX_BKT_CLOSE, // )
 	LEX_SQBKT_OPEN, // [

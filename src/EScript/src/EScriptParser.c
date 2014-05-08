@@ -165,6 +165,9 @@ void processLexem(EScriptParserState state, const char* start, const char* end)
 			else if(*start==':'){
 				lex.type = LEX_COLON;
 			}
+			else if(*start==';'){
+				lex.type = LEX_SEMICOLON;
+			}
 			else if(*start=='('){
 				lex.type = LEX_BKT_OPEN;
 			}
@@ -192,9 +195,9 @@ void processLexem(EScriptParserState state, const char* start, const char* end)
 	EPipeline.push(pip, &lex);
 }
 
-void processCode(void)
+void processCode(int offset)
 {
-	EScriptLexem_p lex = EPipeline.get(pip, 2);
+	EScriptLexem_p lex = EPipeline.get(pip, offset);
 
 	printf("%i\n", lex->type);
 
@@ -228,7 +231,7 @@ bool EScriptParser_parse(EArrayInstance_p out, const char* source)
 			if(state!=ESP_STATE_SKIP){
 				processLexem(state, start, cur-1);
 				if(pip->count_filed_items>2){
-					processCode();
+					processCode(2);
 				}
 			}
 			start = cur;
@@ -236,6 +239,8 @@ bool EScriptParser_parse(EArrayInstance_p out, const char* source)
 		}
 		cur++;
 	}
+	processCode(1);
+	processCode(0);
 
 	return true;
 }
