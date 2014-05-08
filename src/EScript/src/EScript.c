@@ -7,7 +7,7 @@ EScriptInstance_p EScript_create(void)
 
 bool EScript_exec(EScriptInstance_p scope, const char* source)
 {
-	EArrayInstance_p lexems = EArray.create(sizeof(int));
+	EArrayInstance_p lexems = EArray.create(sizeof(EScriptLexem));
 	EScriptParser.parse(lexems, source);
 
 }

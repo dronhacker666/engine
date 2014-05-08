@@ -15,7 +15,24 @@ void testOk(char* testName){
 	printf("Test OK     %s\n", testName);
 }
 
-int main(void){
+int main(void)
+{
+	int a;
+	EPipelineInstance_p pip = EPipeline.create(sizeof(int), 3);
+	a= 10; EPipeline.push(pip, &a);
+	a= 20; EPipeline.push(pip, &a);
+	a= 30; EPipeline.push(pip, &a);
+	a= 40; EPipeline.push(pip, &a);
+	a= 50; EPipeline.push(pip, &a);
+
+
+	printf("%i\n", *(int*)EPipeline.get(pip,0) );
+	printf("%i\n", *(int*)EPipeline.get(pip,1) );
+	printf("%i\n", *(int*)EPipeline.get(pip,2) );
+	printf("%i\n", *(int*)EPipeline.get(pip,3) );
+	printf("%i\n", *(int*)EPipeline.get(pip,4) );
+
+	exit(0);
 
 	printf("%i\n", eTools.hashString("some string"));
 

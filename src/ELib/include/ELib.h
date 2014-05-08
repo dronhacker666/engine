@@ -45,6 +45,24 @@ extern _EStack EStack;
 
 
 /**
+* Pipeline
+*/
+typedef struct {
+	void* _data;
+	int length;
+	int count_filed_items;
+	int pos;
+	int item_size;
+} EPipelineInstance, *EPipelineInstance_p;
+
+typedef struct {
+	EPipelineInstance_p 	(*create) 	(const int, const int);
+	void 					(*push) 	(EPipelineInstance_p, const void*);
+	void* 					(*get) 		(EPipelineInstance_p, int);
+} _EPipeline;
+extern _EPipeline EPipeline;
+
+/**
 *	Array
 */
 #define ARRAY_PART_COUNT 100

@@ -3,7 +3,8 @@
 int main(void){
 
 	char source[] = "\
-		var_a = 20;\
+		var_a = 20;\n\
+		var_b = var_a + 10;\n\
 	";
 
 	EScriptInstance_p scope = EScript.create();

@@ -3,8 +3,15 @@
 
 #include "ELib.h"
 
-enum {
+typedef enum {
+	LEX_GROUP_ID,
+	LEX_GROUP_VALUE,
+	LEX_GROUP_NATIVE,
+	LEX_GROUP_OPERATOR,
+	LEX_GROUP_SEPARATOR,
+} EScriptLexemGroup;
 
+typedef enum {
 	LEX_ID,
 	LEX_NUM,
 	LEX_STRING,
@@ -49,8 +56,16 @@ enum {
 	LEX_ELSE,
 	LEX_WHILE,
 	LEX_FOR,
-
 } EScriptLexemType;
+
+typedef struct {
+	EScriptLexemGroup group;
+	EScriptLexemType type;
+	union{
+		int i_value;
+		float f_value;
+	};
+} EScriptLexem, *EScriptLexem_p;
 
 typedef struct {
 	bool (*parse) (EArrayInstance_p, const char*);
