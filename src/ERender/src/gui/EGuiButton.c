@@ -7,7 +7,7 @@ void EGuiButton_render(EGuiButtonInstance_p widget)
 
 EGuiButtonInstance_p EGuiButton_create(void)
 {
-	new(widget, EGuiButtonInstance);
+	EGuiButtonInstance_p widget = EMem.alloc(sizeof(EGuiButtonInstance));
 
 	widget->render = (void*)EGuiButton_render;
 

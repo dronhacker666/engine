@@ -1,16 +1,14 @@
 #include "../include/ELib.h"
 
-#include <malloc.h>
-
 inline EStackInstance_p eStackCreate(int depth){
-	EStackInstance_p stack = malloc(sizeof(EStackInstance));
+	EStackInstance_p stack = EMem.alloc(sizeof(EStackInstance));
 	if(stack==NULL){
 		printf("No memory for stack\n");
 		return NULL;
 	}
 	stack->_head = 0;
 	stack->_depth = depth;
-	stack->_data = malloc(sizeof(EStackItem)*(depth+1));
+	stack->_data = EMem.alloc(sizeof(EStackItem)*(depth+1));
 	if(stack->_data==NULL){
 		printf("No memory for stack\n");
 		return NULL;

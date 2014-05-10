@@ -4,7 +4,7 @@ GLuint block_VBO, block_VAO;
 
 EGuiManager_p EGui_create(void)
 {
-	new(manager, EGuiManager);
+	EGuiManager_p manager = EMem.alloc(sizeof(EGuiManager));
 
 	float block[] = {
 		 0.0,  0.0,

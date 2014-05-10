@@ -2,7 +2,8 @@
 
 EEventManager_p EEvents_create(void)
 {
-	new(manager, EEventManager);
+	EEventManager_p manager = EMem.alloc(sizeof(EEventManager));
+
 	return manager;
 }
 
@@ -20,7 +21,8 @@ void EEvents_addEvent(EEventManager_p manager, void* _event)
 
 void EEvents_addListener(EEventManager_p manager, EventType type, EventListener listener)
 {
-	new(item, EEventListener);
+	EEventListener_p item = EMem.alloc(sizeof(EEventListener));
+
 	item->type = type;
 	item->listener = listener;
 	item->_next = NULL;
@@ -54,7 +56,7 @@ void EEvents_removeListener(EEventManager_p manager, EventListener _listener)
 			listener->_next->_prev = listener->_prev;
 			listener->_prev->_next = listener->_next;
 
-			free(listener);
+			EMem.free(listener);
 			break;
 		}
 		listener = listener->_next;

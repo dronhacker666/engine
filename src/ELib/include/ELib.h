@@ -13,8 +13,22 @@
 **/
 typedef enum {false, true} bool;
 
+
 /**
-*	Stack		
+*	Memory
+*/
+typedef struct
+{
+	void* (*alloc) (unsigned int);
+	void (*free) (void*);
+
+	void (*printUsage) (void);
+} _EMem;
+extern _EMem EMem;
+
+
+/**
+*	Stack
 */
 typedef union{
 	int i;

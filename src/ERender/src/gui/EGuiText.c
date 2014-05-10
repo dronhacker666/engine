@@ -7,7 +7,7 @@ void EGuiText_render(EGuiTextInstance_p widget)
 
 EGuiTextInstance_p EGuiText_create(char* text)
 {
-	new(widget, EGuiTextInstance);
+	EGuiTextInstance_p widget = EMem.alloc(sizeof(EGuiTextInstance));
 
 	widget->render = (void*)EGuiText_render;
 	widget->text = text;

@@ -10,7 +10,7 @@ GLenum getShaderType(char* filename)
 
 ERenderShaderInstance_p ERenderShaderCreate(char* src, int length, GLenum type)
 {
-	new(shader, ERenderShaderInstance);
+	ERenderShaderInstance_p shader = EMem.alloc(sizeof(ERenderShaderInstance));
 
 	shader->type = type;
 	shader->_hash = eTools.hashString(src);
@@ -57,7 +57,7 @@ _ERenderShader ERenderShader = {
 
 ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 {
-	new(shaderManager, ERenderShaderManagerInstance);
+	ERenderShaderManagerInstance_p shaderManager = EMem.alloc(sizeof(ERenderShaderManagerInstance));
 
 	shaderManager->shader_id = glCreateProgram();
 

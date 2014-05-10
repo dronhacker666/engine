@@ -2,13 +2,12 @@
 
 int main(void){
 
-	char source[] = "\
-		var_a = 20;\n\
-		var_b = var_a + 10;\n\
-	";
+	char source[] = "a= 10; b= a + 20;";
 
 	EScriptInstance_p scope = EScript.create();
 	EScript.exec(scope, source);
+
+	EMem.printUsage();
 
 	return 0;
 }

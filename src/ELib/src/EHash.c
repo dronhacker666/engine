@@ -11,8 +11,7 @@ unsigned int HashLy(const char * str)
 
 EHashInstance_p EHash_create(void)
 {
-	EHashInstance_p hash = malloc(sizeof(EHashInstance));
-	memset(hash, 0, sizeof(EHashInstance));
+	EHashInstance_p hash = EMem.alloc(sizeof(EHashInstance));
 
 	hash->__id__ = HASHINSTANCEID;
 
@@ -31,8 +30,7 @@ bool EHash_typeIs(EHashInstance_p hash, const char* key, EHashItemType type)
 
 EHashItem_p EHash_createItem(EHashInstance_p hash, const char* key)
 {
-	EHashItem_p item = malloc(sizeof(EHashItem));
-	memset(item, 0, sizeof(EHashItem));
+	EHashItem_p item = EMem.alloc(sizeof(EHashItem));
 
 	// Link
 	if(hash->_head==NULL){

@@ -2,13 +2,14 @@
 
 EScriptInstance_p EScript_create(void)
 {
-	new(script, EScriptInstance);
+	EScriptInstance_p script = EMem.alloc(sizeof(EScriptInstance));
+	return script;
 }
 
 bool EScript_exec(EScriptInstance_p scope, const char* source)
 {
-	EArrayInstance_p lexems = EArray.create(sizeof(EScriptLexem));
-	EScriptParser.parse(lexems, source);
+	EArrayInstance_p code = EArray.create(sizeof(EScriptCmd));
+	EScriptParser.parse(code, source);
 
 }
 

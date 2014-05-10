@@ -5,7 +5,7 @@ int some=1;
 
 ERenderCameraInstance_p ERenderCameraCreate(void)
 {
-	new(camera, ERenderCameraInstance);
+	ERenderCameraInstance_p camera = EMem.alloc(sizeof(ERenderCameraInstance));
 
 	camera->shaderManager = ERenderShaderManager.create();
 

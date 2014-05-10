@@ -2,8 +2,7 @@
 
 EPipelineInstance_p EPipeline_create(const int item_size, const int length)
 {
-	EPipelineInstance_p pipeline = malloc(sizeof(EPipelineInstance)+item_size*length);
-	memset(pipeline, 0, sizeof(EPipelineInstance));
+	EPipelineInstance_p pipeline = EMem.alloc(sizeof(EPipelineInstance)+item_size*length);
 
 	pipeline->_data = pipeline + sizeof(EPipelineInstance);
 	pipeline->item_size = item_size;

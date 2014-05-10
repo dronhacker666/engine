@@ -4,6 +4,7 @@
 #include "ELib.h"
 #include "EScriptMacro.h"
 #include "EScriptParser.h"
+#include "EScriptVM.h"
 
 typedef struct {
 	int some;

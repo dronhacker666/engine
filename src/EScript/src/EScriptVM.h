@@ -3,10 +3,25 @@
 
 typedef enum {
 	PUSH,
+	POP,
 } EScriptCmdType;
 
 typedef struct {
+	enum {
+		ESV_FLOAT,
+		ESV_INT,
+		ESV_POINT,
+	} type;
+	union {
+		int i_value;
+		float f_value;
+		void* p_value;
+	};
+} EScriptValue, *EScriptValue_p;
+
+typedef struct {
 	EScriptCmdType type;
+	EScriptValue value;
 } EScriptCmd, *EScriptCmd_p;
 
 typedef struct {

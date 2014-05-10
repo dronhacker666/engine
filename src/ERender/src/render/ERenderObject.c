@@ -4,7 +4,7 @@
 
 ERenderObjectInstance_p ERenderObjectCreateFromMesh(MeshData_p data)
 {
-	new(object, ERenderObjectInstance);
+	ERenderObjectInstance_p object = EMem.alloc(sizeof(ERenderObjectInstance));
 
 	glGenVertexArrays(1, &object->_sys.VAO);
 	glBindVertexArray(object->_sys.VAO);

@@ -10,7 +10,7 @@ unsigned int eToolsHashString(char* str){
 
 bool eToolsLoadFile(char* filename, char** content, int* length)
 {
-	FILE* fp = fopen (filename, "rb+");
+	FILE* fp = fopen(filename, "rb+");
 	int size;
 	if(fp==NULL){
 		printf("ERROR: LoadFile('%s', ..., ...) - cannot read this file\n", filename);
@@ -19,7 +19,7 @@ bool eToolsLoadFile(char* filename, char** content, int* length)
 		fseek(fp, 0, SEEK_END);
 		size = ftell(fp);
 		rewind(fp);
-		*content = malloc( sizeof(char)*size );
+		*content = EMem.alloc( sizeof(char)*size );
 		if(*content==NULL){
 			printf("%s\n", "No memory");
 			return false;

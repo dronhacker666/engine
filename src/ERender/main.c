@@ -134,10 +134,9 @@ int main(void)
 			s = clock();
 			fps = 0;
 		}
-
-
-
 	}
+
+	EMem.printUsage();
 
 	return 0;
 }

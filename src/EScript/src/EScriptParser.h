@@ -2,8 +2,11 @@
 #define ESCRIPTPARSER_H
 
 #include "ELib.h"
+#include "EScriptLexer.h"
+#include "EScriptMacro.h"
 
 typedef enum {
+	LEX_GROUP_UNDEFINED,
 	LEX_GROUP_ID,
 	LEX_GROUP_VALUE,
 	LEX_GROUP_NATIVE,
@@ -65,11 +68,13 @@ typedef struct {
 	union{
 		int i_value;
 		float f_value;
+		char* s_value;
 	};
 } EScriptLexem, *EScriptLexem_p;
 
 typedef struct {
 	bool (*parse) (EArrayInstance_p, const char*);
+	const char* (*getLexemName) (EScriptLexemType);
 } _EScriptParser;
 extern _EScriptParser EScriptParser;
 

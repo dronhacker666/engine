@@ -18,7 +18,7 @@ bool loadTGA(char* filename, Image_p out)
 	if (size <= sizeof(TGAHeader))
 	{
 		printf("Too small file '%s'\n", filename);
-		free(buffer);
+		EMem.free(buffer);
 		return 0;
 	}
 
@@ -28,7 +28,7 @@ bool loadTGA(char* filename, Image_p out)
 	if (header->datatype != 2 || (header->bitperpel != 24 && header->bitperpel != 32))
 	{
 		printf("Wrong TGA format '%s'\n", filename);
-		free(buffer);
+		EMem.free(buffer);
 		return 0;
 	}
 

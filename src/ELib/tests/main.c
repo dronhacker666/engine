@@ -32,7 +32,6 @@ int main(void)
 	printf("%i\n", *(int*)EPipeline.get(pip,3) );
 	printf("%i\n", *(int*)EPipeline.get(pip,4) );
 
-	exit(0);
 
 	printf("%i\n", eTools.hashString("some string"));
 
@@ -44,6 +43,8 @@ int main(void)
 	if(eTools.loadFile("bin/testfile", &content, &length)){
 		printf("%s \nlength %i\n", content, length);
 	}
+
+	EMem.printUsage();
 
 	return 0;
 }

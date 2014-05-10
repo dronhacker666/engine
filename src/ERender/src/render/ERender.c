@@ -2,7 +2,7 @@
 
 ERenderInstance_p ERenderCreate(const int width, const int height){
 
-	new(render, ERenderInstance);
+	ERenderInstance_p render = EMem.alloc(sizeof(ERenderInstance));
 
 	render->width = width;
 	render->height = height;

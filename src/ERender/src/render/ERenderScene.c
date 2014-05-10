@@ -2,7 +2,8 @@
 
 ERenderSceneInstance_p ERenderScene_create(void)
 {
-	new(scene, ERenderSceneInstance);
+	ERenderSceneInstance_p scene = EMem.alloc(sizeof(ERenderSceneInstance));
+
 	return scene;
 }
 

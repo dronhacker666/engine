@@ -31,7 +31,7 @@ GLuint ERenderTextureLoad(char* filename)
 		GL_UNSIGNED_BYTE,
 		image.data
 	);
-	free(image.data);
+	EMem.free(image.data);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 

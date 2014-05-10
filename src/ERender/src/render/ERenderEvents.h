@@ -1,6 +1,7 @@
 #ifndef ERENDEREVENTS_H
 #define ERENDEREVENTS_H
 
+#include "ELib.h"
 #include "ERenderMacro.h"
 
 typedef enum 

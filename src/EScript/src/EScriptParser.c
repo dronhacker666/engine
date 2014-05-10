@@ -19,13 +19,13 @@ bool is_operator(char ch){
 
 
 typedef enum{
+	ESP_STATE_SKIP,
 	ESP_STATE_FAILED,
 	ESP_STATE_ID,
 	ESP_STATE_NUM,
 	ESP_STATE_STRING,
 	ESP_STATE_SEPARATOR,
 	ESP_STATE_OPERATOR,
-	ESP_STATE_SKIP,
 } EScriptParserState;
 
 
@@ -63,25 +63,29 @@ EScriptParserState calcState(const char ch)
 void processLexem(EScriptParserState state, const char* start, const char* end)
 {
 	EScriptLexem lex;
+	int length = end-start;
 
 	switch(state){
 		case ESP_STATE_ID:
 			lex.group = LEX_GROUP_NATIVE;
-			if(memcmp(start, "if", end-start)==0){
+			if(memcmp("if", start, max(length,2) )==0){
 				lex.type = LEX_IF;
 			}
-			else if(memcmp(start, "else", end-start)==0){
+			else if(memcmp(start, "else", max(length,4) )==0){
 				lex.type = LEX_ELSE;
 			}
-			else if(memcmp(start, "for", end-start)==0){
+			else if(memcmp(start, "for", max(length,3) )==0){
 				lex.type = LEX_FOR;
 			}
-			else if(memcmp(start, "while", end-start)==0){
+			else if(memcmp(start, "while", max(length,5) )==0){
 				lex.type = LEX_WHILE;
 			}
 			else{
 				lex.group = LEX_GROUP_ID;
 				lex.type = LEX_ID;
+				lex.s_value = malloc(length+1);
+				memcpy(lex.s_value, start, length);
+				lex.s_value[length] = '\0';
 			}
 		break;
 		case ESP_STATE_NUM:
@@ -90,40 +94,40 @@ void processLexem(EScriptParserState state, const char* start, const char* end)
 		break;
 		case ESP_STATE_OPERATOR:
 			lex.group = LEX_GROUP_OPERATOR;
-			if(memcmp(start, "==", 2)){
+			if(memcmp(start, "==", max(length,2))==0){
 				lex.type = LEX_EQ;
 			}
-			else if(memcmp(start, ">=", 2)){
+			else if(memcmp(start, ">=", max(length,2))==0){
 				lex.type = LEX_GT_EQ;
 			}
-			else if(memcmp(start, "<=", 2)){
+			else if(memcmp(start, "<=", max(length,2))==0){
 				lex.type = LEX_LT_EQ;
 			}
-			else if(memcmp(start, "!=", 2)){
+			else if(memcmp(start, "!=", max(length,2))==0){
 				lex.type = LEX_NOT_EQ;
 			}
-			else if(memcmp(start, "+=", 2)){
+			else if(memcmp(start, "+=", max(length,2))==0){
 				lex.type = LEX_CP_ADD;
 			}
-			else if(memcmp(start, "-=", 2)){
+			else if(memcmp(start, "-=", max(length,2))==0){
 				lex.type = LEX_CP_SUB;
 			}
-			else if(memcmp(start, "*=", 2)){
+			else if(memcmp(start, "*=", max(length,2))==0){
 				lex.type = LEX_CP_MUL;
 			}
-			else if(memcmp(start, "/=", 2)){
+			else if(memcmp(start, "/=", max(length,2))==0){
 				lex.type = LEX_CP_DIV;
 			}
-			else if(memcmp(start, "++", 2)){
+			else if(memcmp(start, "++", max(length,2))==0){
 				lex.type = LEX_INC;
 			}
-			else if(memcmp(start, "--", 2)){
+			else if(memcmp(start, "--", max(length,2))==0){
 				lex.type = LEX_DEC;
 			}
-			else if(memcmp(start, "&&", 2)){
+			else if(memcmp(start, "&&", max(length,2))==0){
 				lex.type = LEX_AND;
 			}
-			else if(memcmp(start, "||", 2)){
+			else if(memcmp(start, "||", max(length,2))==0){
 				lex.type = LEX_OR;
 			}
 			else if(*start=='+'){
@@ -195,15 +199,7 @@ void processLexem(EScriptParserState state, const char* start, const char* end)
 	EPipeline.push(pip, &lex);
 }
 
-void processCode(int offset)
-{
-	EScriptLexem_p lex = EPipeline.get(pip, offset);
-
-	printf("%i\n", lex->type);
-
-}
-
-bool EScriptParser_parse(EArrayInstance_p out, const char* source)
+bool EScriptParser_parse(EArrayInstance_p code, const char* source)
 {
 	EScriptParserState state = ESP_STATE_SKIP;
 	EScriptParserState cur_state;
@@ -229,9 +225,9 @@ bool EScriptParser_parse(EArrayInstance_p out, const char* source)
 				return false;
 			}
 			if(state!=ESP_STATE_SKIP){
-				processLexem(state, start, cur-1);
+				processLexem(state, start, cur);
 				if(pip->count_filed_items>2){
-					processCode(2);
+					EScriptLexer.process(code, pip, 2);
 				}
 			}
 			start = cur;
@@ -239,12 +235,61 @@ bool EScriptParser_parse(EArrayInstance_p out, const char* source)
 		}
 		cur++;
 	}
-	processCode(1);
-	processCode(0);
+	processLexem(state, start, cur);
+	EScriptLexer.process(code, pip, 1);
+	EScriptLexer.process(code, pip, 0);
 
 	return true;
 }
 
+
+const char* EScriptParser_getLexemName(EScriptLexemType type)
+{
+	switch(type){
+		case LEX_ID: return "LEX_ID";
+		case LEX_NUM: return "LEX_NUM";
+		case LEX_STRING: return "LEX_STRING";
+		case LEX_NEWLINE: return "LEX_NEWLINE";
+		case LEX_COMMA: return "LEX_COMMA";
+		case LEX_DOT: return "LEX_DOT";
+		case LEX_COLON: return "LEX_COLON";
+		case LEX_SEMICOLON: return "LEX_SEMICOLON";
+		case LEX_BKT_OPEN: return "LEX_BKT_OPEN";
+		case LEX_BKT_CLOSE: return "LEX_BKT_CLOSE";
+		case LEX_SQBKT_OPEN: return "LEX_SQBKT_OPEN";
+		case LEX_SQBKT_CLOSE: return "LEX_SQBKT_CLOSE";
+		case LEX_CURBKT_OPEN: return "LEX_CURBKT_OPEN";
+		case LEX_CURBKT_CLOSE: return "LEX_CURBKT_CLOSE";
+		case LEX_ADD: return "LEX_ADD";
+		case LEX_SUB: return "LEX_SUB";
+		case LEX_MUL: return "LEX_MUL";
+		case LEX_DIV: return "LEX_DIV";
+		case LEX_INC: return "LEX_INC";
+		case LEX_DEC: return "LEX_DEC";
+		case LEX_CP: return "LEX_CP";
+		case LEX_EQ: return "LEX_EQ";
+		case LEX_GT: return "LEX_GT";
+		case LEX_LT: return "LEX_LT";
+		case LEX_GT_EQ: return "LEX_GT_EQ";
+		case LEX_LT_EQ: return "LEX_LT_EQ";
+		case LEX_NOT_EQ: return "LEX_NOT_EQ";
+		case LEX_CP_ADD: return "LEX_CP_ADD";
+		case LEX_CP_SUB: return "LEX_CP_SUB";
+		case LEX_CP_MUL: return "LEX_CP_MUL";
+		case LEX_CP_DIV: return "LEX_CP_DIV";
+		case LEX_AND: return "LEX_AND";
+		case LEX_OR: return "LEX_OR";
+		case LEX_NOT: return "LEX_NOT";
+		case LEX_IF: return "LEX_IF";
+		case LEX_ELSE: return "LEX_ELSE";
+		case LEX_WHILE: return "LEX_WHILE";
+		case LEX_FOR: return "LEX_FOR";
+		default: return "--UNKNOWN--";
+	}
+}
+
+
 _EScriptParser EScriptParser = {
 	parse: EScriptParser_parse,
+	getLexemName: EScriptParser_getLexemName,
 };
