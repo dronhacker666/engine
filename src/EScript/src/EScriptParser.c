@@ -17,23 +17,80 @@ bool is_operator(char ch){
 	return ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='='||ch=='>'||ch=='<';
 }
 
+EScriptParserInstance_p EScriptParser_create(void)
+{
+	EScriptParserInstance_p parser = EMem.alloc(sizeof(EScriptParserInstance));
 
-typedef enum{
-	ESP_STATE_SKIP,
-	ESP_STATE_FAILED,
-	ESP_STATE_ID,
-	ESP_STATE_NUM,
-	ESP_STATE_STRING,
-	ESP_STATE_SEPARATOR,
-	ESP_STATE_OPERATOR,
-} EScriptParserState;
+	parser->pip = EPipeline.create(sizeof(EScriptLexem), 5);
+	parser->id_stack = EStack.create(10);
+
+	parser->lineCount = 1;
 
 
-int lineCount=1;
-int charCount=0;
-EPipelineInstance_p pip;
+	parser->waitLexGroup = (int[]){LEX_GROUP_ID, 0};
 
-EScriptParserState calcState(const char ch)
+	return parser;
+}
+
+
+bool inArray(int value, int array[])
+{
+	int i = 0;
+	while(array[i]){
+		if(value==array[i]){
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+
+bool processLexem(EScriptParserInstance_p parser, EArrayInstance_p code, int offset)
+{
+	EScriptCmd cmd;
+
+	EScriptLexem_p lex = EPipeline.get(parser->pip, offset);
+
+	if( !inArray(lex->group, parser->waitLexGroup) ){
+		printf("Wait other lexem\n");
+		return false;
+	}
+
+	switch(lex->group){
+		case LEX_GROUP_ID:
+			cmd.type = CMD_FOCUS;
+			cmd.value.s_value = lex->s_value;
+
+			parser->waitLexGroup = (int[]){LEX_GROUP_OPERATOR, 0};
+		break;
+		case LEX_GROUP_OPERATOR:
+			parser->waitLexGroup = (int[]){LEX_GROUP_VALUE, LEX_GROUP_ID, 0};
+		break;
+		case LEX_GROUP_VALUE:
+			cmd.type = CMD_VALUE;
+			switch(lex->type){
+				case LEX_NUM:
+					cmd.value.type = ESV_FLOAT;
+					cmd.value.f_value = lex->f_value;
+				break;
+				case LEX_STRING:
+					cmd.value.type = ESV_STRING;
+					cmd.value.s_value = lex->s_value;
+				break;
+			}
+			
+		break;
+	}
+
+	//printf("--%s\n", EScriptParser.getLexemName(lex->type) );
+	printf("%s\n", EScriptVM.toString(&cmd));
+
+
+	return true;
+}
+
+
+EScriptParserState calcState(EScriptParserInstance_p parser, const char ch)
 {
 	if(is_letter(ch))
 	{
@@ -56,11 +113,11 @@ EScriptParserState calcState(const char ch)
 		return ESP_STATE_SKIP;
 	}
 
-	printf("Failed char \"%c\" line %i char %i\n", ch, lineCount, charCount);
+	printf("Failed char \"%c\" line %i char %i\n", ch, parser->lineCount, parser->charCount);
 	return 	ESP_STATE_FAILED;
 }
 
-void processLexem(EScriptParserState state, const char* start, const char* end)
+void processSource(EScriptParserInstance_p parser, EScriptParserState state, const char* start, const char* end)
 {
 	EScriptLexem lex;
 	int length = end-start;
@@ -196,10 +253,11 @@ void processLexem(EScriptParserState state, const char* start, const char* end)
 			exit(0);
 	}
 
-	EPipeline.push(pip, &lex);
+	EPipeline.push(parser->pip, &lex);
 }
 
-bool EScriptParser_parse(EArrayInstance_p code, const char* source)
+
+bool EScriptParser_parse(EScriptParserInstance_p parser, EArrayInstance_p code, const char* source)
 {
 	EScriptParserState state = ESP_STATE_SKIP;
 	EScriptParserState cur_state;
@@ -208,26 +266,24 @@ bool EScriptParser_parse(EArrayInstance_p code, const char* source)
 	const char* cur = source;
 	const char* start = cur;
 
-	pip = EPipeline.create(sizeof(EScriptLexem), 5);
-
 	while(*cur){
 
 		if(*cur=='\n'){
-			charCount=0;
-			lineCount++;
+			parser->charCount=0;
+			parser->lineCount++;
 		}
-		charCount++;
+		parser->charCount++;
 
-		cur_state = calcState(*cur);
+		cur_state = calcState(parser, *cur);
 
 		if( state != cur_state ){
 			if(state==ESP_STATE_FAILED){
 				return false;
 			}
 			if(state!=ESP_STATE_SKIP){
-				processLexem(state, start, cur);
-				if(pip->count_filed_items>2){
-					EScriptLexer.process(code, pip, 2);
+				processSource(parser, state, start, cur);
+				if(parser->pip->count_filed_items>2){
+					processLexem(parser, code, 2);
 				}
 			}
 			start = cur;
@@ -235,9 +291,9 @@ bool EScriptParser_parse(EArrayInstance_p code, const char* source)
 		}
 		cur++;
 	}
-	processLexem(state, start, cur);
-	EScriptLexer.process(code, pip, 1);
-	EScriptLexer.process(code, pip, 0);
+	processSource(parser, state, start, cur);
+	processLexem(parser, code, 1);
+	processLexem(parser, code, 0);
 
 	return true;
 }
@@ -290,6 +346,7 @@ const char* EScriptParser_getLexemName(EScriptLexemType type)
 
 
 _EScriptParser EScriptParser = {
+	create: EScriptParser_create,
 	parse: EScriptParser_parse,
 	getLexemName: EScriptParser_getLexemName,
 };

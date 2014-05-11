@@ -5,7 +5,22 @@ GLuint ERenderTextureLoad(char* filename)
 {
 	Image image;
 	GLuint texture;
-	if( !loadTGA(filename, &image) ){
+
+	bool ok;
+	int length = strlen(filename);
+
+	if( memcmp(filename+length-4, ".tga", 4)==0 ){
+		ok = loadTGA(filename, &image);
+	}
+	else if( memcmp(filename+length-4, ".jpg", 4)==0 || memcmp(filename+length-5, ".jpeg", 5)==0 ){
+		ok = loadJPEG(filename, &image);
+	}
+	else{
+		printf("ERenderTexture error: unknown format \"%s\"\n", filename);
+		exit(0);
+	}
+
+	if( !ok ){
 		return 0;
 	}
 
@@ -27,7 +42,7 @@ GLuint ERenderTextureLoad(char* filename)
 		image.width,
 		image.height,
 		0,
-		image.depth==24 ? GL_BGR : GL_BGRA,
+		image.depth==24 ? (image.colorSpace==RGB?GL_RGB:GL_BGR) : (image.colorSpace==RGB?GL_RGBA:GL_BGRA),
 		GL_UNSIGNED_BYTE,
 		image.data
 	);

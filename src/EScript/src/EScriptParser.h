@@ -2,7 +2,7 @@
 #define ESCRIPTPARSER_H
 
 #include "ELib.h"
-#include "EScriptLexer.h"
+#include "EScriptVM.h"
 #include "EScriptMacro.h"
 
 typedef enum {
@@ -62,6 +62,16 @@ typedef enum {
 	LEX_FOR,
 } EScriptLexemType;
 
+typedef enum{
+	ESP_STATE_SKIP,
+	ESP_STATE_FAILED,
+	ESP_STATE_ID,
+	ESP_STATE_NUM,
+	ESP_STATE_STRING,
+	ESP_STATE_SEPARATOR,
+	ESP_STATE_OPERATOR,
+} EScriptParserState;
+
 typedef struct {
 	EScriptLexemGroup group;
 	EScriptLexemType type;
@@ -73,8 +83,23 @@ typedef struct {
 } EScriptLexem, *EScriptLexem_p;
 
 typedef struct {
-	bool (*parse) (EArrayInstance_p, const char*);
-	const char* (*getLexemName) (EScriptLexemType);
+
+	// parser part
+	int lineCount;
+	int charCount;
+	EPipelineInstance_p pip;
+
+	// lexer part
+	int *waitLexGroup;
+	EStackInstance_p id_stack;
+	EStackInstance_p bkt_stack;
+
+} EScriptParserInstance, *EScriptParserInstance_p;
+
+typedef struct {
+	EScriptParserInstance_p 	(*create) 			(void);
+	bool 						(*parse) 			(EScriptParserInstance_p, EArrayInstance_p, const char*);
+	const char* 				(*getLexemName) 	(EScriptLexemType);
 } _EScriptParser;
 extern _EScriptParser EScriptParser;
 

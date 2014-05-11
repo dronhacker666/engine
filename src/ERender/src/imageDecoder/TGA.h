@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "Image.h"
-#include "../../../ELib/include/ELib.h"
+#include "ELib.h"
 
 typedef struct
 {

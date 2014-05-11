@@ -30,6 +30,7 @@ void onMouseUp(MouseEvent_p _event)
 	EEvents.removeListener(render->events, (void*)onMouseMove);
 }
 
+#include "../modelDecoder/ModelDecoder.h"
 
 int main(void)
 {

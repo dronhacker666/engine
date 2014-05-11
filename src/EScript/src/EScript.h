@@ -7,7 +7,8 @@
 #include "EScriptVM.h"
 
 typedef struct {
-	int some;
+	EScriptParserInstance_p parser;
+	EScriptVMInstance_p vm;
 } EScriptInstance, *EScriptInstance_p;
 
 typedef struct {

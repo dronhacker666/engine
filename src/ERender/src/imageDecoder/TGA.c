@@ -35,6 +35,7 @@ bool loadTGA(char* filename, Image_p out)
 	out->width = header->width;
 	out->height = header->height;
 	out->depth = header->bitperpel;
+	out->colorSpace = BGR;
 	out->data = (void*)(buffer + sizeof(TGAHeader) + header->idlength);
 
 	return 1;
