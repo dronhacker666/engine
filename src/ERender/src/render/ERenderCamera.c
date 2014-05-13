@@ -9,6 +9,8 @@ ERenderCameraInstance_p ERenderCameraCreate(void)
 
 	camera->shaderManager = ERenderShaderManager.create();
 
+	camera->pos.z = -10;
+
 	return camera;
 }
 

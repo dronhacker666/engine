@@ -51,6 +51,9 @@ void ERenderMatrixOrtho4f(Matrix4f mat, float left, float right, float bottom, f
 
 void ERenderMatrixRotation4f(Matrix4f M, float x, float y, float z)
 {
+	x = M_PI/180 * x;
+	y = M_PI/180 * y;
+	z = M_PI/180 * z;
 	const float A = cosf(x), B = sinf(x), C = cosf(y),
 				D = sinf(y), E = cosf(z), F = sinf(z);
 	const float AD = A * D, BD = B * D;

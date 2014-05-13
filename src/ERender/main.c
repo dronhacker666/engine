@@ -11,10 +11,22 @@ void onKeyDown(KeyboardEvent_p event)
 
 void onBeforeRender(RenderEvent_p _event)
 {
-	if(EInput.keyPress('W')){ render->camera->pos.z+=0.01; }
-	if(EInput.keyPress('S')){ render->camera->pos.z-=0.01; }
-	if(EInput.keyPress('A')){ render->camera->pos.x+=0.01; }
-	if(EInput.keyPress('D')){ render->camera->pos.x-=0.01; }
+
+	if(EInput.keyPress('W')){
+		render->camera->pos.x -= sin(M_PI/180 * render->camera->pos.ry) / 100;
+		render->camera->pos.y += sin(M_PI/180 * render->camera->pos.rx) / 100;
+		render->camera->pos.z += cos(M_PI/180 * render->camera->pos.ry) / 100;
+	}
+	if(EInput.keyPress('S')){
+		render->camera->pos.x += sin(M_PI/180 * render->camera->pos.ry) / 100;
+		render->camera->pos.y -= sin(M_PI/180 * render->camera->pos.rx) / 100;
+		render->camera->pos.z -= cos(M_PI/180 * render->camera->pos.ry) / 100;
+	}
+
+	//if(EInput.keyPress('W')){ render->camera->pos.z+=0.01; }
+	//if(EInput.keyPress('S')){ render->camera->pos.z-=0.01; }
+	//if(EInput.keyPress('A')){ render->camera->pos.x+=0.01; }
+	//if(EInput.keyPress('D')){ render->camera->pos.x-=0.01; }
 }
 
 void onMouseMove(MouseEvent_p _event)
@@ -71,8 +83,8 @@ int main(void)
 
 		GetCursorPos(&mouse);
 
-		render->camera->pos.rx = (float)mouse.y/1000;
-		render->camera->pos.ry = (float)mouse.x/1000;
+		render->camera->pos.rx = (float)mouse.y;
+		render->camera->pos.ry = (float)mouse.x;
 
 		EEvents.addEvent(render->events, &event_beforeRender);
 
