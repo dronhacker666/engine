@@ -7,7 +7,7 @@
 #include "ERenderShader.h"
 #include "ELib.h"
 
-typedef float *CRenderMesh;
+#include "../modelDecoder/ModelLoader.h"
 
 typedef struct ERenderObjectInstance {
 	struct ERenderObjectInstance* _next;
@@ -24,10 +24,8 @@ typedef struct ERenderObjectInstance {
 
 	struct {
 		GLuint VAO;
-		GLuint positionVBO;
-		GLuint texcoordVBO;
-		GLuint indexVBO;
-		GLuint countIndexes;
+		GLuint VBO;
+		GLuint vertexCount;
 	} _sys;
 
 	Matrix4f modelMatrix;
@@ -43,7 +41,7 @@ typedef struct {
 
 
 typedef struct {
-	ERenderObjectInstance_p 	(*createFromMesh) 	(MeshData_p);
+	ERenderObjectInstance_p 	(*load) 			(const char*);
 	BOOL						(*loadTexture)		(ERenderObjectInstance_p, char*, int);
 } _ERenderObject;
 extern _ERenderObject ERenderObject;

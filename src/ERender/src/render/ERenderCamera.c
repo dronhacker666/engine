@@ -19,17 +19,19 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 
 	// TODO: move out this from render loop
 	if(some==1){
-		glBindBuffer(GL_ARRAY_BUFFER, object->_sys.positionVBO);
+		glBindVertexArray(object->_sys.VAO);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, object->_sys.VBO);
+
 		GLint positionLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iPosition");
 		if(positionLocation !=-1 ){
-			glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
+			glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
 			glEnableVertexAttribArray(positionLocation);
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, object->_sys.texcoordVBO);
 		GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iTexcoord");
 		if(texcoordLocation !=-1 ){
-			glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
+			glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*3) );
 			glEnableVertexAttribArray(texcoordLocation);
 		}
 
@@ -65,8 +67,6 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "modelMatrix"), 1, GL_TRUE, modelMatrix);
 
-	glBindVertexArray(object->_sys.VAO);
-
 	// Textures
 	if(object->texture0){
 		glActiveTexture(GL_TEXTURE0);
@@ -84,7 +84,9 @@ void ERenderCameraRenderObject(ERenderCameraInstance_p camera, ERenderObjectInst
 		glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iTex2") , 2);
 	}
 
-	glDrawElements(GL_TRIANGLES, object->_sys.countIndexes, GL_UNSIGNED_INT, NULL);
+	glBindVertexArray(object->_sys.VAO);
+
+	glDrawArrays(GL_TRIANGLES, 0, object->_sys.vertexCount);
 }
 
 
