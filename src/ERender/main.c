@@ -22,11 +22,17 @@ void onBeforeRender(RenderEvent_p _event)
 		render->camera->pos.y -= sin(M_PI/180 * render->camera->pos.rx) / 100;
 		render->camera->pos.z -= cos(M_PI/180 * render->camera->pos.ry) / 100;
 	}
+	if(EInput.keyPress('D')){
+		render->camera->pos.x -= sin(M_PI/180 * (render->camera->pos.ry+90)) / 100;
+		render->camera->pos.y += sin(M_PI/180 * render->camera->pos.rx) / 100;
+		render->camera->pos.z += cos(M_PI/180 * (render->camera->pos.ry+90)) / 100;
+	}
+	if(EInput.keyPress('A')){
+		render->camera->pos.x -= sin(M_PI/180 * (render->camera->pos.ry-90)) / 100;
+		render->camera->pos.y += sin(M_PI/180 * render->camera->pos.rx) / 100;
+		render->camera->pos.z += cos(M_PI/180 * (render->camera->pos.ry-90)) / 100;
+	}
 
-	//if(EInput.keyPress('W')){ render->camera->pos.z+=0.01; }
-	//if(EInput.keyPress('S')){ render->camera->pos.z-=0.01; }
-	//if(EInput.keyPress('A')){ render->camera->pos.x+=0.01; }
-	//if(EInput.keyPress('D')){ render->camera->pos.x-=0.01; }
 }
 
 void onMouseMove(MouseEvent_p _event)
@@ -66,7 +72,7 @@ int main(void)
 	EEvents.addListener(render->events, mouseUp, (void*)onMouseUp);
 
 
-	ERenderObjectInstance_p object1 = ERenderObject.load("../data/beretta.obj");
+	ERenderObjectInstance_p object1 = ERenderObject.load("../data/model.obj");
 	ERenderScene.addObject(render->scene, object1);
 
 	ERenderObject.loadTexture(object1, "../data/beretta.jpg", 0);
