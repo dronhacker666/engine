@@ -1,23 +1,9 @@
 #include "ERenderObject.h"
-#include "ERenderOpenGL.h"
 #include "ERenderTexture.h"
 
-ERenderObjectInstance_p ERenderObject_load(const char* filename)
-{
-	ERenderObjectInstance_p object = EMem.alloc(sizeof(ERenderObjectInstance));
-	Model_p model = ModelLoader.loadOBJ(filename);
+#include "ERenderModel.h"
 
-	object->_sys.vertexCount = model->vertexCount;
-
-	glGenVertexArrays(1, &object->_sys.VAO);
-	glBindVertexArray(object->_sys.VAO);
-
-	glGenBuffers(1, &object->_sys.VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, object->_sys.VBO);
-	glBufferData(GL_ARRAY_BUFFER, model->vertexCount * sizeof(float) * 8, model->mesh, GL_STATIC_DRAW);
-
-	return object;
-}
+/*
 
 BOOL ERenderObject_loadTexture(ERenderObjectInstance_p object, char* filename, int index)
 {
@@ -34,9 +20,4 @@ BOOL ERenderObject_loadTexture(ERenderObjectInstance_p object, char* filename, i
 	}
 	return TRUE;
 }
-
-
-_ERenderObject ERenderObject = {
-	load: ERenderObject_load,
-	loadTexture: ERenderObject_loadTexture,
-};
+*/

@@ -12,13 +12,11 @@
 
 #include "EInput.h"
 #include "ERender.h"
-#include "ERenderScene.h"
 #include "ERenderShader.h"
 #include "ERenderObject.h"
 #include "ERenderOpenGL.h"
 #include "ERenderCamera.h"
 #include "ERenderEvents.h"
-#include "ERenderMacro.h"
 
 //GUI
 #include "EGui.h"

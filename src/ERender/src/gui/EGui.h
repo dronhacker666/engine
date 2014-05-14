@@ -5,8 +5,6 @@
 
 #include <stdio.h>
 #include "ERenderAPI.h"
-#include "ERenderMacro.h"
-#include "EGuiMacro.h"
 
 #define _EGuiItemPrototype\
 	struct EGuiItem* _next;\

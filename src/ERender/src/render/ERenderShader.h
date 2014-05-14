@@ -7,7 +7,6 @@
 #include <GL/wglext.h>
 #include <GL/glext.h>
 #include "ELib.h"
-#include "ERenderMacro.h"
 
 /**
 *	Shader Instance

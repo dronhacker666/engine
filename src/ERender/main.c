@@ -13,24 +13,24 @@ void onBeforeRender(RenderEvent_p _event)
 {
 
 	if(EInput.keyPress('W')){
-		render->camera->pos.x -= sin(M_PI/180 * render->camera->pos.ry) / 100;
-		render->camera->pos.y += sin(M_PI/180 * render->camera->pos.rx) / 100;
-		render->camera->pos.z += cos(M_PI/180 * render->camera->pos.ry) / 100;
+		render->camera->position.x -= sin(M_PI/180 * render->camera->rotation.y) / 100;
+		render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
+		render->camera->position.z += cos(M_PI/180 * render->camera->rotation.y) / 100;
 	}
 	if(EInput.keyPress('S')){
-		render->camera->pos.x += sin(M_PI/180 * render->camera->pos.ry) / 100;
-		render->camera->pos.y -= sin(M_PI/180 * render->camera->pos.rx) / 100;
-		render->camera->pos.z -= cos(M_PI/180 * render->camera->pos.ry) / 100;
+		render->camera->position.x += sin(M_PI/180 * render->camera->rotation.y) / 100;
+		render->camera->position.y -= sin(M_PI/180 * render->camera->rotation.x) / 100;
+		render->camera->position.z -= cos(M_PI/180 * render->camera->rotation.y) / 100;
 	}
 	if(EInput.keyPress('D')){
-		render->camera->pos.x -= sin(M_PI/180 * (render->camera->pos.ry+90)) / 100;
-		render->camera->pos.y += sin(M_PI/180 * render->camera->pos.rx) / 100;
-		render->camera->pos.z += cos(M_PI/180 * (render->camera->pos.ry+90)) / 100;
+		render->camera->position.x -= sin(M_PI/180 * (render->camera->rotation.y+90)) / 100;
+		render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
+		render->camera->position.z += cos(M_PI/180 * (render->camera->rotation.y+90)) / 100;
 	}
 	if(EInput.keyPress('A')){
-		render->camera->pos.x -= sin(M_PI/180 * (render->camera->pos.ry-90)) / 100;
-		render->camera->pos.y += sin(M_PI/180 * render->camera->pos.rx) / 100;
-		render->camera->pos.z += cos(M_PI/180 * (render->camera->pos.ry-90)) / 100;
+		render->camera->position.x -= sin(M_PI/180 * (render->camera->rotation.y-90)) / 100;
+		render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
+		render->camera->position.z += cos(M_PI/180 * (render->camera->rotation.y-90)) / 100;
 	}
 
 }
@@ -50,17 +50,18 @@ void onMouseUp(MouseEvent_p _event)
 
 int main(void)
 {
-
 	render = ERender.create(800, 600);
+	RenderEvent event_beforeRender = {type: beforeRender, render: render};
+	RenderEvent event_afterRender = {type: afterRender, render: render};
+
+	ERenderScene.load(render->scene, "../data/model.obj");
+
 
 
 	EGuiManager_p gui = EGui.create();
 	EGuiButtonInstance_p button = EGuiButton.create();
 	EGui.addItem(gui, (EGuiItem_p)button);
-	//EGui.render(gui);
-	//SwapBuffers(render->gAPI.hdc);
-	//while(!GetAsyncKeyState(VK_ESCAPE)){}
-
+	
 
 	EInput.init();
 
@@ -72,25 +73,27 @@ int main(void)
 	EEvents.addListener(render->events, mouseUp, (void*)onMouseUp);
 
 
+	/*
 	ERenderObjectInstance_p object1 = ERenderObject.load("../data/model.obj");
 	ERenderScene.addObject(render->scene, object1);
 
 	ERenderObject.loadTexture(object1, "../data/beretta.jpg", 0);
+
+	*/
 
 	POINT mouse;
 
 	int fps = 0;
 	int s = 0;
 
-	RenderEvent event_beforeRender = {type: beforeRender, render: render};
-	RenderEvent event_afterRender = {type: afterRender, render: render};
+
 
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
 		GetCursorPos(&mouse);
 
-		render->camera->pos.rx = (float)mouse.y;
-		render->camera->pos.ry = (float)mouse.x;
+		render->camera->rotation.x = (float)mouse.y;
+		render->camera->rotation.y = (float)mouse.x;
 
 		EEvents.addEvent(render->events, &event_beforeRender);
 
@@ -106,6 +109,7 @@ int main(void)
 			fps = 0;
 		}
 	}
+
 
 	EMem.printUsage();
 

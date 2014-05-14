@@ -1,34 +1,35 @@
-#include "ModelLoader.h"
+#include "SceneLoader.h"
 
-const Model_p loadOBJ(const char* filename)
+EArrayInstance_p vertex;
+EArrayInstance_p texcoord;
+EArrayInstance_p normals;
+
+MeshInfo_p readMesh(FILE* fp)
 {
+	MeshInfo_p mesh = EMem.alloc(sizeof(MeshInfo));
+	EArrayInstance_p res = EArray.create(sizeof(float)*8);
 	char buffer[1024];
-	unsigned int size;
-	FILE* fp;
-
-	if (NULL == (fp = fopen(filename, "r"))){
-		return false;
-	}
-
 	float tf[8];
 	int ti[9];
-	EArrayInstance_p vertex = EArray.create(sizeof(float)*3);
-	EArrayInstance_p texcoord = EArray.create(sizeof(float)*2);
-	EArrayInstance_p normals = EArray.create(sizeof(float)*3);
-
-	EArrayInstance_p res = EArray.create(sizeof(float)*8);
-
+	fpos_t startStrPos;
 	bool hasTexcoord = false;
 	bool hasNormals = false;
+	int size;
 
-	while( fgets(buffer, 1024, fp) ){
-
+	while( fgets(buffer, 1024, fp) )
+	{
 		switch(buffer[0]){
-			case 'm':
-
-			break;
 			case 'o':
-
+				if(res->length==0){
+					// store object name
+					size = strlen(buffer+2);
+					mesh->name = EMem.alloc(size);
+					memcpy(mesh->name, buffer+2, size);
+					mesh->name[size-1] = '\0';
+				}else{
+					fsetpos(fp, &startStrPos);
+					goto END;
+				}
 			break;
 			case 'v':
 				switch(buffer[1]){
@@ -118,18 +119,61 @@ const Model_p loadOBJ(const char* filename)
 
 			break;
 		}
+		fgetpos(fp, &startStrPos);
+	}
 
+	END:
+
+	mesh->vertexCount = res->length;
+	mesh->mesh = EArray.getData(res);
+
+	EArray.free(res);
+
+	return mesh;
+}
+
+
+
+const SceneInfo_p loadOBJ(const char* filename)
+{
+
+	EArrayInstance_p meshes = EArray.create(sizeof(MeshInfo));
+
+	vertex = EArray.create(sizeof(float)*3);
+	texcoord = EArray.create(sizeof(float)*2);
+	normals = EArray.create(sizeof(float)*3);
+
+	FILE* fp;
+	char buffer[1024];
+	fpos_t startStrPos = 0;
+
+	if (NULL == (fp = fopen(filename, "rb"))){
+		return false;
+	}
+
+	while( fgets(buffer, 1024, fp) )
+	{
+		switch(buffer[0]){
+			case 'm':
+
+			break;
+			case 'o':
+			case 'v':
+				fsetpos(fp, &startStrPos);
+				EArray.push(meshes, readMesh(fp));
+			break;
+		}
+		fgetpos(fp, &startStrPos);
 	}
 
 	EArray.free(vertex);
 	EArray.free(texcoord);
 	EArray.free(normals);
 
-	Model_p model = EMem.alloc(sizeof(Model));
-	model->vertexCount = res->length;
-	model->mesh = res->_data;
+	SceneInfo_p scene = EMem.alloc(sizeof(SceneInfo));
+	scene->meshes = EArray.getData(meshes);
+	scene->meshCount = meshes->length;
+	EArray.free(meshes);
 
-	EMem.free(res);
-
-	return model;
+	return scene;
 }

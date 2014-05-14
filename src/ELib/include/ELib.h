@@ -92,6 +92,7 @@ typedef struct {
 typedef struct {
 	EArrayInstance_p 	(*create)	(int);
 	void 				(*free)		(EArrayInstance_p);
+	void*				(*getData)	(EArrayInstance_p);
 	int 				(*push)		(EArrayInstance_p, void*);
 	void 				(*reset)	(EArrayInstance_p);
 	void* 				(*next)		(EArrayInstance_p);

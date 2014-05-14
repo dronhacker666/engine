@@ -1,14 +1,14 @@
 #ifndef ERENDERCAMERA_H
 #define ERENDERCAMERA_H
 
-#include "ERenderTypes.h"
 #include "ERenderMatrix.h"
 #include "ERenderScene.h"
 #include "ERenderObject.h"
 #include "ERenderShader.h"
 
 typedef struct {
-	ERenderPos pos;
+	Vec3f position;
+	Vec3f rotation;
 
 	ERenderSceneInstance_p scene;
 

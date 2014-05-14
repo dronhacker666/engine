@@ -42,6 +42,13 @@ void* EArray_get(EArrayInstance_p array, int index){
 	return array->_data + (index*array->_item_size);
 }
 
+void* EArray_getData(EArrayInstance_p array)
+{
+	void* memory = EMem.alloc(array->_item_size * array->length);
+	memcpy(memory, array->_data, array->_item_size * array->length);
+	return memory;
+}
+
 void EArray_free(EArrayInstance_p array){
 	if(array->length>0){
 		EMem.free(array->_data);
@@ -53,6 +60,7 @@ void EArray_free(EArrayInstance_p array){
 _EArray EArray = {
 	create: EArray_create,
 	free: EArray_free,
+	getData: EArray_getData,
 	push: EArray_push,
 	reset: EArray_reset,
 	next: EArray_next,
