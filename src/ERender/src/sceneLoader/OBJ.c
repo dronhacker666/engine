@@ -4,6 +4,9 @@ EArrayInstance_p vertex;
 EArrayInstance_p texcoord;
 EArrayInstance_p normals;
 
+bool hasTexcoord = false;
+bool hasNormals = false;
+
 MeshInfo_p readMesh(FILE* fp)
 {
 	MeshInfo_p mesh = EMem.alloc(sizeof(MeshInfo));
@@ -12,8 +15,6 @@ MeshInfo_p readMesh(FILE* fp)
 	float tf[8];
 	int ti[9];
 	fpos_t startStrPos;
-	bool hasTexcoord = false;
-	bool hasNormals = false;
 	int size;
 
 	while( fgets(buffer, 1024, fp) )

@@ -29,32 +29,15 @@ void ERenderScene_addObject(ERenderSceneInstance_p scene, ERenderObjectInstance_
 bool ERenderScene_load(ERenderSceneInstance_p scene, const char* filename)
 {
 	SceneInfo_p sceneInfo = SceneLoader.loadOBJ(filename);
-
-	int a, b;
-	for(a=0; a<sceneInfo->meshCount; a++){
-		MeshInfo_p model = &sceneInfo->meshes[a];
-		for(b=0; b<model->vertexCount; b++){
-			float* t = model->mesh + sizeof(float)*8*b;
-			printf("%f %f %f\n", t[0], t[1], t[2]);
-		}
-		printf("\n\n");
-	}
-
-	
-
-	//exit(0);
-
 	int i;
-	for(i=0; i<sceneInfo->meshCount; i++)
-	{
+	for(i=0; i<sceneInfo->meshCount; i++){
 		ERenderScene_addObject(
 			scene,
 			(ERenderObjectInstance_p)ERenderModel.create(&sceneInfo->meshes[i])
 		);
-
 		EMem.free( sceneInfo->meshes[i].mesh );
-		EMem.free( &sceneInfo->meshes[i]);
 	}
+	EMem.free(sceneInfo);
 }
 
 _ERenderScene ERenderScene = {
