@@ -111,9 +111,6 @@ void ERenderCameraRenderScene(ERenderCameraInstance_p camera, ERenderSceneInstan
 	ERenderMatrix.mul4f(viewProjectionMatrix, projectionMatrix, rotationView);
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);
 
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	ERenderSceneItem_p item = scene->_head;
 	while(item){
 		switch(item->this->type){

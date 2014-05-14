@@ -58,7 +58,6 @@ void ERenderModel_render(ERenderModelInstance_p model, ERenderCameraInstance_p c
 
 	glBindVertexArray(model->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
-
 }
 
 _ERenderModel ERenderModel = {

@@ -98,7 +98,7 @@ int main(void)
 		EEvents.addEvent(render->events, &event_beforeRender);
 
 		ERender.render(render);
-		EGui.render(gui);
+		//EGui.render(gui);
 
 		EEvents.addEvent(render->events, &event_afterRender);
 
