@@ -2,21 +2,15 @@
 #define SCENEDECODER_H
 
 #include "ERenderMath.h"
+#include "ERenderScene.h"
 #include "ERenderModel.h"
+#include "ERenderMaterial.h"
 #include "ELib.h"
 
-typedef struct {
-	Vec3f position;
-	Vec3f direction;
-} LightInfo, *LightInfo_p;
+bool SceneLoader_loadOBJ(ERenderSceneInstance_p, const char*);
 
 typedef struct {
-	MeshInfo *meshes;
-	unsigned int meshCount;
-} SceneInfo, *SceneInfo_p;
-
-typedef struct {
-	const SceneInfo_p (*loadOBJ) (const char*);
+	bool (*load) (ERenderSceneInstance_p, const char*);
 } _SceneLoader;
 
 extern _SceneLoader SceneLoader;

@@ -9,7 +9,7 @@ bool loadTGA(char* filename, Image_p out)
 	char *buffer;
 	unsigned int size;
 
-	if(!eTools.loadFile(filename, &buffer, &size))
+	if(!ETools.loadFile(filename, &buffer, &size))
 	{
 		return 0;
 	}

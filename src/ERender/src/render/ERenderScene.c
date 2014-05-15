@@ -28,16 +28,7 @@ void ERenderScene_addObject(ERenderSceneInstance_p scene, ERenderObjectInstance_
 
 bool ERenderScene_load(ERenderSceneInstance_p scene, const char* filename)
 {
-	SceneInfo_p sceneInfo = SceneLoader.loadOBJ(filename);
-	int i;
-	for(i=0; i<sceneInfo->meshCount; i++){
-		ERenderScene_addObject(
-			scene,
-			(ERenderObjectInstance_p)ERenderModel.create(&sceneInfo->meshes[i])
-		);
-		EMem.free( sceneInfo->meshes[i].mesh );
-	}
-	EMem.free(sceneInfo);
+	SceneLoader.load(scene, filename);
 }
 
 _ERenderScene ERenderScene = {

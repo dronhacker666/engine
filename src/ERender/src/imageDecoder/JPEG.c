@@ -23,7 +23,7 @@ bool loadJPEG(char* filename, Image_p out)
 	out->width = cinfo.output_width;
 	out->height = cinfo.output_height;
 	out->depth = cinfo.num_components * 8;
-	out->colorSpace = cinfo.jpeg_color_space == JCS_RGB ? RGB : BGR;
+	out->colorSpace = cinfo.jpeg_color_space == JCS_RGB ? BGR : RGB;
 
 	int line_size = cinfo.output_width * cinfo.num_components;
 	while (cinfo.output_scanline < cinfo.output_height)

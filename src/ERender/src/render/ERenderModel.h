@@ -3,19 +3,14 @@
 
 #include "ERenderObject.h"
 #include "ERenderCamera.h"
-
-typedef struct {
-	char* name;
-	void* mesh;
-	unsigned int vertexCount;
-} MeshInfo, *MeshInfo_p;
+#include "ERenderMaterial.h"
 
 typedef struct {
 	ERenderObjectPrototype;
 
-	GLuint texture0;
-	GLuint texture1;
-	GLuint texture2;
+	char* name;
+
+	ERenderMaterialInstance_p mtl;
 
 	ERenderShaderInstance_p fragmentShader;
 	ERenderShaderInstance_p vertexShader;
@@ -30,8 +25,9 @@ typedef struct {
 
 
 typedef struct {
-	ERenderModelInstance_p (*create) (MeshInfo_p);
-	void (*render) (ERenderModelInstance_p, ERenderCameraInstance_p);
+	ERenderModelInstance_p 	(*create) 		(void);
+	bool 					(*loadMesh) 	(ERenderModelInstance_p, unsigned int, void*);
+	void 					(*render) 		(ERenderModelInstance_p, ERenderCameraInstance_p);
 } _ERenderModel;
 extern _ERenderModel ERenderModel;
 

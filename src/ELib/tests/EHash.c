@@ -17,5 +17,7 @@ int eHashTest(){
 
 	EHash.dump(hash);
 
+
+	EHash.rfree(hash);
 	return true;
 }

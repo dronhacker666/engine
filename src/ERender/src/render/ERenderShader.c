@@ -13,7 +13,7 @@ ERenderShaderInstance_p ERenderShaderCreate(char* src, int length, GLenum type)
 	ERenderShaderInstance_p shader = EMem.alloc(sizeof(ERenderShaderInstance));
 
 	shader->type = type;
-	shader->_hash = eTools.hashString(src);
+	shader->_hash = ETools.hashString(src);
 	shader->_gl_id = glCreateShader(shader->type);
 
 	glShaderSource(shader->_gl_id, 1, (const GLchar**)&src, (const GLint*)&length);
@@ -37,7 +37,7 @@ ERenderShaderInstance_p ERenderShaderLoad(char* filename)
 	char* buffer;
 	int length;
 
-	if( !eTools.loadFile(filename, &buffer, &length) ){
+	if( !ETools.loadFile(filename, &buffer, &length) ){
 		return NULL;
 	}
 

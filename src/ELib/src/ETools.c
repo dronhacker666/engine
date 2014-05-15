@@ -1,16 +1,15 @@
 #include "../include/ELib.h"
 
-unsigned int eToolsHashString(char* str){
-	unsigned int res = 0;
-	while(*str){
-		res = (res<<5) + res + *str++;
-	}
-	return res;
+unsigned int ETools_hashString(char* str){
+	unsigned int hash = 0;
+	for(; *str; str++)
+		hash = (hash * 1664525) + (unsigned char)(*str) + 1013904223;
+	return hash;
 }
 
-bool eToolsLoadFile(char* filename, char** content, int* length)
+bool ETools_loadFile(char* filename, char** content, int* length)
 {
-	FILE* fp = fopen(filename, "rb+");
+	FILE* fp = fopen(filename, "rb");
 	int size;
 	if(fp==NULL){
 		printf("ERROR: LoadFile('%s', ..., ...) - cannot read this file\n", filename);
@@ -26,7 +25,7 @@ bool eToolsLoadFile(char* filename, char** content, int* length)
 		}
 		fread(*content, sizeof(char)*size , 1, fp);
 
-		(*content)[size] = 0;
+		(*content)[size] = '\0';
 		*length = size;
 		fclose(fp);
 	}
@@ -34,7 +33,7 @@ bool eToolsLoadFile(char* filename, char** content, int* length)
 }
 
 
-_eTools eTools = {
-	hashString: eToolsHashString,
-	loadFile: eToolsLoadFile,
+_ETools ETools = {
+	hashString: ETools_hashString,
+	loadFile: ETools_loadFile,
 };

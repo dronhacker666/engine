@@ -4,12 +4,29 @@ EArrayInstance_p vertex;
 EArrayInstance_p texcoord;
 EArrayInstance_p normals;
 
+EHashInstance_p mtl;
+
 bool hasTexcoord = false;
 bool hasNormals = false;
 
-MeshInfo_p readMesh(FILE* fp)
+void filePath(char* out, const char* filename)
 {
-	MeshInfo_p mesh = EMem.alloc(sizeof(MeshInfo));
+	int length = strlen(filename);
+	char* ch = filename + length-1;
+	while(*ch != '/') ch--;
+	memcpy(out, filename, ch-filename+1);
+	out[ch-filename+1] = '\0';
+}
+
+void fixStr(char* str){
+	char* ch = str;
+	while(*ch!='\0' && *ch!='\n' && *ch!='\r') ch++;
+	*ch = '\0';
+}
+
+void readMesh(ERenderSceneInstance_p scene, FILE* fp)
+{
+	ERenderModelInstance_p model = ERenderModel.create();
 	EArrayInstance_p res = EArray.create(sizeof(float)*8);
 	char buffer[1024];
 	float tf[8];
@@ -19,14 +36,13 @@ MeshInfo_p readMesh(FILE* fp)
 
 	while( fgets(buffer, 1024, fp) )
 	{
+		fixStr(buffer);
 		switch(buffer[0]){
 			case 'o':
 				if(res->length==0){
 					// store object name
 					size = strlen(buffer+2);
-					mesh->name = EMem.alloc(size);
-					memcpy(mesh->name, buffer+2, size);
-					mesh->name[size-1] = '\0';
+					model->name = EMem.clone(buffer+2, size);
 				}else{
 					fsetpos(fp, &startStrPos);
 					goto END;
@@ -53,7 +69,9 @@ MeshInfo_p readMesh(FILE* fp)
 				}
 			break;
 			case 'u':
-
+				if(memcmp(buffer, "usemtl", 6)==0){
+					model->mtl = EHash.get1p(mtl, buffer+7);
+				}
 			break;
 			case 'f':
 
@@ -125,24 +143,52 @@ MeshInfo_p readMesh(FILE* fp)
 
 	END:
 
-	mesh->vertexCount = res->length;
-	mesh->mesh = EArray.getData(res);
-
+	ERenderModel.loadMesh(model, res->length, res->_data);
 	EArray.free(res);
 
-	return mesh;
+	ERenderScene_addObject(scene, (ERenderObjectInstance_p)model);
 }
 
-
-
-const SceneInfo_p loadOBJ(const char* filename)
+void readMtl(const char* filename)
 {
+	FILE* fp;
+	char buffer[1024];
+	char path[1024];
+	char current_mtl[128];
+	ERenderMaterialInstance_p material;
 
-	EArrayInstance_p meshes = EArray.create(sizeof(MeshInfo));
+	if (NULL == (fp = fopen(filename, "rb"))){
+		return;
+	}
+	while( fgets(buffer, 1024, fp) )
+	{
+		fixStr(buffer);
+		switch(buffer[0]){
+			case 'n':
+				if(memcmp(buffer, "newmtl", 6)==0){
+					strcpy(current_mtl, buffer+7);
+					material = ERenderMaterial.create();
+					EHash.set1p(mtl, current_mtl, material);
+				}
+			break;
+			case 'm':
+				if(memcmp(buffer, "map_Kd", 6)==0){
+					filePath(path, filename);
+					strcat(path, buffer+7);
+					ERenderMaterial.loadTexture(material, path, 0);
+				}
+			break;
+		}
+	}
+}
 
+bool SceneLoader_loadOBJ(ERenderSceneInstance_p scene, const char* filename)
+{
 	vertex = EArray.create(sizeof(float)*3);
 	texcoord = EArray.create(sizeof(float)*2);
 	normals = EArray.create(sizeof(float)*3);
+
+	mtl = EHash.create();
 
 	FILE* fp;
 	char buffer[1024];
@@ -154,14 +200,20 @@ const SceneInfo_p loadOBJ(const char* filename)
 
 	while( fgets(buffer, 1024, fp) )
 	{
+		fixStr(buffer);
 		switch(buffer[0]){
 			case 'm':
-
+				if(memcmp(buffer, "mtllib", 6)==0){
+					char path[1024];
+					filePath(path, filename);
+					strcat(path, buffer+7);
+					readMtl( path );
+				}
 			break;
 			case 'o':
 			case 'v':
 				fsetpos(fp, &startStrPos);
-				EArray.push(meshes, readMesh(fp));
+				readMesh(scene, fp);
 			break;
 		}
 		fgetpos(fp, &startStrPos);
@@ -171,10 +223,7 @@ const SceneInfo_p loadOBJ(const char* filename)
 	EArray.free(texcoord);
 	EArray.free(normals);
 
-	SceneInfo_p scene = EMem.alloc(sizeof(SceneInfo));
-	scene->meshes = EArray.getData(meshes);
-	scene->meshCount = meshes->length;
-	EArray.free(meshes);
+	EHash.free(mtl);
 
-	return scene;
+	return true;
 }

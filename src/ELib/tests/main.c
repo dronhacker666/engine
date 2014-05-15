@@ -17,6 +17,7 @@ void testOk(char* testName){
 
 int main(void)
 {
+
 	int a;
 	EPipelineInstance_p pip = EPipeline.create(sizeof(int), 3);
 	a= 10; EPipeline.push(pip, &a);
@@ -33,14 +34,14 @@ int main(void)
 	printf("%i\n", *(int*)EPipeline.get(pip,4) );
 
 
-	printf("%i\n", eTools.hashString("some string"));
+	printf("%i\n", ETools.hashString("some string"));
 
 	CHECK(eStackTest);
 	CHECK(eHashTest);
 
 	char* content;
 	int length;
-	if(eTools.loadFile("bin/testfile", &content, &length)){
+	if(ETools.loadFile("bin/testfile", &content, &length)){
 		printf("%s \nlength %i\n", content, length);
 	}
 

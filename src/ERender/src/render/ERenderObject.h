@@ -21,10 +21,4 @@ typedef struct {
 	ERenderObjectPrototype;
 } ERenderObjectInstance, *ERenderObjectInstance_p;
 
-
-typedef struct {
-
-} _ERenderObject;
-extern _ERenderObject ERenderObject;
-
 #endif

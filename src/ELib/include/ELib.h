@@ -20,6 +20,7 @@ typedef enum {false, true} bool;
 typedef struct
 {
 	void* (*alloc) (unsigned int);
+	void* (*clone) (const void*, unsigned int);
 	void (*free) (void*);
 
 	void (*printUsage) (void);
@@ -136,10 +137,13 @@ typedef struct {
 
 typedef struct {
 	EHashInstance_p 	(*create)	(void);
-	void 				(*remove) 	(EHashInstance_p, const char*);
+	void 				(*delete) 	(EHashInstance_p, const char*);
+	void 				(*free) 	(EHashInstance_p);
+	void 				(*rfree) 	(EHashInstance_p);
 	bool 				(*typeIs) 	(EHashInstance_p, const char*, EHashItemType);
 
 	EHashItem_p 		(*get) 		(EHashInstance_p, const char*);
+	bool 				(*has) 		(EHashInstance_p, const char*);
 
 	void 				(*set1p) 	(EHashInstance_p, const char*, void*);
 	void*				(*get1p) 	(EHashInstance_p, const char*);
@@ -165,7 +169,7 @@ typedef struct {
 typedef struct {
 	unsigned int 	(*hashString)	(char *);
 	bool	 		(*loadFile)		(char*, char**, int*);
-} _eTools;
-extern _eTools eTools;
+} _ETools;
+extern _ETools ETools;
 
 #endif

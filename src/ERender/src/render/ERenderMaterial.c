@@ -1,7 +1,12 @@
-#include "ERenderTexture.h"
-#include "ERenderOpenGL.h"
+#include "ERenderMaterial.h"
 
-GLuint ERenderTextureLoad(char* filename)
+ERenderMaterialInstance_p ERenderMaterial_create(void)
+{
+	ERenderMaterialInstance_p mtl = EMem.alloc(sizeof(ERenderMaterialInstance));
+	return mtl;
+}
+
+bool ERenderMaterial_loadTexture(ERenderMaterialInstance_p mtl, const char* filename, GLuint index)
 {
 	Image image;
 	GLuint texture;
@@ -50,10 +55,12 @@ GLuint ERenderTextureLoad(char* filename)
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	return texture;
+	mtl->tex[index] = texture;
+
+	return true;
 }
 
-
-_ERenderTexture ERenderTexture = {
-	load: ERenderTextureLoad,
+_ERenderMaterial ERenderMaterial = {
+	create: ERenderMaterial_create,
+	loadTexture: ERenderMaterial_loadTexture,
 };

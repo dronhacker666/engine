@@ -18,7 +18,16 @@ EHashInstance_p EHash_create(void)
 	return hash;
 }
 
-void EHash_remove(EHashInstance_p hash, const char* key)
+void EHash_delete(EHashInstance_p hash, const char* key)
+{
+
+}
+
+void EHash_free(EHashInstance_p hash)
+{
+
+}
+void EHash_rfree(EHashInstance_p hash)
 {
 
 }
@@ -47,7 +56,7 @@ EHashItem_p EHash_createItem(EHashInstance_p hash, const char* key)
 	item->hash = HashLy(key);
 
 	// Key
-	item->key = key;
+	item->key = EMem.clone(key, strlen(key)+1);
 
 	return item;
 }
@@ -63,6 +72,11 @@ EHashItem_p EHash_get(EHashInstance_p hash, const char* key)
 		item = item->_next;
 	}
 	return NULL;
+}
+
+bool EHash_has(EHashInstance_p hash, const char* key)
+{
+	return EHash_get(hash, key) != NULL;
 }
 
 
@@ -126,10 +140,13 @@ void EHash_dump(EHashInstance_p hash){
 
 _EHash EHash = {
 	create: EHash_create,
-	remove: EHash_remove,
+	delete: EHash_delete,
+	free: EHash_free,
+	rfree: EHash_rfree,
 	typeIs: EHash_typeIs,
 
 	get:	EHash_get,
+	has:	EHash_has,
 
 	set1p: EHash_set1p,
 	get1p: EHash_get1p,

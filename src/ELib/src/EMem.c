@@ -14,6 +14,18 @@ void* EMem_alloc(unsigned int size)
 	return memory;
 }
 
+void* EMem_clone(const void* ptr, unsigned int size)
+{
+	void* memory = malloc(size);
+	if(!memory){
+		printf("EMem error: failed alloc memory\n");
+		exit(1);
+	}
+	memcpy(memory, ptr, size);
+	memoryAlloc += size;
+	return memory;
+}
+
 void EMem_free(void* ptr)
 {
 	free(ptr);
@@ -36,6 +48,7 @@ void EMem_printUsage(void)
 
 _EMem EMem = {
 	alloc: EMem_alloc,
+	clone: EMem_clone,
 	free: EMem_free,
 	printUsage: EMem_printUsage,
 };
