@@ -5,9 +5,10 @@ EArrayInstance_p texcoord;
 EArrayInstance_p normals;
 
 EHashInstance_p mtl;
+ERenderGroupInstance_p group;
 
-bool hasTexcoord = false;
-bool hasNormals = false;
+bool hasTexcoord;
+bool hasNormals;
 
 void filePath(char* out, const char* filename)
 {
@@ -24,7 +25,7 @@ void fixStr(char* str){
 	*ch = '\0';
 }
 
-void readMesh(ERenderSceneInstance_p scene, FILE* fp)
+void readMesh(FILE* fp)
 {
 	ERenderModelInstance_p model = ERenderModel.create();
 	EArrayInstance_p res = EArray.create(sizeof(float)*8);
@@ -146,7 +147,7 @@ void readMesh(ERenderSceneInstance_p scene, FILE* fp)
 	ERenderModel.loadMesh(model, res->length, res->_data);
 	EArray.free(res);
 
-	ERenderScene_addObject(scene, (ERenderObjectInstance_p)model);
+	EList.push(group->child, model);
 }
 
 void readMtl(const char* filename)
@@ -182,13 +183,17 @@ void readMtl(const char* filename)
 	}
 }
 
-bool SceneLoader_loadOBJ(ERenderSceneInstance_p scene, const char* filename)
+ERenderObjectInstance_p SceneLoader_loadOBJ(const char* filename)
 {
+	hasTexcoord = false;
+	hasNormals = false;
+
 	vertex = EArray.create(sizeof(float)*3);
 	texcoord = EArray.create(sizeof(float)*2);
 	normals = EArray.create(sizeof(float)*3);
 
 	mtl = EHash.create();
+	group = ERenderGroup.create();
 
 	FILE* fp;
 	char buffer[1024];
@@ -213,7 +218,7 @@ bool SceneLoader_loadOBJ(ERenderSceneInstance_p scene, const char* filename)
 			case 'o':
 			case 'v':
 				fsetpos(fp, &startStrPos);
-				readMesh(scene, fp);
+				readMesh(fp);
 			break;
 		}
 		fgetpos(fp, &startStrPos);
@@ -225,5 +230,11 @@ bool SceneLoader_loadOBJ(ERenderSceneInstance_p scene, const char* filename)
 
 	EHash.free(mtl);
 
-	return true;
+	if(group->child->length==1){
+
+		return (ERenderObjectInstance_p)EList.get(group->child, 0);
+
+	}else{
+		return (ERenderObjectInstance_p)group;
+	}
 }

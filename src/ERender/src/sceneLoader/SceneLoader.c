@@ -1,8 +1,8 @@
 #include "SceneLoader.h"
 
-bool SceneLoader_load(ERenderSceneInstance_p scene, const char* filename)
+ERenderObjectInstance_p SceneLoader_load(ERenderSceneInstance_p scene, const char* filename)
 {
-	return SceneLoader_loadOBJ(scene, filename);
+	return SceneLoader_loadOBJ(filename);
 }
 
 _SceneLoader SceneLoader = {

@@ -13,8 +13,6 @@ void ERenderScene_addObject(ERenderSceneInstance_p scene, ERenderObjectInstance_
 {
 	switch(object->type){
 		case ERENDEROBJECTTYPE_GROUP:
-
-		break;
 		case ERENDEROBJECTTYPE_MODEL:
 			EList.push(scene->models, object);
 		break;
@@ -25,9 +23,11 @@ void ERenderScene_addObject(ERenderSceneInstance_p scene, ERenderObjectInstance_
 }
 
 
-bool ERenderScene_load(ERenderSceneInstance_p scene, const char* filename)
+ERenderObjectInstance_p ERenderScene_load(ERenderSceneInstance_p scene, const char* filename)
 {
-	SceneLoader.load(scene, filename);
+	ERenderObjectInstance_p object = SceneLoader.load(scene, filename);
+	ERenderScene_addObject(scene, object);
+	return object;
 }
 
 _ERenderScene ERenderScene = {

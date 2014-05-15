@@ -13,9 +13,9 @@ typedef struct{
 
 typedef struct{
 	ERenderSceneInstance_p 	(*create) 		(void);
-	void 					(*addObject) 	(ERenderSceneInstance_p, ERenderObjectInstance_p);
+	void					(*addObject) 	(ERenderSceneInstance_p, ERenderObjectInstance_p);
 
-	bool					(*load)			(ERenderSceneInstance_p, const char*);
+	ERenderObjectInstance_p	(*load)			(ERenderSceneInstance_p, const char*);
 
 } _ERenderScene;
 extern _ERenderScene ERenderScene;

@@ -1,8 +1,9 @@
 #include "ERenderCamera.h"
 #include "ERenderOpenGL.h"
 #include "ERenderModel.h"
+#include "ERenderGroup.h"
 
-ERenderCameraInstance_p ERenderCameraCreate(void)
+ERenderCameraInstance_p ERenderCamera_create(void)
 {
 	ERenderCameraInstance_p camera = EMem.alloc(sizeof(ERenderCameraInstance));
 
@@ -13,7 +14,28 @@ ERenderCameraInstance_p ERenderCameraCreate(void)
 	return camera;
 }
 
-void ERenderCameraRenderScene(ERenderCameraInstance_p camera, ERenderSceneInstance_p scene)
+void ERenderCamera_render(ERenderCameraInstance_p camera, EListInstance_p objects)
+{
+	unsigned int i;
+	ERenderObjectInstance_p object;
+	for(i=0; i<objects->length; i++)
+	{
+		object = EList.get(objects, i);
+		switch(object->type){
+			case ERENDEROBJECTTYPE_GROUP:
+				ERenderCamera_render(camera, ((ERenderGroupInstance_p)object)->child );
+			break;
+			case ERENDEROBJECTTYPE_MODEL:
+				ERenderModel.render( (ERenderModelInstance_p)object, camera );
+			break;
+			case ERENDEROBJECTTYPE_LIGHT:
+
+			break;
+		}
+	}
+}
+
+void ERenderCamera_renderScene(ERenderCameraInstance_p camera, ERenderSceneInstance_p scene)
 {
 	ERenderShaderManager.prepareShaders(camera->shaderManager);
 
@@ -32,26 +54,10 @@ void ERenderCameraRenderScene(ERenderCameraInstance_p camera, ERenderSceneInstan
 	ERenderMatrix.mul4f(viewProjectionMatrix, projectionMatrix, rotationView);
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);
 
-	unsigned int i;
-	ERenderObjectInstance_p object;
-	for(i=0; i<scene->models->length; i++)
-	{
-		object = EList.get(scene->models, i);
-		switch(object->type){
-			case ERENDEROBJECTTYPE_GROUP:
-
-			break;
-			case ERENDEROBJECTTYPE_MODEL:
-				ERenderModel.render((ERenderModelInstance_p)object, camera);
-			break;
-			case ERENDEROBJECTTYPE_LIGHT:
-
-			break;
-		}
-	}
+	ERenderCamera_render(camera, scene->models);
 }
 
 _ERenderCamera ERenderCamera = {
-	create: ERenderCameraCreate,
-	renderScene: ERenderCameraRenderScene,
+	create: ERenderCamera_create,
+	renderScene: ERenderCamera_renderScene,
 };

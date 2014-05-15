@@ -55,13 +55,13 @@ int main(void)
 	RenderEvent event_afterRender = {type: afterRender, render: render};
 
 	ERenderScene.load(render->scene, "../data/model.obj");
+	ERenderObjectInstance_p beretta = ERenderScene.load(render->scene, "../data/beretta.obj");
 
-
+	beretta->position.y = 4;
 
 	EGuiManager_p gui = EGui.create();
 	EGuiButtonInstance_p button = EGuiButton.create();
 	EGui.addItem(gui, (EGuiItem_p)button);
-	
 
 	EInput.init();
 
@@ -72,25 +72,17 @@ int main(void)
 	EEvents.addListener(render->events, mouseDown, (void*)onMouseDown);
 	EEvents.addListener(render->events, mouseUp, (void*)onMouseUp);
 
-
-	/*
-	ERenderObjectInstance_p object1 = ERenderObject.load("../data/model.obj");
-	ERenderScene.addObject(render->scene, object1);
-
-	ERenderObject.loadTexture(object1, "../data/beretta.jpg", 0);
-
-	*/
-
 	POINT mouse;
 
 	int fps = 0;
 	int s = 0;
 
-
-
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
 		GetCursorPos(&mouse);
+
+
+		beretta->rotation.y += 0.1;
 
 		render->camera->rotation.x = (float)mouse.y;
 		render->camera->rotation.y = (float)mouse.x;
