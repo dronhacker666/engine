@@ -17,6 +17,21 @@ void testOk(char* testName){
 
 int main(void)
 {
+	char str1[] = "str1";
+	char str2[] = "str2";
+	char str3[] = "str3";
+
+	EListInstance_p list = EList.create();
+	EList.push(list, str1);
+	EList.push(list, str2);
+	EList.push(list, str3);
+
+
+	printf("%s\n", (char*)EList.get(list, 0));
+	printf("%s\n", EList.get(list, 1));
+	printf("%s\n", EList.get(list, 2));
+
+	exit(0);
 
 	int a;
 	EPipelineInstance_p pip = EPipeline.create(sizeof(int), 3);
@@ -39,11 +54,6 @@ int main(void)
 	CHECK(eStackTest);
 	CHECK(eHashTest);
 
-	char* content;
-	int length;
-	if(ETools.loadFile("bin/testfile", &content, &length)){
-		printf("%s \nlength %i\n", content, length);
-	}
 
 	EMem.printUsage();
 

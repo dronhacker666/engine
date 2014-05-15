@@ -4,25 +4,24 @@
 ERenderSceneInstance_p ERenderScene_create(void)
 {
 	ERenderSceneInstance_p scene = EMem.alloc(sizeof(ERenderSceneInstance));
-
+	scene->models = EList.create();
+	scene->lights = EList.create();
 	return scene;
 }
 
 void ERenderScene_addObject(ERenderSceneInstance_p scene, ERenderObjectInstance_p object)
 {
-	ERenderSceneItem_p item = EMem.alloc(sizeof(ERenderSceneItem));
+	switch(object->type){
+		case ERENDEROBJECTTYPE_GROUP:
 
-	item->this = object;
-	item->next = NULL;
-	item->prev = scene->_current;
-
-	if(scene->_head==NULL){
-		scene->_head = item;
+		break;
+		case ERENDEROBJECTTYPE_MODEL:
+			EList.push(scene->models, object);
+		break;
+		case ERENDEROBJECTTYPE_LIGHT:
+			EList.push(scene->lights, object);
+		break;
 	}
-	if(scene->_current!=NULL){
-		scene->_current->next = item;
-	}
-	scene->_current = item;
 }
 
 

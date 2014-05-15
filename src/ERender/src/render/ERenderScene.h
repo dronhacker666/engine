@@ -4,16 +4,10 @@
 #include "ELib.h"
 #include "ERenderObject.h"
 
-typedef struct ERenderSceneItem {
-	struct ERenderSceneItem* prev;
-	ERenderObjectInstance_p this;
-	struct ERenderSceneItem* next;
-} ERenderSceneItem, *ERenderSceneItem_p;
-
-
 typedef struct{
-	ERenderSceneItem_p _head;
-	ERenderSceneItem_p _current;
+
+	EListInstance_p models;
+	EListInstance_p lights;
 
 } ERenderSceneInstance, *ERenderSceneInstance_p;
 

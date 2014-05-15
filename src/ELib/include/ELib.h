@@ -156,6 +156,34 @@ typedef struct {
 } _EHash;
 extern _EHash EHash;
 
+
+/**
+*	Linked List
+*/
+typedef struct EListItem {
+	struct EListItem* prev;
+	struct EListItem* next;
+	void* data;
+} EListItem, *EListItem_p;
+
+typedef struct {
+	EListItem_p head;
+	EListItem_p last;
+	unsigned int length;
+} EListInstance, *EListInstance_p;
+
+typedef struct {
+	EListInstance_p (*create) (void);
+	void (*push) (EListInstance_p, void*);
+	void (*insertAfter) (EListInstance_p, void*, unsigned int);
+
+	void (*remove) (EListInstance_p, unsigned int);
+	void (*free) (EListInstance_p);
+
+	void* (*get) (EListInstance_p, unsigned int);
+} _EList;
+extern _EList EList;
+
 /**
 *	Tools
 */
