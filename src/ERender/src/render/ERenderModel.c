@@ -66,6 +66,8 @@ void ERenderModel_render(ERenderModelInstance_p model, ERenderCameraInstance_p c
 		glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iTex2") , 2);
 	}*/
 
+	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
 	glBindVertexArray(model->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
 }

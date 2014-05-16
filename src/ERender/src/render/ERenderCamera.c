@@ -45,7 +45,7 @@ void ERenderCamera_renderScene(ERenderCameraInstance_p camera, ERenderSceneInsta
 		projectionMatrix,
 		viewProjectionMatrix;
 
-	float aspectRatio = (float)800 / (float)600;
+	float aspectRatio = (float)camera->viewport.width / (float)camera->viewport.height;
 	ERenderMatrix.perspective4f(projectionMatrix, 45.0f, aspectRatio, 0.01f, 500.0f);
 
 	ERenderMatrix.translation4f(translationView, camera->position.x, camera->position.y, camera->position.z);

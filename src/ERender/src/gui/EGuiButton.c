@@ -1,6 +1,6 @@
 #include "EGuiButton.h"
 
-void EGuiButton_render(EGuiButtonInstance_p widget)
+void EGuiButton_render(EGuiButtonInstance_p widget, EGuiManager_p manager)
 {
 
 }

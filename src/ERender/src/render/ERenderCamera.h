@@ -15,10 +15,12 @@ typedef struct {
 	ERenderShaderManagerInstance_p shaderManager;
 
 	// ViewPort
-	int viewport_x;
-	int viewport_y;
-	int viewport_width;
-	int viewport_height;
+	struct {
+		int width;
+		int height;
+		int x;
+		int y;
+	} viewport;
 
 } ERenderCameraInstance, *ERenderCameraInstance_p;
 

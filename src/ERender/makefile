@@ -6,7 +6,7 @@ MAKE=mingw32-make
 SOURCES=src/*/*.c
 PARAMS= -s
 INCLUDE=-I include -I ../ELib/include -I src/render -I src/input -I src/gui
-LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg
+LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg -lfreetype
 
 run:
 	mkdir -p bin

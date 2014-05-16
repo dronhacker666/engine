@@ -59,9 +59,13 @@ int main(void)
 
 	beretta->position.y = 4;
 
+
 	EGuiManager_p gui = EGui.create();
-	EGuiButtonInstance_p button = EGuiButton.create();
-	EGui.addItem(gui, (EGuiItem_p)button);
+	//EGuiButtonInstance_p button = EGuiButton.create();
+	EGuiTextInstance_p text = EGuiText.create("Hello World!");
+	EGui.addItem(gui, (EGuiItem_p)text);
+
+
 
 	EInput.init();
 
@@ -90,7 +94,7 @@ int main(void)
 		EEvents.addEvent(render->events, &event_beforeRender);
 
 		ERender.render(render);
-		//EGui.render(gui);
+		EGui.render(gui);
 
 		EEvents.addEvent(render->events, &event_afterRender);
 

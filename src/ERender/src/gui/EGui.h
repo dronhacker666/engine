@@ -1,15 +1,22 @@
 #ifndef EGUI_H
 #define EGUI_H
 
-#include "ELib.h"
-
 #include <stdio.h>
+#include <ft2build.h>
+#include <freetype/freetype.h>
+#include <freetype/ftglyph.h>
+#include <freetype/ftoutln.h>
+#include <freetype/fttrigon.h>
+
+#include "ELib.h"
 #include "ERenderAPI.h"
+
+typedef struct EGuiManager* EGuiManager_p;
 
 #define _EGuiItemPrototype\
 	struct EGuiItem* _next;\
 	struct EGuiItem* _prev;\
-	void(*render)(void*);\
+	void(*render)(void*, EGuiManager_p);\
 	int x, y, zIndex, width, heigth, rotate;
 
 
@@ -18,7 +25,7 @@ typedef struct EGuiItem{
 	// some fields: use in gui elements
 } EGuiItem, *EGuiItem_p;
 
-typedef struct {
+typedef struct EGuiManager{
 	ERenderShaderManagerInstance_p shaderManager;
 
 	EGuiItem_p _head;

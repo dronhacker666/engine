@@ -14,6 +14,9 @@ ERenderInstance_p ERenderCreate(const int width, const int height){
 	}
 
 	render->camera = ERenderCamera.create();
+	render->camera->viewport.width = width;
+	render->camera->viewport.height = height;
+
 	render->scene = ERenderScene.create();
 
 	return render;
