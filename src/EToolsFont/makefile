@@ -3,14 +3,14 @@ LIB_DIR=lib
 
 CC=gcc
 MAKE=mingw32-make
-SOURCES=src/*/*.c
+SOURCES=src/*.c
 PARAMS= -s
-INCLUDE=-I include -I ../ELib/include -I src/render -I src/input -I src/gui
-LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg
+INCLUDE=-I include -I ../ELib/include
+LIBS=-Llib -lfreetype
 
 run:
 	mkdir -p bin
-	${CC} -o bin/run.exe ${INCLUDE} ${SOURCES} main.c ${PARAMS} ${LIBS}
+	${CC} -o bin/run.exe ${INCLUDE} ${SOURCES} ${PARAMS} ${LIBS}
 	cd bin && ./run.exe
 
 build_lib:

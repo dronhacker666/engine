@@ -17,6 +17,7 @@ EGuiTextInstance_p EGuiText_create(char* text)
 	widget->render = (void*)EGuiText_render;
 	widget->text = text;
 
+/*
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -33,7 +34,7 @@ EGuiTextInstance_p EGuiText_create(char* text)
 
 	FT_GlyphSlot g = face->glyph;
 
-	FT_Set_Pixel_Sizes(face, 0, 48);
+	FT_Set_Pixel_Sizes(face, 0, 8);
 
 	FT_Load_Char(face, 'H', FT_LOAD_RENDER);
 
@@ -51,7 +52,7 @@ EGuiTextInstance_p EGuiText_create(char* text)
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
-
+*/
 	return widget;
 }
 
