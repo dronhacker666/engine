@@ -1,4 +1,5 @@
 #include "EGuiText.h"
+#include "libfont.h"
 
 GLuint texture = NULL;
 
@@ -11,51 +12,50 @@ void EGuiText_render(EGuiTextInstance_p widget, EGuiManager_p manager)
 
 }
 
-EGuiTextInstance_p EGuiText_create(char* text)
+void EGuiText_setText(EGuiTextInstance_p widget, const char* text)
 {
-	EGuiTextInstance_p widget = EMem.alloc(sizeof(EGuiTextInstance));
-	widget->render = (void*)EGuiText_render;
 	widget->text = text;
 
-/*
-	glGenTextures(1, &texture);
+	void* buffer = EMem.alloc(sizeof(char)*100*20);
+	Libfont.genText(buffer, text, 100, 20);
+
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	FT_Face face;
-	FT_Library ft;
-
-	FT_Init_FreeType(&ft);
-	FT_New_Face(ft, "../data/arial.ttf", 0, &face);
-
-	FT_GlyphSlot g = face->glyph;
-
-	FT_Set_Pixel_Sizes(face, 0, 8);
-
-	FT_Load_Char(face, 'H', FT_LOAD_RENDER);
 
 	glTexImage2D(
 		GL_TEXTURE_2D,
 		0,
 		GL_R8,
-		g->bitmap.width,
-		g->bitmap.rows,
+		100,
+		20,
 		0,
 		GL_RED,
 		GL_UNSIGNED_BYTE,
-		g->bitmap.buffer
+		buffer
 	);
 
-	FT_Done_Face(face);
-	FT_Done_FreeType(ft);
-*/
+	EMem.free(buffer);
+}
+
+EGuiTextInstance_p EGuiText_create(void)
+{
+	EGuiTextInstance_p widget = EMem.alloc(sizeof(EGuiTextInstance));
+	widget->render = (void*)EGuiText_render;
+	
+	Libfont.init();
+
+	if(! Libfont.setFont("../data/arial.my", 14) ){
+		exit(0);
+	}
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	return widget;
 }
 
 _EGuiText EGuiText = {
 	create: EGuiText_create,
+	setText: EGuiText_setText,
 };

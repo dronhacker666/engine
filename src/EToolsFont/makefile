@@ -1,21 +1,22 @@
-NAME=erender
-LIB_DIR=lib
-
 CC=gcc
 MAKE=mingw32-make
-SOURCES=src/*.c
-PARAMS= -s
-INCLUDE=-I include -I ../ELib/include
-LIBS=-Llib -lfreetype
+
+NAME=font
+LIB_DIR=lib
 
 run:
 	mkdir -p bin
-	${CC} -o bin/run.exe ${INCLUDE} ${SOURCES} ${PARAMS} ${LIBS}
+
+	#font converter
+	#${CC} -s -o bin/fontconv.exe -I include src/fontconv.c -Llib -lfreetype
+	#cd bin && ./fontconv.exe
+
+	${CC} -o bin/run.exe -I include -I ../ELib/include src/libfont.c main.c -s -L ../ELib/lib -lelib
 	cd bin && ./run.exe
 
 build_lib:
 	mkdir -p ${LIB_DIR}
-	${CC} -c ${SOURCES}
+	${CC} -c src/libfont.c -I include -I ../ELib/include
 	ar rc ${LIB_DIR}/lib${NAME}.a *.o
 	ranlib ${LIB_DIR}/lib${NAME}.a
 	${MAKE} clean

@@ -5,18 +5,10 @@
 #include <freetype/ftoutln.h>
 #include <freetype/fttrigon.h>
 
-typedef struct
-{
-	char code;
-	char size;
-	unsigned int width;
-	unsigned int height;
-	unsigned int _dataSize;
-} FChar;
+#include "headers.h"
 
 int main(void)
 {
-
 	FILE* fp = fopen("../data/arial.my", "wb");
 
 	FT_Face face;
@@ -27,31 +19,46 @@ int main(void)
 
 	FT_GlyphSlot g = face->glyph;
 
-	FT_Set_Pixel_Sizes(face, 0, 8);
-
-	int size;
-	int code;
+	unsigned char size;
+	char code;
 	FChar ch;
-	for(size=8; size<48; size++){
-		for(code='!'; code<256; code++){
+	FCharset chset;
+	long int pos1, pos2;
+	unsigned int dataSize;
 
+	for(size=8; size<48; size++)
+	{
+		FT_Set_Pixel_Sizes(face, 0, size);
+		pos1 = ftell(fp);
+		fseek(fp, sizeof(FCharset), SEEK_CUR);
+		dataSize=0;
+		for(code=0; code<127; code++)
+		{
 			FT_Load_Char(face, code, FT_LOAD_RENDER);
 
-			ch.size = size;
 			ch.code = code;
 			ch.width = g->bitmap.width;
 			ch.height = g->bitmap.rows;
+			ch.top = g->bitmap_top;
+			ch.left = g->bitmap_left;
 			ch._dataSize = sizeof(char) * ch.width * ch.height;
 
 			fwrite(&ch, sizeof(FChar), 1, fp);
 			fwrite(g->bitmap.buffer, ch._dataSize, 1, fp);
-
+			dataSize += ch._dataSize + sizeof(FChar);
 		}
+		pos2 = ftell(fp);
+		chset.fontSize = size;
+		chset._dataSize = dataSize;
+		fseek(fp, pos1, SEEK_SET);
+		fwrite(&chset, sizeof(FCharset), 1, fp);
+		fseek(fp, pos2, SEEK_SET);
 	}
+
+	fclose(fp);
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
-	
 
 	return 0;
 }

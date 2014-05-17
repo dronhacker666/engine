@@ -5,8 +5,8 @@ CC=gcc
 MAKE=mingw32-make
 SOURCES=src/*/*.c
 PARAMS= -s
-INCLUDE=-I include -I ../ELib/include -I src/render -I src/input -I src/gui
-LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg
+INCLUDE=-I include -I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include
+LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont
 
 run:
 	mkdir -p bin

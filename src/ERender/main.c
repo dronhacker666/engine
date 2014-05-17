@@ -24,12 +24,12 @@ void onBeforeRender(RenderEvent_p _event)
 	}
 	if(EInput.keyPress('D')){
 		render->camera->position.x -= sin(M_PI/180 * (render->camera->rotation.y+90)) / 100;
-		render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
+		//render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
 		render->camera->position.z += cos(M_PI/180 * (render->camera->rotation.y+90)) / 100;
 	}
 	if(EInput.keyPress('A')){
 		render->camera->position.x -= sin(M_PI/180 * (render->camera->rotation.y-90)) / 100;
-		render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
+		//render->camera->position.y += sin(M_PI/180 * render->camera->rotation.x) / 100;
 		render->camera->position.z += cos(M_PI/180 * (render->camera->rotation.y-90)) / 100;
 	}
 
@@ -62,8 +62,8 @@ int main(void)
 
 	EGuiManager_p gui = EGui.create();
 	//EGuiButtonInstance_p button = EGuiButton.create();
-	EGuiTextInstance_p text = EGuiText.create("Hello World!");
-	EGui.addItem(gui, (EGuiItem_p)text);
+	EGuiTextInstance_p wfps = EGuiText.create();
+	EGui.addItem(gui, (EGuiItem_p)wfps);
 
 
 
@@ -80,6 +80,8 @@ int main(void)
 
 	int fps = 0;
 	int s = 0;
+
+	char fps_buffer[100];
 
 	while(!GetAsyncKeyState(VK_ESCAPE)){
 
@@ -100,7 +102,10 @@ int main(void)
 
 		fps++;
 		if(clock()-s>1000){
-			printf("fps: %i\n", fps);
+			
+			sprintf(fps_buffer, "fps:%i", fps);
+			EGuiText.setText(wfps, fps_buffer);
+
 			s = clock();
 			fps = 0;
 		}

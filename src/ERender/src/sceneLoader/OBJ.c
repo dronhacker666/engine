@@ -13,7 +13,7 @@ bool hasNormals;
 void filePath(char* out, const char* filename)
 {
 	int length = strlen(filename);
-	char* ch = filename + length-1;
+	const char* ch = filename + length-1;
 	while(*ch != '/') ch--;
 	memcpy(out, filename, ch-filename+1);
 	out[ch-filename+1] = '\0';
