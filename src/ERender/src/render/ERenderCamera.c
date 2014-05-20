@@ -7,12 +7,55 @@ ERenderCameraInstance_p ERenderCamera_create(void)
 {
 	ERenderCameraInstance_p camera = EMem.alloc(sizeof(ERenderCameraInstance));
 
+	camera->renderDepth = true;
+	camera->renderColor = true;
+
+	glGenFramebuffers(1, &camera->FBO);
+
 	camera->shaderManager = ERenderShaderManager.create();
 
 	camera->position.z = -10;
 
 	return camera;
 }
+
+void ERenderCamera_freeTextures(ERenderCameraInstance_p camera)
+{
+	if(camera->depth){
+		glDeleteTextures(1, &camera->depth);
+	}
+	if(camera->color){
+		glDeleteTextures(1, &camera->color);
+	}
+}
+
+void ERenderCamera_setSize(ERenderCameraInstance_p camera, unsigned int width, unsigned int height)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, camera->FBO);
+	if(
+		camera->viewport.width != width ||
+		camera->viewport.height != height
+	){
+		ERenderCamera_freeTextures(camera);
+		if(camera->renderDepth){
+			camera->depth = TextureCreate(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, width, height, NULL, false);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, camera->depth, 0);
+		}
+		if(camera->renderColor){
+			glDrawBuffer(GL_BACK);
+			glReadBuffer(GL_BACK);
+			camera->color = TextureCreate(GL_RGBA8, GL_RGB, width, height, NULL, false);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, camera->color, 0);
+		}else{
+			glDrawBuffer(GL_NONE);
+			glReadBuffer(GL_NONE);
+		}
+	}
+	camera->viewport.width = width;
+	camera->viewport.height = height;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 
 void ERenderCamera_render(ERenderCameraInstance_p camera, EListInstance_p objects)
 {
@@ -54,10 +97,17 @@ void ERenderCamera_renderScene(ERenderCameraInstance_p camera, ERenderSceneInsta
 	ERenderMatrix.mul4f(viewProjectionMatrix, projectionMatrix, rotationView);
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, camera->FBO);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	ERenderCamera_render(camera, scene->models);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 _ERenderCamera ERenderCamera = {
 	create: ERenderCamera_create,
 	renderScene: ERenderCamera_renderScene,
+	setSize: ERenderCamera_setSize,
 };

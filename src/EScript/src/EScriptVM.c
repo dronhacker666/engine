@@ -7,20 +7,31 @@ EScriptVMInstance_p EScriptVM_create(void)
 	return vm;
 }
 
-const char* EScriptVM_toString(EScriptCmd_p cmd)
+void EScriptVM_exec(EScriptVMInstance_p vm, const EScriptCode_p data)
 {
-	char buffer[1024];
-	switch(cmd->type){
-		case CMD_FOCUS: sprintf(buffer, "CMD_FOCUS %s", cmd->value.s_value); break;
-		case CMD_VALUE: sprintf(buffer, "CMD_VALUE %f", cmd->value.f_value); break;
-		default: sprintf(buffer, "--UNKNOWN--"); break;
-	}
-	return buffer;
+
 }
 
+void EScriptVM_toString(EScriptCmd_p cmd)
+{
+	switch(cmd->type){
+		case CMD_PUSH_LVALUE: printf("CMD_PUSH_LVALUE %s\n", cmd->value.s_value); break;
+		case CMD_VALUE: printf("CMD_VALUE %f\n", cmd->value.f_value); break;
+		default: printf("--UNKNOWN--\n"); break;
+	}
+}
+
+void EScriptVM_dump(EScriptCode_p data)
+{
+	unsigned int i;
+	EScriptCmd_p cmd;
+	for(i=0; i<data->code_length; i++){
+		EScriptVM_toString( &data->code[i] );
+	}
+}
 
 _EScriptVM EScriptVM = {
 	create: EScriptVM_create,
-
-	toString: EScriptVM_toString,
+	exec: EScriptVM_exec,
+	dump: EScriptVM_dump,
 };

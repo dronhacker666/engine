@@ -11,6 +11,11 @@ EPipelineInstance_p EPipeline_create(const int item_size, const int length)
 	return pipeline;
 }
 
+void EPipeline_free(EPipelineInstance_p pip)
+{
+	EMem.free(pip);
+}
+
 void EPipeline_push(EPipelineInstance_p pipeline, const void* data)
 {
 	if(pipeline->pos >= pipeline->length){
@@ -31,6 +36,7 @@ void* EPipeline_get(EPipelineInstance_p pipeline, int offset)
 
 _EPipeline EPipeline = {
 	create: EPipeline_create,
+	free: EPipeline_free,
 	push: EPipeline_push,
 	get: EPipeline_get,
 };

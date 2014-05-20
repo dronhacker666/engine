@@ -12,43 +12,6 @@ void ERenderMatrixPerspective4f(Matrix4f M, float fovy, float aspect, float znea
 	M[12] = 0;          M[13] =  0; M[14] = -1; M[15] =  0;
 }
 
-
-void ERenderMatrixOrtho4f(Matrix4f mat, float left, float right, float bottom, float top)
-{
-	// this is basically from
-	// http://en.wikipedia.org/wiki/Orthographic_projection_(geometry)
-	const float zNear = -1.0f;
-	const float zFar = 100.0f;
-	const float inv_z = 1.0f / (zFar - zNear);
-	const float inv_y = 1.0f / (top - bottom);
-	const float inv_x = 1.0f / (right - left);
-
-	//first column
-	*mat++ = (2.0f*inv_x);
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-
-	//second
-	*mat++ = (0.0f);
-	*mat++ = (2.0*inv_y);
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-
-	//third
-	*mat++ = (0.0f);
-	*mat++ = (0.0f);
-	*mat++ = (-2.0f*inv_z);
-	*mat++ = (0.0f);
-
-	//fourth
-	*mat++ = (-(right + left)*inv_x);
-	*mat++ = (-(top + bottom)*inv_y);
-	*mat++ = (-(zFar + zNear)*inv_z);
-	*mat++ = (1.0f);
-}
-
-
 void ERenderMatrixRotation4f(Matrix4f M, float x, float y, float z)
 {
 	x = M_PI/180 * x;
@@ -94,7 +57,6 @@ void ERenderMatrixMul4f(Matrix4f M, Matrix4f A, Matrix4f B)
 
 _ERenderMatrix ERenderMatrix = {
 	perspective4f: ERenderMatrixPerspective4f,
-	ortho4f: ERenderMatrixOrtho4f,
 	rotation4f: ERenderMatrixRotation4f,
 	translation4f: ERenderMatrixTranslation4f,
 	mul4f: ERenderMatrixMul4f,

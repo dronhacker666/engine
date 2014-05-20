@@ -4,8 +4,12 @@ int main(void){
 
 	char source[] = "a= 10; b= a + 20;";
 
-	EScriptInstance_p scope = EScript.create();
-	EScript.exec(scope, source);
+	EScriptCode_p code = EScriptParser.parse(source);
+
+	EScriptVMInstance_p vm = EScriptVM.create();
+	EScriptVM.dump(code);
+
+	//EScriptVM.exec(vm, code);
 
 	EMem.printUsage();
 

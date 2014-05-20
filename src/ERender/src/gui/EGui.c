@@ -6,7 +6,7 @@ EGuiManager_p EGui_create(void)
 {
 	EGuiManager_p manager = EMem.alloc(sizeof(EGuiManager));
 
-	float block[] = {
+	static float block[] = {
 		 0.0, 0.0,  0.0, 0.0,
 		 0.0, 2.0,  0.0, 1.0,
 		 2.0, 2.0,  1.0, 1.0,
@@ -40,7 +40,7 @@ EGuiManager_p EGui_create(void)
 		{\n\
 			vec2 res;\n\
 			res.x = (box.pos.x + iPosition.x*box.size.x)/resolution.x - 1.0;\n\
-			res.y = 1.0 - (box.pos.y + iPosition.y*box.size.y)/resolution.y;\n\
+			res.y = (box.pos.y + iPosition.y*box.size.y)/resolution.y;\n\
 			gl_Position = vec4(res, box.zIndex, 1.0);\n\
 			fragTexcoord  = iTexcoord;\n\
 		}\n\
@@ -55,7 +55,8 @@ EGuiManager_p EGui_create(void)
 		void main(void)\n\
 		{\n\
 			//color = texture(iTex0, fragTexcoord);\n\
-			color = vec4(0.1, 0.1, 0.1, texture(iTex0, fragTexcoord).r);\n\
+			//color = vec4(0.1, 0.1, 0.1, texture(iTex0, fragTexcoord).r);\n\
+			color = vec4(0.0, 0.0, 1.0, 1.0);\n\
 		}\n\
 	";
 	manager->shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
@@ -95,16 +96,17 @@ void EGui_addItem(EGuiManager_p manager, EGuiItem_p item)
 
 void EGui_render(EGuiManager_p manager)
 {
-
 	ERenderShaderManager.prepareShaders(manager->shaderManager);
 
 	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "resolution"), 800, 600);
 
-	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.pos"), 10, 10);
-	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.size"), 100, 20);
-	glUniform1f(glGetUniformLocation(manager->shaderManager->shader_id, "box.zIndex"), 0);
+	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.pos"), 0, 0);
+	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.size"), 300, 300);
+	glUniform1f(glGetUniformLocation(manager->shaderManager->shader_id, "box.zIndex"), 0.0f);
 
 	glBindVertexArray(block_VAO);
+
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	EGuiItem_p item = manager->_head;
 	while(item){
