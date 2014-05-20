@@ -14,12 +14,17 @@ typedef struct {
 
 	ERenderShaderManagerInstance_p shaderManager;
 
+	GLuint depth;
+	GLuint color;
+	GLuint FBO;
+
+	bool renderDepth;
+	bool renderColor;
+
 	// ViewPort
 	struct {
-		int width;
-		int height;
-		int x;
-		int y;
+		unsigned int width;
+		unsigned int height;
 	} viewport;
 
 } ERenderCameraInstance, *ERenderCameraInstance_p;
@@ -27,6 +32,9 @@ typedef struct {
 typedef struct {
 	ERenderCameraInstance_p (*create) (void);
 	void (*renderScene) (ERenderCameraInstance_p, ERenderSceneInstance_p);
+
+	void (*setSize) (ERenderCameraInstance_p, unsigned int, unsigned int);
+
 } _ERenderCamera;
 extern _ERenderCamera ERenderCamera;
 

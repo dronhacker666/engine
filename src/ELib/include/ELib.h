@@ -72,6 +72,7 @@ typedef struct {
 
 typedef struct {
 	EPipelineInstance_p 	(*create) 	(const int, const int);
+	void 					(*free) 	(EPipelineInstance_p);
 	void 					(*push) 	(EPipelineInstance_p, const void*);
 	void* 					(*get) 		(EPipelineInstance_p, int);
 } _EPipeline;

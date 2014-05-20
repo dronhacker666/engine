@@ -9,12 +9,18 @@
 
 BOOL ERenderOGLInit(ERenderInstance_p);
 
+GLuint TextureCreate(GLint, GLenum, GLsizei, GLsizei, const GLvoid*, bool);
+
 /* OPENGL EXTENSIONS */
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 
 extern PFNGLACTIVETEXTUREPROC glActiveTexture;
 extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
+//FBO
+extern PFNGLGENFRAMEBUFFERSPROC 		glGenFramebuffers;
+extern PFNGLBINDFRAMEBUFFERPROC 		glBindFramebuffer;
+extern PFNGLFRAMEBUFFERTEXTUREPROC 		glFramebufferTexture;
 // VAO
 extern PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays;
 extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays;

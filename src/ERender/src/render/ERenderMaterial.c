@@ -29,33 +29,15 @@ bool ERenderMaterial_loadTexture(ERenderMaterialInstance_p mtl, const char* file
 		return 0;
 	}
 
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); 
-
-	// загрузим данные о цвете в текущую автивную текстуру
-	glTexImage2D(
-		GL_TEXTURE_2D,
-		0,
+	mtl->tex[index] = TextureCreate(
 		image.depth==24 ? GL_RGB8 : GL_RGBA8,
+		image.depth==24 ? (image.colorSpace==RGB?GL_RGB:GL_BGR) : (image.colorSpace==RGB?GL_RGBA:GL_BGRA),
 		image.width,
 		image.height,
-		0,
-		image.depth==24 ? (image.colorSpace==RGB?GL_RGB:GL_BGR) : (image.colorSpace==RGB?GL_RGBA:GL_BGRA),
-		GL_UNSIGNED_BYTE,
-		image.data
+		image.data,
+		true
 	);
 	EMem.free(image.data);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	mtl->tex[index] = texture;
 
 	return true;
 }

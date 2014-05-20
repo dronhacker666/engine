@@ -7,6 +7,10 @@ PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 PFNGLACTIVETEXTUREPROC glActiveTexture = NULL;
 PFNGLGENERATEMIPMAPPROC glGenerateMipmap = NULL;
 
+//FBO
+PFNGLGENFRAMEBUFFERSPROC 		glGenFramebuffers 	 = NULL;
+PFNGLBINDFRAMEBUFFERPROC 		glBindFramebuffer 	 = NULL;
+PFNGLFRAMEBUFFERTEXTUREPROC 	glFramebufferTexture = NULL;
 // VAO
 PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays = NULL;
@@ -54,6 +58,11 @@ BOOL _initOpenGLProc(void)
 	glActiveTexture = (PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
 	glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)wglGetProcAddress("glGenerateMipmap");
 	
+	//FBO
+	glGenFramebuffers = (PFNGLGENFRAMEBUFFERSPROC)wglGetProcAddress("glGenFramebuffers");
+	glBindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC)wglGetProcAddress("glBindFramebuffer");
+	glFramebufferTexture = (PFNGLFRAMEBUFFERTEXTUREPROC)wglGetProcAddress("glFramebufferTexture");
+	//VAO
 	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
 	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)wglGetProcAddress("glDeleteVertexArrays");
 	glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)wglGetProcAddress("glBindVertexArray");
@@ -235,3 +244,32 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	return TRUE;
 }
 
+
+
+GLuint TextureCreate(GLint internalFormat, GLenum format, GLsizei width, GLsizei height, const GLvoid * data, bool genMipmap)
+{
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	if(genMipmap){
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE); 
+	}else{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+
+	if(genMipmap){
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+
+	return texture;
+}

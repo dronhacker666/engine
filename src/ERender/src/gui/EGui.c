@@ -106,6 +106,8 @@ void EGui_render(EGuiManager_p manager)
 
 	glBindVertexArray(block_VAO);
 
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	EGuiItem_p item = manager->_head;
 	while(item){
 

@@ -97,8 +97,7 @@ typedef struct {
 } EScriptParserInstance, *EScriptParserInstance_p;
 
 typedef struct {
-	EScriptParserInstance_p 	(*create) 			(void);
-	bool 						(*parse) 			(EScriptParserInstance_p, EArrayInstance_p, const char*);
+	void* 						(*parse) 			(const char*);
 	const char* 				(*getLexemName) 	(EScriptLexemType);
 } _EScriptParser;
 extern _EScriptParser EScriptParser;

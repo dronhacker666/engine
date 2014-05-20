@@ -4,13 +4,15 @@
 #include "ELib.h"
 
 typedef enum {
-	CMD_FOCUS,
+	CMD_PUSH_LVALUE,
+	CMD_PUSH_RVALUE,
 	CMD_VALUE,
 
 } EScriptCmdType;
 
 typedef struct {
 	enum {
+		ESV_NULL,
 		ESV_FLOAT,
 		ESV_INT,
 		ESV_POINT,
@@ -29,14 +31,21 @@ typedef struct {
 	EScriptValue value;
 } EScriptCmd, *EScriptCmd_p;
 
+
+typedef struct {
+	EScriptCmd_p code;
+	unsigned int code_length;
+} EScriptCode, *EScriptCode_p;
+
+
 typedef struct {
 	
 } EScriptVMInstance, *EScriptVMInstance_p;
 
 typedef struct {
 	EScriptVMInstance_p (*create) 		(void);
-	EScriptVMInstance_p (*exec) 		(EArrayInstance_p);
-	const char* 		(*toString) 	(EScriptCmd_p);
+	void				(*exec) 		(EScriptVMInstance_p, const EScriptCode_p);
+	void				(*dump) 		(EScriptCode_p);
 } _EScriptVM;
 extern _EScriptVM EScriptVM;
 

@@ -70,8 +70,8 @@ ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 		out vec2 fragTexcoord;\n\
 		void main(void)\n\
 		{\n\
-			gl_Position   =  viewMatrix * (modelMatrix * vec4(iPosition, 1.0));\n\
-			fragTexcoord  = iTexcoord;\n\
+			gl_Position = viewMatrix * (modelMatrix * vec4(iPosition, 1.0));\n\
+			fragTexcoord = iTexcoord;\n\
 		}\n\
 	";
 	shaderManager->vertexShader = ERenderShaderCreate(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
