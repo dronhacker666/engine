@@ -3,7 +3,6 @@
 
 int main(void)
 {
-
 	Libfont.init();
 	Libfont.setFont("../data/arial.my", 14);
 

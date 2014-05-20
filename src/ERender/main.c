@@ -54,7 +54,7 @@ int main(void)
 	RenderEvent event_beforeRender = {type: beforeRender, render: render};
 	RenderEvent event_afterRender = {type: afterRender, render: render};
 
-	ERenderScene.load(render->scene, "../data/model.obj");
+	ERenderScene.load(render->scene, "D:/andrey/models/tibet house/model.obj");
 	ERenderObjectInstance_p beretta = ERenderScene.load(render->scene, "../data/beretta.obj");
 
 	beretta->position.y = 4;
