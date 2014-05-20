@@ -98,8 +98,12 @@ void ERenderCamera_renderScene(ERenderCameraInstance_p camera, ERenderSceneInsta
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "viewMatrix"), 1, GL_TRUE, viewProjectionMatrix);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, camera->FBO);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	ERenderCamera_render(camera, scene->models);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 _ERenderCamera ERenderCamera = {

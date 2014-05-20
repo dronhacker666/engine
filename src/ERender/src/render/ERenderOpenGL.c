@@ -235,11 +235,13 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	glClearDepth(1.0f);
 	glClearColor(0.6, 0.6, 0.6, 0.0);
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 
 	glEnable (GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glViewport(0, 0, render->width, render->height);
 
 	return TRUE;
 }
