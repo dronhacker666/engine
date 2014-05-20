@@ -16,8 +16,8 @@ void EGuiText_setText(EGuiTextInstance_p widget, const char* text)
 {
 	widget->text = text;
 
-	void* buffer = EMem.alloc(sizeof(char)*100*20);
-	Libfont.genText(buffer, text, 100, 20);
+	void* buffer = EMem.alloc(sizeof(char)*200*100);
+	Libfont.genText(buffer, text, 200, 100);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -25,8 +25,8 @@ void EGuiText_setText(EGuiTextInstance_p widget, const char* text)
 		GL_TEXTURE_2D,
 		0,
 		GL_R8,
+		200,
 		100,
-		20,
 		0,
 		GL_RED,
 		GL_UNSIGNED_BYTE,
