@@ -113,7 +113,7 @@ void ERenderRender(const ERenderInstance_p render)
 {
 	ERenderCamera.renderScene(render->camera, render->scene);
 
-	ERender_renderRect(render, 0, 0, render->width, render->height, render->camera->color);
+	ERender_renderRect(render, 0, 0, render->width, render->height, render->camera->color[1]);
 }
 
 

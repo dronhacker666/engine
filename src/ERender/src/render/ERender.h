@@ -23,6 +23,8 @@ typedef struct ERenderInstance{
 	ERenderCameraInstance_p camera;
 	ERenderSceneInstance_p 	scene;
 
+	float timerFix;
+
 } ERenderInstance, *ERenderInstance_p;
 
 // EVENTS

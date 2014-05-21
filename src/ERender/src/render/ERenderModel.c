@@ -21,12 +21,16 @@ bool ERenderModel_loadMesh(ERenderModelInstance_p model, unsigned int vertexCoun
 
 	GLint positionLocation = 0; // GLint positionLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iPosition");
 	GLint texcoordLocation = 1; // GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iTexcoord");
+	GLint normalLocation = 2; // GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iNormal");
 
 	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
 	glEnableVertexAttribArray(positionLocation);
 
 	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*3) );
 	glEnableVertexAttribArray(texcoordLocation);
+
+	glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*5) );
+	glEnableVertexAttribArray(normalLocation);
 
 	return true;
 }

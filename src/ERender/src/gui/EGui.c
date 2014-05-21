@@ -12,7 +12,7 @@ EGuiManager_p EGui_create(void)
 		0.0f,0.0f,
 		1.0f,1.0f,
 		1.0f,0.0f,
-		0.0f,0.0f,
+		0.0f,0.0f
 	};
 
 	glGenVertexArrays(1, &block_VAO);
@@ -29,7 +29,6 @@ EGuiManager_p EGui_create(void)
 		struct Box {\n\
 			vec2 pos;\n\
 			vec2 size;\n\
-			float zIndex;\n\
 		};\n\
 		uniform Box box;\n\
 		uniform vec2 resolution;\n\
@@ -39,8 +38,8 @@ EGuiManager_p EGui_create(void)
 		{\n\
 			vec2 res;\n\
 			res.x = (iPosition.x*2.0*box.size.x + box.pos.x)/resolution.x - 1.0;\n\
-			res.y = -(iPosition.y*2.0*box.size.y - box.pos.y)/resolution.y;\n\
-			gl_Position = vec4(res, box.zIndex, 1.0);\n\
+			res.y = 1.0 - (iPosition.y*2.0*box.size.y + box.pos.y)/resolution.y;\n\
+			gl_Position = vec4(res, 0.0, 1.0);\n\
 			fragTexcoord  = iPosition;\n\
 		}\n\
 	";
@@ -94,7 +93,6 @@ void EGui_render(EGuiManager_p manager)
 
 	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.pos"), 10, 10);
 	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.size"), 200, 100);
-	glUniform1f(glGetUniformLocation(manager->shaderManager->shader_id, "box.zIndex"), 0.0f);
 
 	glBindVertexArray(block_VAO);
 

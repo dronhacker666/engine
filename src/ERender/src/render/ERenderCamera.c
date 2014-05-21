@@ -14,6 +14,9 @@ ERenderCameraInstance_p ERenderCamera_create(void)
 
 	camera->shaderManager = ERenderShaderManager.create();
 
+	glBindFragDataLocation(camera->shaderManager->shader_id, 0, "oColor0");
+	glBindFragDataLocation(camera->shaderManager->shader_id, 1, "oColor1");
+
 	camera->position.z = -10;
 
 	return camera;
@@ -25,7 +28,7 @@ void ERenderCamera_freeTextures(ERenderCameraInstance_p camera)
 		glDeleteTextures(1, &camera->depth);
 	}
 	if(camera->color){
-		glDeleteTextures(1, &camera->color);
+		glDeleteTextures(2, camera->color);
 	}
 }
 
@@ -44,8 +47,13 @@ void ERenderCamera_setSize(ERenderCameraInstance_p camera, unsigned int width, u
 		if(camera->renderColor){
 			glDrawBuffer(GL_BACK);
 			glReadBuffer(GL_BACK);
-			camera->color = TextureCreate(GL_RGBA8, GL_RGB, width, height, NULL, false);
-			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, camera->color, 0);
+
+			camera->color[0] = TextureCreate(GL_RGBA8, GL_RGB, width, height, NULL, false);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, camera->color[0], 0);
+
+			camera->color[1] = TextureCreate(GL_RGBA8, GL_RGB, width, height, NULL, false);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, camera->color[1], 0);
+
 		}else{
 			glDrawBuffer(GL_NONE);
 			glReadBuffer(GL_NONE);
@@ -99,11 +107,16 @@ void ERenderCamera_renderScene(ERenderCameraInstance_p camera, ERenderSceneInsta
 
 	glBindFramebuffer(GL_FRAMEBUFFER, camera->FBO);
 
+	GLenum buffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+	glDrawBuffers(2, buffers);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	ERenderCamera_render(camera, scene->models);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glBindFramebuffer (GL_READ_FRAMEBUFFER, 0);
+	//glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
 }
 
 _ERenderCamera ERenderCamera = {

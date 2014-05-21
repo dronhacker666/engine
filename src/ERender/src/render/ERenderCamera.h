@@ -15,7 +15,7 @@ typedef struct {
 	ERenderShaderManagerInstance_p shaderManager;
 
 	GLuint depth;
-	GLuint color;
+	GLuint color[2];
 	GLuint FBO;
 
 	bool renderDepth;

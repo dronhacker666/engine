@@ -11,6 +11,8 @@ PFNGLGENERATEMIPMAPPROC glGenerateMipmap = NULL;
 PFNGLGENFRAMEBUFFERSPROC 		glGenFramebuffers 	 = NULL;
 PFNGLBINDFRAMEBUFFERPROC 		glBindFramebuffer 	 = NULL;
 PFNGLFRAMEBUFFERTEXTUREPROC 	glFramebufferTexture = NULL;
+PFNGLDRAWBUFFERSPROC 			glDrawBuffers = NULL;
+PFNGLBINDFRAGDATALOCATIONPROC 	glBindFragDataLocation = NULL;
 // VAO
 PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays    = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays = NULL;
@@ -62,6 +64,8 @@ BOOL _initOpenGLProc(void)
 	glGenFramebuffers = (PFNGLGENFRAMEBUFFERSPROC)wglGetProcAddress("glGenFramebuffers");
 	glBindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC)wglGetProcAddress("glBindFramebuffer");
 	glFramebufferTexture = (PFNGLFRAMEBUFFERTEXTUREPROC)wglGetProcAddress("glFramebufferTexture");
+	glDrawBuffers = (PFNGLDRAWBUFFERSPROC)wglGetProcAddress("glDrawBuffers");
+	glBindFragDataLocation = (PFNGLBINDFRAGDATALOCATIONPROC)wglGetProcAddress("glBindFragDataLocation");
 	//VAO
 	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
 	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)wglGetProcAddress("glDeleteVertexArrays");
@@ -109,6 +113,15 @@ BOOL _initOpenGLProc(void)
 
 ERenderInstance_p render;
 
+
+void changeWindowSize(ERenderInstance_p render, int width, int height)
+{
+	render->width = width;
+	render->height = height;
+	glViewport(0, 0, width, height);
+}
+
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	KeyboardEvent event;
@@ -123,6 +136,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			event.type = keyUp;
 			event.keyCode = wParam;
 			EEvents.addEvent(render->events, &event);
+		break;
+		case WM_SIZE:
+			//changeWindowSize(render, LOWORD(lParam), HIWORD(lParam));
 		break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -149,7 +165,6 @@ void ERenderOpenGL_onAfterRender(RenderEvent_p event)
 	//glFlush();
 	SwapBuffers(event->render->gAPI.hdc);
 }
-
 
 BOOL ERenderOGLInit(ERenderInstance_p render)
 {
@@ -180,7 +195,10 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	};
 	RegisterClassEx(&wc);
 
-	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "myclass", "Game", WS_VISIBLE|WS_TILEDWINDOW, 0, 0, render->width, render->height, 0, 0, 0, 0);
+	int x = 0;// (GetSystemMetrics(SM_CXSCREEN) - render->width)  / 2;
+	int y = 0;// (GetSystemMetrics(SM_CYSCREEN) - render->height) / 2;
+
+	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "myclass", "Game", WS_VISIBLE|WS_POPUP, x, y, render->width, render->height, 0, 0, 0, 0);
 	gApi->hdc = GetDC(gApi->hWnd);
 
 	PIXELFORMATDESCRIPTOR ppfd;

@@ -21,6 +21,9 @@ extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 extern PFNGLGENFRAMEBUFFERSPROC 		glGenFramebuffers;
 extern PFNGLBINDFRAMEBUFFERPROC 		glBindFramebuffer;
 extern PFNGLFRAMEBUFFERTEXTUREPROC 		glFramebufferTexture;
+extern PFNGLDRAWBUFFERSPROC 			glDrawBuffers;
+extern PFNGLBINDFRAGDATALOCATIONPROC 	glBindFragDataLocation;
+
 // VAO
 extern PFNGLGENVERTEXARRAYSPROC    glGenVertexArrays;
 extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays;
