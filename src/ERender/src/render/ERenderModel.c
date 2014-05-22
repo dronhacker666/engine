@@ -42,17 +42,22 @@ void ERenderModel_render(ERenderModelInstance_p model, ERenderCameraInstance_p c
 		rotationModel,
 		modelMatrix;
 
+	Vec3f cameraNormal;
+	Vec.direction3f(&cameraNormal, &camera->position, &model->position);
+	glUniform3fv(glGetUniformLocation(camera->shaderManager->shader_id, "cameraNormal"), 1, (const GLfloat*)&cameraNormal);
+
 	ERenderMatrix.translation4f(translationModel, model->position.x, model->position.y, model->position.z);
 	ERenderMatrix.rotation4f(rotationModel, model->rotation.x, model->rotation.y, model->rotation.z);
 	ERenderMatrix.mul4f(modelMatrix, translationModel, rotationModel);
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "modelMatrix"), 1, GL_TRUE, modelMatrix);
 
+	glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "mtlID"), model->mtl->id);
+
 	// Textures
-	if(model->mtl){
-		glActiveTexture(GL_TEXTURE0);
+	/*if(model->mtl){
+		glActiveTexture(GL_TEXTURE0 + model->mtl->id+1);
 		glBindTexture(GL_TEXTURE_2D, model->mtl->tex[0]);
-		glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iTex0") , 0);
-	}
+	}*/
 
 	/*if(model->texture0){
 		glActiveTexture(GL_TEXTURE0);

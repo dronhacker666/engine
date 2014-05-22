@@ -1,8 +1,11 @@
 #include "ERenderMaterial.h"
 
+unsigned int id=0;
+
 ERenderMaterialInstance_p ERenderMaterial_create(void)
 {
 	ERenderMaterialInstance_p mtl = EMem.alloc(sizeof(ERenderMaterialInstance));
+	mtl->id = id++;
 	return mtl;
 }
 
@@ -38,6 +41,9 @@ bool ERenderMaterial_loadTexture(ERenderMaterialInstance_p mtl, const char* file
 		true
 	);
 	EMem.free(image.data);
+
+	glActiveTexture(GL_TEXTURE0 + mtl->id+1);
+	glBindTexture(GL_TEXTURE_2D, mtl->tex[index]);
 
 	return true;
 }

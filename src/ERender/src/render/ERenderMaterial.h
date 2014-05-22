@@ -6,7 +6,7 @@
 #include "ERenderOpenGL.h"
 
 typedef struct {
-
+	unsigned int id;
 	GLuint tex[10];
 
 } ERenderMaterialInstance, *ERenderMaterialInstance_p;

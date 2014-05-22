@@ -58,46 +58,8 @@ _ERenderShader ERenderShader = {
 ERenderShaderManagerInstance_p ERenderShaderManagerCreate(void)
 {
 	ERenderShaderManagerInstance_p shaderManager = EMem.alloc(sizeof(ERenderShaderManagerInstance));
-
 	shaderManager->shader_id = glCreateProgram();
-
-	char vertex_src[] = "\
-		#version 140\n\
-		uniform mat4 viewMatrix;\n\
-		uniform mat4 modelMatrix;\n\
-		in vec3 iPosition;\n\
-		in vec2 iTexcoord;\n\
-		in vec3 iNormal;\n\
-		out vec2 fragTexcoord;\n\
-		out vec3 fragNormal;\n\
-		void main(void)\n\
-		{\n\
-			gl_Position = viewMatrix * (modelMatrix * vec4(iPosition, 1.0));\n\
-			fragTexcoord = iTexcoord;\n\
-			fragNormal = (viewMatrix * (modelMatrix * vec4(iNormal, 1.0))).xyz;\n\
-		}\n\
-	";
-	shaderManager->vertexShader = ERenderShaderCreate(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
-
-	char fragment_src[] = "\
-		#version 140\n\
-		uniform sampler2D iTex0;\n\
-		in vec2 fragTexcoord;\n\
-		in vec3 fragNormal;\n\
-		out vec4 oColor0;\n\
-		out vec4 oColor1;\n\
-		void main(void)\n\
-		{\n\
-			//color = texture(iTex0, fragTexcoord);\n\
-			oColor0 = texture(iTex0, fragTexcoord);\n\
-			oColor1.rgb = texture(iTex0, fragTexcoord).rgb * gl_FragCoord.w;\n\
-			//oColor1.rgb = fragNormal.xxx;\n\
-		}\n\
-	";
-	shaderManager->fragmentShader = ERenderShaderCreate(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
-
 	shaderManager->needRelink = TRUE;
-
 	return shaderManager;
 }
 

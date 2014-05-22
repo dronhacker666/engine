@@ -53,6 +53,7 @@ PFNGLUNIFORM4FPROC   		glUniform4f		     = NULL;
 PFNGLUNIFORM1IPROC   		glUniform1i		     = NULL;
 PFNGLUNIFORM2IPROC   		glUniform2i		     = NULL;
 PFNGLUNIFORM2FVPROC			glUniform2fv		 = NULL;
+PFNGLUNIFORM3FVPROC			glUniform3fv		 = NULL;
 PFNGLUNIFORM2IVPROC			glUniform2iv		 = NULL;
 
 BOOL _initOpenGLProc(void)
@@ -106,6 +107,7 @@ BOOL _initOpenGLProc(void)
 	glUniform1i = (PFNGLUNIFORM1IPROC)wglGetProcAddress("glUniform1i");
 	glUniform2i = (PFNGLUNIFORM2IPROC)wglGetProcAddress("glUniform2i");
 	glUniform2fv = (PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform2fv");
+	glUniform3fv = (PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform3fv");
 	glUniform2iv = (PFNGLUNIFORM2IVPROC)wglGetProcAddress("glUniform2iv");
 
 	return TRUE;
@@ -255,7 +257,6 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	glEnable (GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 

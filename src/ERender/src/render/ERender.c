@@ -23,7 +23,6 @@ ERenderInstance_p ERenderCreate(const int width, const int height){
 
 	ERender_initRenderRect();
 
-
 	return render;
 }
 
@@ -65,16 +64,31 @@ void ERender_initRenderRect(void)
 	char fragment_src[] = "\
 		#version 140\n\
 		uniform sampler2D iTex0;\n\
+		uniform sampler2D iTex1;\n\
+		uniform sampler2D iTex2;\n\
+		uniform sampler2D iTex3;\n\
 		in vec2 fragTexcoord;\n\
 		out vec4 color;\n\
 		void main(void)\n\
 		{\n\
-			color = texture(iTex0, fragTexcoord);\n\
+			vec4 data = texture(iTex0, fragTexcoord);\n\
+			float mtlID = data.a;\n\
+			vec2 texCoord = data.xy;\n\
+			float depth = data.b;\n\
+			if(mtlID==1) color = texture(iTex1, texCoord);\n\
+			if(mtlID==2) color = texture(iTex2, texCoord);\n\
+			if(mtlID==3) color = texture(iTex3, texCoord);\n\
 		}\n\
 	";
 	shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
 
 	ERenderShaderManager.prepareShaders(shaderManager);
+
+	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex0") , 0);
+
+	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex1") , 1);
+	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex2") , 2);
+	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex3") , 3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, block_VBO123);
 	GLint positionLocation = glGetAttribLocation(shaderManager->shader_id, "iPosition");
@@ -96,7 +110,6 @@ void ERender_renderRect(ERenderInstance_p render, int x, int y, int width, int h
 	glBindVertexArray(block_VAO123);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex0") , 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
