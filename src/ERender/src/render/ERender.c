@@ -50,8 +50,9 @@ void ERender_initRenderRect(void)
 
 	char vertex_src[] = "\
 		#version 140\n\
-		in vec2 iPosition;\n\
-		in vec2 iTexcoord;\n\
+		#extension ARB_explicit_attrib_location : require\n\
+		layout(location = 0) in vec2 iPosition;\n\
+		layout(location = 1) in vec2 iTexcoord;\n\
 		out vec2 fragTexcoord;\n\
 		void main(void)\n\
 		{\n\
@@ -91,16 +92,13 @@ void ERender_initRenderRect(void)
 	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex3") , 3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, block_VBO123);
-	GLint positionLocation = glGetAttribLocation(shaderManager->shader_id, "iPosition");
-	if(positionLocation !=-1 ){
-		glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), 0);
-		glEnableVertexAttribArray(positionLocation);
-	}
-	GLint texcoordLocation = glGetAttribLocation(shaderManager->shader_id, "iTexcoord");
-	if(texcoordLocation !=-1 ){
-		glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (const GLvoid*)(sizeof(float)*2) );
-		glEnableVertexAttribArray(texcoordLocation);
-	}
+	GLint positionLocation = 0;
+	glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), 0);
+	glEnableVertexAttribArray(positionLocation);
+
+	GLint texcoordLocation = 1;
+	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (const GLvoid*)(sizeof(float)*2) );
+	glEnableVertexAttribArray(texcoordLocation);
 }
 
 void ERender_renderRect(ERenderInstance_p render, int x, int y, int width, int height, GLint texture)

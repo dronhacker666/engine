@@ -16,12 +16,13 @@ ERenderCameraInstance_p ERenderCamera_create(void)
 
 	char vertex_src[] = "\
 		#version 140\n\
+		#extension ARB_explicit_attrib_location : require\n\
 		uniform mat4 viewMatrix;\n\
 		uniform mat4 modelMatrix;\n\
 		uniform vec3 cameraNormal;\n\
-		in vec3 iPosition;\n\
-		in vec2 iTexcoord;\n\
-		in vec3 iNormal;\n\
+		layout(location = 0) in vec3 iPosition;\n\
+		layout(location = 1) in vec2 iTexcoord;\n\
+		layout(location = 2) in vec3 iNormal;\n\
 		out vec2 fragTexcoord;\n\
 		out vec3 fragNormal;\n\
 		void main(void)\n\
