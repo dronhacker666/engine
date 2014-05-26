@@ -50,9 +50,8 @@ void ERender_initRenderRect(void)
 
 	char vertex_src[] = "\
 		#version 140\n\
-		#extension ARB_explicit_attrib_location : require\n\
-		layout(location = 0) in vec2 iPosition;\n\
-		layout(location = 1) in vec2 iTexcoord;\n\
+		in vec2 iPosition;\n\
+		in vec2 iTexcoord;\n\
 		out vec2 fragTexcoord;\n\
 		void main(void)\n\
 		{\n\
@@ -73,12 +72,9 @@ void ERender_initRenderRect(void)
 		void main(void)\n\
 		{\n\
 			vec4 data = texture(iTex0, fragTexcoord);\n\
-			float mtlID = data.a;\n\
-			vec2 texCoord = data.xy;\n\
-			float depth = data.b;\n\
-			if(mtlID==1) color = texture(iTex1, texCoord);\n\
-			if(mtlID==2) color = texture(iTex2, texCoord);\n\
-			if(mtlID==3) color = texture(iTex3, texCoord);\n\
+			vec3 _color = data.rgb;\n\
+			float _depth = data.a;\n\
+			color = vec4(_color, 1.0);\n\
 		}\n\
 	";
 	shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
@@ -92,11 +88,11 @@ void ERender_initRenderRect(void)
 	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex3") , 3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, block_VBO123);
-	GLint positionLocation = 0;
+	GLint positionLocation = glGetAttribLocation(shaderManager->shader_id, "iPosition");;
 	glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), 0);
 	glEnableVertexAttribArray(positionLocation);
 
-	GLint texcoordLocation = 1;
+	GLint texcoordLocation = glGetAttribLocation(shaderManager->shader_id, "iTexcoord");;
 	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (const GLvoid*)(sizeof(float)*2) );
 	glEnableVertexAttribArray(texcoordLocation);
 }

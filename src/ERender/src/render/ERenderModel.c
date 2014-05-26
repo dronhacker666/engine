@@ -19,70 +19,11 @@ bool ERenderModel_loadMesh(ERenderModelInstance_p model, unsigned int vertexCoun
 	glBindBuffer(GL_ARRAY_BUFFER, model->VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float) * 8, mesh, GL_STATIC_DRAW);
 
-	GLint positionLocation = 0; // GLint positionLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iPosition");
-	GLint texcoordLocation = 1; // GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iTexcoord");
-	GLint normalLocation = 2; // GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iNormal");
-
-	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
-	glEnableVertexAttribArray(positionLocation);
-
-	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*3) );
-	glEnableVertexAttribArray(texcoordLocation);
-
-	glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*5) );
-	glEnableVertexAttribArray(normalLocation);
-
 	return true;
 }
 
-void ERenderModel_render(ERenderModelInstance_p model, ERenderCameraInstance_p camera)
-{
-	Matrix4f 
-		translationModel,
-		rotationModel,
-		modelMatrix;
-
-	Vec3f cameraNormal;
-	Vec.direction3f(&cameraNormal, &camera->position, &model->position);
-	glUniform3fv(glGetUniformLocation(camera->shaderManager->shader_id, "cameraNormal"), 1, (const GLfloat*)&cameraNormal);
-
-	ERenderMatrix.translation4f(translationModel, model->position.x, model->position.y, model->position.z);
-	ERenderMatrix.rotation4f(rotationModel, model->rotation.x, model->rotation.y, model->rotation.z);
-	ERenderMatrix.mul4f(modelMatrix, translationModel, rotationModel);
-	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "modelMatrix"), 1, GL_TRUE, modelMatrix);
-
-	glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "mtlID"), model->mtl->id);
-
-	// Textures
-	/*if(model->mtl){
-		glActiveTexture(GL_TEXTURE0 + model->mtl->id+1);
-		glBindTexture(GL_TEXTURE_2D, model->mtl->tex[0]);
-	}*/
-
-	/*if(model->texture0){
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, model->texture0);
-		glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iTex0") , 0);
-	}
-	if(model->texture1){
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, model->texture1);
-		glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iTex1") , 1);
-	}
-	if(model->texture2){
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, model->texture2);
-		glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iTex2") , 2);
-	}*/
-
-	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-
-	glBindVertexArray(model->VAO);
-	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
-}
 
 _ERenderModel ERenderModel = {
 	create: ERenderModel_create,
 	loadMesh: ERenderModel_loadMesh,
-	render: ERenderModel_render,
 };

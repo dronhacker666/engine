@@ -42,9 +42,6 @@ bool ERenderMaterial_loadTexture(ERenderMaterialInstance_p mtl, const char* file
 	);
 	EMem.free(image.data);
 
-	glActiveTexture(GL_TEXTURE0 + mtl->id+1);
-	glBindTexture(GL_TEXTURE_2D, mtl->tex[index]);
-
 	return true;
 }
 

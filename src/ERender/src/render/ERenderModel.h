@@ -27,7 +27,6 @@ typedef struct {
 typedef struct {
 	ERenderModelInstance_p 	(*create) 		(void);
 	bool 					(*loadMesh) 	(ERenderModelInstance_p, unsigned int, void*);
-	void 					(*render) 		(ERenderModelInstance_p, ERenderCameraInstance_p);
 } _ERenderModel;
 extern _ERenderModel ERenderModel;
 

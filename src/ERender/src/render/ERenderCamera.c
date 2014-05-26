@@ -16,13 +16,12 @@ ERenderCameraInstance_p ERenderCamera_create(void)
 
 	char vertex_src[] = "\
 		#version 140\n\
-		#extension ARB_explicit_attrib_location : require\n\
 		uniform mat4 viewMatrix;\n\
 		uniform mat4 modelMatrix;\n\
 		uniform vec3 cameraNormal;\n\
-		layout(location = 0) in vec3 iPosition;\n\
-		layout(location = 1) in vec2 iTexcoord;\n\
-		layout(location = 2) in vec3 iNormal;\n\
+		in vec3 iPosition;\n\
+		in vec2 iTexcoord;\n\
+		in vec3 iNormal;\n\
 		out vec2 fragTexcoord;\n\
 		out vec3 fragNormal;\n\
 		void main(void)\n\
@@ -36,17 +35,14 @@ ERenderCameraInstance_p ERenderCamera_create(void)
 
 	char fragment_src[] = "\
 		#version 140\n\
-		uniform int mtlID;\n\
+		uniform sampler2D iTex0;\n\
 		in vec2 fragTexcoord;\n\
 		in vec3 fragNormal;\n\
 		out vec4 oColor0;\n\
 		out vec4 oColor1;\n\
 		void main(void)\n\
 		{\n\
-			//color = texture(iTex0, fragTexcoord);\n\
-			//oColor0 = texture(iTex0, fragTexcoord);\n\
-			//oColor1.rgb = texture(iTex0, fragTexcoord).rgb * gl_FragCoord.w;\n\
-			oColor1 = vec4(fragTexcoord, gl_FragCoord.w, mtlID);\n\
+			oColor1 = vec4(texture(iTex0, fragTexcoord).rgb, gl_FragCoord.w);\n\
 		}\n\
 	";
 	camera->shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
@@ -87,10 +83,10 @@ void ERenderCamera_setSize(ERenderCameraInstance_p camera, unsigned int width, u
 			glDrawBuffer(GL_BACK);
 			glReadBuffer(GL_BACK);
 
-			camera->color[0] = TextureCreate(GL_RGBA16, GL_RGBA, width, height, NULL, false);
+			camera->color[0] = TextureCreate(GL_RGBA8, GL_RGBA, width, height, NULL, false);
 			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, camera->color[0], 0);
 
-			camera->color[1] = TextureCreate(GL_RGBA16F, GL_RGBA, width, height, NULL, false);
+			camera->color[1] = TextureCreate(GL_RGBA8, GL_RGBA, width, height, NULL, false);
 			glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, camera->color[1], 0);
 
 		}else{
@@ -104,6 +100,48 @@ void ERenderCamera_setSize(ERenderCameraInstance_p camera, unsigned int width, u
 }
 
 
+void ERenderCamera_renderModel(ERenderCameraInstance_p camera, ERenderModelInstance_p model)
+{
+	Matrix4f 
+		translationModel,
+		rotationModel,
+		modelMatrix;
+
+	Vec3f cameraNormal;
+	Vec.direction3f(&cameraNormal, &camera->position, &model->position);
+	glUniform3fv(glGetUniformLocation(camera->shaderManager->shader_id, "cameraNormal"), 1, (const GLfloat*)&cameraNormal);
+
+	ERenderMatrix.translation4f(translationModel, model->position.x, model->position.y, model->position.z);
+	ERenderMatrix.rotation4f(rotationModel, model->rotation.x, model->rotation.y, model->rotation.z);
+	ERenderMatrix.mul4f(modelMatrix, translationModel, rotationModel);
+	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "modelMatrix"), 1, GL_TRUE, modelMatrix);
+
+
+	glBindVertexArray(model->VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, model->VBO);
+
+	GLint positionLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iPosition");
+	GLint texcoordLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iTexcoord");
+	GLint normalLocation = glGetAttribLocation(camera->shaderManager->shader_id, "iNormal");
+
+	glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
+	glEnableVertexAttribArray(positionLocation);
+
+	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*3) );
+	glEnableVertexAttribArray(texcoordLocation);
+
+	glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (const GLvoid*)(sizeof(float)*5) );
+	glEnableVertexAttribArray(normalLocation);
+
+	// Textures
+	if(model->mtl){
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, model->mtl->tex[0]);
+	}
+
+	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
+}
+
 void ERenderCamera_render(ERenderCameraInstance_p camera, EListInstance_p objects)
 {
 	unsigned int i;
@@ -116,7 +154,7 @@ void ERenderCamera_render(ERenderCameraInstance_p camera, EListInstance_p object
 				ERenderCamera_render(camera, ((ERenderGroupInstance_p)object)->child );
 			break;
 			case ERENDEROBJECTTYPE_MODEL:
-				ERenderModel.render( (ERenderModelInstance_p)object, camera );
+				ERenderCamera_renderModel(camera, (ERenderModelInstance_p)object);
 			break;
 			case ERENDEROBJECTTYPE_LIGHT:
 
