@@ -4,7 +4,7 @@ LIB_DIR=lib
 CC=gcc
 MAKE=mingw32-make
 SOURCES=src/*/*.c
-PARAMS= -s
+PARAMS= -s -g
 INCLUDE=-I include -I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include
 LIBS=-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont
 
