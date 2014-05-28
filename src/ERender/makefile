@@ -4,6 +4,7 @@ run: build
 build:
 	bash build.sh
 
+rebuild: clean build
 
 #build_lib:
 	#mkdir -p ${LIB_DIR}

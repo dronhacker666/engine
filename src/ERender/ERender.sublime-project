@@ -19,6 +19,10 @@
 					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "run"],
 				},
 				{
+					"name"	: "Rebuild",
+					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "rebuild"],
+				},
+				{
 					"name"	: "Clean",
 					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "clean"],
 				},

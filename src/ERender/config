@@ -1,6 +1,6 @@
-CC="gcc"
+CC="cc"
 SOURCES="src/*/*.c main.c"
-PARAMS="-s -g"
+PARAMS="-Wall" #-g -pg
 INCLUDE="-I include -I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include"
 LIBS="-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont"
 

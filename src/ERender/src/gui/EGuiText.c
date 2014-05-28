@@ -1,7 +1,7 @@
 #include "EGuiText.h"
 #include "libfont.h"
 
-GLuint texture = NULL;
+GLuint texture = -1;
 
 void EGuiText_render(EGuiTextInstance_p widget, EGuiManager_p manager)
 {
