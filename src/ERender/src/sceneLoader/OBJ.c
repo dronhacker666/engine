@@ -1,4 +1,4 @@
-#include "SceneLoader.h"
+#include <sceneLoader/SceneLoader.h>
 
 EArrayInstance_p vertex;
 EArrayInstance_p texcoord;

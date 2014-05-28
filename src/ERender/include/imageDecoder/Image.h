@@ -12,4 +12,7 @@ typedef struct {
 	void* data;
 } Image, *Image_p;
 
+bool loadJPEG(const char*, Image_p);
+bool loadTGA(const char*, Image_p);
+
 #endif

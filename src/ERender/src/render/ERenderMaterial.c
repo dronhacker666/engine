@@ -1,4 +1,4 @@
-#include "ERenderMaterial.h"
+#include <render/ERenderMaterial.h>
 
 unsigned int id=0;
 
@@ -12,7 +12,6 @@ ERenderMaterialInstance_p ERenderMaterial_create(void)
 bool ERenderMaterial_loadTexture(ERenderMaterialInstance_p mtl, const char* filename, GLuint index)
 {
 	Image image;
-	GLuint texture;
 
 	bool ok;
 	int length = strlen(filename);

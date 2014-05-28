@@ -1,6 +1,6 @@
-#include "JPEG.h"
+#include <imageDecoder/JPEG.h>
 
-bool loadJPEG(char* filename, Image_p out)
+bool loadJPEG(const char* filename, Image_p out)
 {
 	FILE *fd;
 	struct jpeg_decompress_struct cinfo;

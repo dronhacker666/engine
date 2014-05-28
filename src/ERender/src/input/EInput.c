@@ -1,4 +1,4 @@
-#include "EInput.h"
+#include <input/EInput.h>
 
 void EInput_proccessInput(void)
 {

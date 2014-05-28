@@ -1,7 +1,7 @@
-#include "ERenderCamera.h"
-#include "ERenderOpenGL.h"
-#include "ERenderModel.h"
-#include "ERenderGroup.h"
+#include <render/ERenderCamera.h>
+#include <render/ERenderOpenGL.h>
+#include <render/ERenderModel.h>
+#include <render/ERenderGroup.h>
 
 ERenderCameraInstance_p ERenderCamera_create(void)
 {

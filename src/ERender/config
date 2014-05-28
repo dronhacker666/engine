@@ -1,7 +1,11 @@
 CC="cc"
 SOURCES="src/*/*.c main.c"
 PARAMS="-Wall" #-g -pg
-INCLUDE="-I include -I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include"
+
+OUTSIDE_INCLUDE="-I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include"
+INSIDE_INCUDE="-I include"
+INCLUDE="${INSIDE_INCUDE} ${OUTSIDE_INCLUDE}"
+
 LIBS="-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont"
 
 OBJ_DIR="obj"

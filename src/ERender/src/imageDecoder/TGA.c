@@ -1,13 +1,13 @@
-#include "TGA.h"
+#include <imageDecoder/TGA.h>
 #include <assert.h>
 
-bool loadTGA(char* filename, Image_p out)
+bool loadTGA(const char* filename, Image_p out)
 {
 	assert(filename);
 
 	TGAHeader *header;
 	char *buffer;
-	unsigned int size;
+	int size;
 
 	if(!ETools.loadFile(filename, &buffer, &size))
 	{

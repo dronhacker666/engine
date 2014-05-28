@@ -1,5 +1,5 @@
-#include "ERender.h"
-#include "ERenderOpenGL.h"
+#include <render/ERender.h>
+#include <render/ERenderOpenGL.h>
 
 void ERender_initRenderRect(void);
 

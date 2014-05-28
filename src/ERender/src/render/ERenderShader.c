@@ -1,5 +1,5 @@
-#include "ERenderShader.h"
-#include "ERenderOpenGL.h"
+#include <render/ERenderShader.h>
+#include <render/ERenderOpenGL.h>
 
 GLenum getShaderType(char* filename)
 {

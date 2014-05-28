@@ -1,5 +1,5 @@
-#include "ERenderScene.h"
-#include "../sceneLoader/SceneLoader.h"
+#include <render/ERenderScene.h>
+#include <sceneLoader/SceneLoader.h>
 
 ERenderSceneInstance_p ERenderScene_create(void)
 {

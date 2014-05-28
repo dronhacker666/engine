@@ -1,13 +1,13 @@
 #include "../include/ELib.h"
 
-unsigned int ETools_hashString(char* str){
+unsigned int ETools_hashString(const char* str){
 	unsigned int hash = 0;
 	for(; *str; str++)
 		hash = (hash * 1664525) + (unsigned char)(*str) + 1013904223;
 	return hash;
 }
 
-bool ETools_loadFile(char* filename, char** content, int* length)
+bool ETools_loadFile(const char* filename, char** content, int* length)
 {
 	FILE* fp = fopen(filename, "rb");
 	int size;

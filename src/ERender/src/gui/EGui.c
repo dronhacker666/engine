@@ -1,4 +1,4 @@
-#include "EGui.h"
+#include <gui/EGui.h>
 
 GLuint block_VBO, block_VAO;
 

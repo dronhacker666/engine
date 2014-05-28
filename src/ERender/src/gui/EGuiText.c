@@ -1,5 +1,5 @@
-#include "EGuiText.h"
-#include "libfont.h"
+#include <gui/EGuiText.h>
+#include <libfont.h>
 
 GLuint texture = -1;
 

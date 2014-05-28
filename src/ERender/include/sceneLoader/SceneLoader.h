@@ -1,12 +1,12 @@
 #ifndef SCENEDECODER_H
 #define SCENEDECODER_H
 
-#include "ERenderMath.h"
-#include "ERenderScene.h"
-#include "ERenderModel.h"
-#include "ERenderGroup.h"
-#include "ERenderMaterial.h"
-#include "ELib.h"
+#include <render/ERenderMath.h>
+#include <render/ERenderScene.h>
+#include <render/ERenderModel.h>
+#include <render/ERenderGroup.h>
+#include <render/ERenderMaterial.h>
+#include <ELib.h>
 
 ERenderObjectInstance_p SceneLoader_loadOBJ(const char*);
 

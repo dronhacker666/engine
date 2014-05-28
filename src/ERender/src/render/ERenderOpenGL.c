@@ -1,6 +1,6 @@
-#include "ERenderOpenGL.h"
-#include "ERenderEvents.h"
-#include "EInput.h"
+#include <render/ERenderOpenGL.h>
+#include <render/ERenderEvents.h>
+#include <input/EInput.h>
 
 PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
@@ -217,7 +217,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
 
 	if(!wglCreateContextAttribsARB){
-		printf("wglCreateContextAttribsARB fail (%d)\n", GetLastError());
+		printf("wglCreateContextAttribsARB fail (%ld)\n", GetLastError());
 		return FALSE;
 	}
 
@@ -238,7 +238,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	hGLRC = wglCreateContextAttribsARB(gApi->hdc, 0, attr);
 
 	if(!hGLRC || !wglMakeCurrent(gApi->hdc, hGLRC)){
-		printf("Creating gApi context fail (%d)\n", GetLastError());
+		printf("Creating gApi context fail (%ld)\n", GetLastError());
 		return FALSE;
 	}
 

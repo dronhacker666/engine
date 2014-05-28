@@ -1,8 +1,8 @@
 #ifndef ERENDERMATERIAL_H
 #define ERENDERMATERIAL_H
 
-#include "ELib.h"
-#include "../imageDecoder/Image.h"
+#include <ELib.h>
+#include <imageDecoder/Image.h>
 #include "ERenderOpenGL.h"
 
 typedef struct {

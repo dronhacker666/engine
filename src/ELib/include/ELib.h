@@ -196,8 +196,8 @@ typedef struct {
 } FileResult;
 
 typedef struct {
-	unsigned int 	(*hashString)	(char *);
-	bool	 		(*loadFile)		(char*, char**, int*);
+	unsigned int 	(*hashString)	(const char *);
+	bool	 		(*loadFile)		(const char*, char**, int*);
 } _ETools;
 extern _ETools ETools;
 

@@ -2,8 +2,8 @@
 #define IMAGEDECODER_TGA_H
 
 #include <stdint.h>
+#include <ELib.h>
 #include "Image.h"
-#include "ELib.h"
 
 typedef struct
 {
@@ -18,7 +18,5 @@ typedef struct
 	uint8_t  bitperpel;
 	uint8_t  description;
 } TGAHeader;
-
-bool loadTGA(char*, Image_p);
 
 #endif

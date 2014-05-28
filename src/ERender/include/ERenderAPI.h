@@ -10,15 +10,15 @@
 #include <GL/glext.h>
 #include <GL/wglext.h>
 
-#include "EInput.h"
-#include "ERender.h"
-#include "ERenderShader.h"
-#include "ERenderObject.h"
-#include "ERenderOpenGL.h"
-#include "ERenderCamera.h"
-#include "ERenderEvents.h"
+#include <input/EInput.h>
+#include <render/ERender.h>
+#include <render/ERenderShader.h>
+#include <render/ERenderObject.h>
+#include <render/ERenderOpenGL.h>
+#include <render/ERenderCamera.h>
+#include <render/ERenderEvents.h>
 
 //GUI
-#include "EGui.h"
+#include <gui/EGui.h>
 
 #endif

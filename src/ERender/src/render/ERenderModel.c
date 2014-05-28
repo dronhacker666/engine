@@ -1,5 +1,5 @@
-#include "ERenderModel.h"
-#include "ERenderOpenGL.h"
+#include <render/ERenderModel.h>
+#include <render/ERenderOpenGL.h>
 
 ERenderModelInstance_p ERenderModel_create(void)
 {

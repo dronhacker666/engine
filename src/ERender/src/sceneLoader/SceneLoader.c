@@ -1,4 +1,4 @@
-#include "SceneLoader.h"
+#include <sceneLoader/SceneLoader.h>
 
 ERenderObjectInstance_p SceneLoader_load(ERenderSceneInstance_p scene, const char* filename)
 {

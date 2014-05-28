@@ -1,10 +1,10 @@
 #ifndef ERENDEROBJECT_H
 #define ERENDEROBJECT_H
 
+#include <ELib.h>
 #include "ERenderShader.h"
 #include "ERenderMatrix.h"
 #include "ERenderMath.h"
-#include "ELib.h"
 
 typedef enum {
 	ERENDEROBJECTTYPE_GROUP,
