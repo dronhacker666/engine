@@ -1,4 +1,4 @@
-CC="cc"
+CC="gcc"
 SOURCES="src/*/*.c main.c"
 PARAMS="-Wall" #-g -pg
 

@@ -11,20 +11,19 @@
 	[
 		{
 			"name" : "ERender",
-			"cmd" : ["mingw32-make.exe", "-f", "makefile"],
 			"working_dir": "${project_path:${folder}}",
 			"variants" : [
 				{
 					"name"	: "Run",
-					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "run"],
+					"cmd"	: ["mingw32-make", "-f", "makefile", "run"],
 				},
 				{
 					"name"	: "Rebuild",
-					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "rebuild"],
+					"cmd"	: ["mingw32-make", "-f", "makefile", "rebuild"],
 				},
 				{
 					"name"	: "Clean",
-					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "clean"],
+					"cmd"	: ["mingw32-make", "-f", "makefile", "clean"],
 				},
 			],
 		},
