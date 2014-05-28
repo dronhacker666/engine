@@ -2,15 +2,11 @@
 	"folders":
 	[
 		{
+			"path": ".",
 			"follow_symlinks": true,
-			"path": "."
+			"folder_exclude_patterns": ["bin", "lib", "obj"],
 		}
 	],
-	"settings":
-	{
-		"sublimegdb_workingdir": "${project_path:${folder:/bin}}",
-		"sublimegdb_commandline": "gdb --interpreter=mi ./run",
-	},
 	"build_systems":
 	[
 		{
@@ -19,16 +15,12 @@
 			"working_dir": "${project_path:${folder}}",
 			"variants" : [
 				{
-					"name"	: "All",
-					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "all"],
-				},
-				{
 					"name"	: "Run",
 					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "run"],
 				},
 				{
-					"name"	: "Lib",
-					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "build_lib"],
+					"name"	: "Clean",
+					"cmd"	: ["mingw32-make.exe", "-f", "makefile", "clean"],
 				},
 			],
 		},

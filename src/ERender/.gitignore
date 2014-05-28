@@ -1,0 +1,6 @@
+obj
+bin
+*.sublime-workspace
+*.log
+*.o
+*.exe
