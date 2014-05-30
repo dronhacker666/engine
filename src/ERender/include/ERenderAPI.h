@@ -10,6 +10,7 @@
 #include <GL/glext.h>
 #include <GL/wglext.h>
 
+#include <sys/ESys.h>
 #include <input/EInput.h>
 #include <render/ERender.h>
 #include <render/ERenderShader.h>

@@ -9,7 +9,7 @@ typedef struct
 	void (*init) (void);
 	void (*free) (void);
 	int (*setFont) (const char*, unsigned char);
-	void (*genText) (void*, const char*, unsigned int, unsigned int);
+	void (*genText) (void*, const wchar_t*, unsigned int, unsigned int);
 } _Libfont;
 extern _Libfont Libfont;
 

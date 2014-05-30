@@ -12,7 +12,7 @@ typedef struct EGuiManager* EGuiManager_p;
 	struct EGuiItem* _next;\
 	struct EGuiItem* _prev;\
 	void(*render)(void*, EGuiManager_p);\
-	int x, y, zIndex, width, heigth, rotate;
+	int x, y, zIndex, width, height, rotate;
 
 
 typedef struct EGuiItem{

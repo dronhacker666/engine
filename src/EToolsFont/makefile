@@ -8,11 +8,11 @@ run:
 	mkdir -p bin
 
 	#font converter
-	#${CC} -s -o bin/fontconv.exe -I include src/fontconv.c -Llib -lfreetype
-	#cd bin && ./fontconv.exe
+	${CC} -s -o bin/fontconv.exe -I include src/fontconv.c -Llib -lfreetype
+	cd bin && ./fontconv.exe
 
-	${CC} -o bin/run.exe -I include -I ../ELib/include src/libfont.c main.c -s -L ../ELib/lib -lelib
-	cd bin && ./run.exe
+	#${CC} -o bin/run.exe -I include -I ../ELib/include src/libfont.c main.c -s -L ../ELib/lib -lelib
+	#cd bin && ./run.exe
 
 build_lib:
 	mkdir -p ${LIB_DIR}

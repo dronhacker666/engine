@@ -50,8 +50,8 @@ void* Libfont_loadFont(const char* filename, unsigned char fontSize)
 	}
 
 	int i;
-	result = malloc(sizeof(LFChar)*128);
-	for(i=0; i<127; i++)
+	result = malloc(sizeof(LFChar)*2000);
+	for(i=0; i<2000; i++)
 	{
 		fread(&fchar, sizeof(FChar), 1, fp);
 		result[i].width = fchar.width;
@@ -97,10 +97,12 @@ int Libfont_setFont(const char* filename, unsigned char _fontSize)
 */
 
 
-void Libfont_genText(void* out, const char* text, unsigned int width, unsigned int height)
+void Libfont_genText(void* out, const wchar_t* text, unsigned int width, unsigned int height)
 {
+
+
 	int x, y;
-	const char* cur = text;
+	const wchar_t* cur = text;
 	LFChar ch;
 
 	int cx = 0;
@@ -110,6 +112,9 @@ void Libfont_genText(void* out, const char* text, unsigned int width, unsigned i
 
 	while(*cur)
 	{
+		ch = charset[*cur];
+		cur++;
+
 		switch(*cur){
 			case ' ':
 				cx += (int)fontSize/2;
@@ -119,7 +124,6 @@ void Libfont_genText(void* out, const char* text, unsigned int width, unsigned i
 				cy += fontSize;
 			break;
 			default:
-				ch = charset[*cur];
 				for(y=0; y<ch.height; y++){
 					for(x=0; x<ch.width; x++){
 						int offset = (cy+y+(fontSize-ch.top))*width+x+cx;
@@ -130,7 +134,6 @@ void Libfont_genText(void* out, const char* text, unsigned int width, unsigned i
 				}
 				cx += ch.width - ch.left;
 		}
-		cur++;
 	}
 }
 

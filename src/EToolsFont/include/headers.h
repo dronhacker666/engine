@@ -9,7 +9,7 @@ typedef struct
 
 typedef struct
 {
-	char code;
+	int code;
 	unsigned int width;
 	unsigned int height;
 	int top;

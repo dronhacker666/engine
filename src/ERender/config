@@ -1,12 +1,12 @@
 CC="gcc"
 SOURCES="src/*/*.c main.c"
-PARAMS="-Wall" #-g -pg
+PARAMS="-Wall -s" #-g -pg
 
 OUTSIDE_INCLUDE="-I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include"
 INSIDE_INCUDE="-I include"
 INCLUDE="${INSIDE_INCUDE} ${OUTSIDE_INCLUDE}"
 
-LIBS="-lOpenGL32 -lGdi32 -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont"
+LIBS="-lOpenGL32 -lGdi32 -lpthread -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont"
 
 OBJ_DIR="obj"
 BIN_DIR="bin"

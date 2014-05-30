@@ -1,9 +1,12 @@
 #include <gui/EGui.h>
+#include <libfont.h>
 
 GLuint block_VBO, block_VAO;
 
 EGuiManager_p EGui_create(void)
 {
+	Libfont.init();
+
 	EGuiManager_p manager = EMem.alloc(sizeof(EGuiManager));
 
 	static float block[] = {
@@ -91,15 +94,15 @@ void EGui_render(EGuiManager_p manager)
 
 	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "resolution"), 800, 600);
 
-	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.pos"), 10, 10);
-	glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.size"), 200, 100);
-
 	glBindVertexArray(block_VAO);
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	EGuiItem_p item = manager->_head;
 	while(item){
+
+		glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.pos"), item->x, item->y);
+		glUniform2f(glGetUniformLocation(manager->shaderManager->shader_id, "box.size"), item->width, item->height);
 
 		item->render(item, manager);
 		glDrawArrays(GL_TRIANGLES, 0, 6);

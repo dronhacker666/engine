@@ -75,6 +75,7 @@ void ERender_initRenderRect(void)
 			vec3 _color = data.rgb;\n\
 			float _depth = data.a;\n\
 			color = vec4(_color, 1.0);\n\
+			//color.rgb = mix(color.rgb, vec3(1.0), 1.0-_depth);\n\
 		}\n\
 	";
 	shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);

@@ -20,19 +20,19 @@ int main(void)
 	FT_GlyphSlot g = face->glyph;
 
 	unsigned char size;
-	char code;
+	int code;
 	FChar ch;
 	FCharset chset;
 	long int pos1, pos2;
 	unsigned int dataSize;
 
-	for(size=8; size<48; size++)
+	for(size=10; size<=14; size++)
 	{
 		FT_Set_Pixel_Sizes(face, 0, size);
 		pos1 = ftell(fp);
 		fseek(fp, sizeof(FCharset), SEEK_CUR);
 		dataSize=0;
-		for(code=0; code<127; code++)
+		for(code=0; code<2000; code++)
 		{
 			FT_Load_Char(face, code, FT_LOAD_RENDER);
 

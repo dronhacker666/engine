@@ -6,14 +6,14 @@
 typedef struct{
 	_EGuiItemPrototype;
 	// some fields: use in gui elements
-	const char* text;
-	unsigned int fontSize;
-
+	const wchar_t* text;
+	int fontSize;
+	GLuint tex;
 }EGuiTextInstance, *EGuiTextInstance_p;
 
 typedef struct {
 	EGuiTextInstance_p (*create) (void);
-	void (*setText) (EGuiTextInstance_p, const char*);
+	void (*setText) (EGuiTextInstance_p, const wchar_t*);
 } _EGuiText;
 extern _EGuiText EGuiText;
 
