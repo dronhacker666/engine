@@ -113,8 +113,6 @@ void Libfont_genText(void* out, const wchar_t* text, unsigned int width, unsigne
 	while(*cur)
 	{
 		ch = charset[*cur];
-		cur++;
-
 		switch(*cur){
 			case ' ':
 				cx += (int)fontSize/2;
@@ -134,6 +132,7 @@ void Libfont_genText(void* out, const wchar_t* text, unsigned int width, unsigne
 				}
 				cx += ch.width - ch.left;
 		}
+		cur++;
 	}
 }
 

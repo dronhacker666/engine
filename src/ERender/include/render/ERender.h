@@ -4,6 +4,7 @@
 struct ERenderInstance;
 
 #include <windows.h>
+#include <gui/EGui.h>
 #include "ERenderEvents.h"
 #include "ERenderScene.h"
 #include "ERenderCamera.h"
@@ -19,6 +20,9 @@ typedef struct ERenderInstance{
 	int width;
 	int height;
 
+	bool enabled;
+
+	EGuiManager_p 			gui;
 	EEventManager_p 		events;
 	ERenderCameraInstance_p camera;
 	ERenderSceneInstance_p 	scene;

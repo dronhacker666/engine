@@ -1,13 +1,15 @@
 CC="gcc"
-SOURCES="src/*/*.c main.c"
-PARAMS="-Wall -s" #-g -pg
+PARAMS="-Wall -s -DUNICODE" #-g -pg
 
-OUTSIDE_INCLUDE="-I ../ELib/include -I src/render -I src/input -I src/gui -I ../EToolsFont/include"
-INSIDE_INCUDE="-I include"
-INCLUDE="${INSIDE_INCUDE} ${OUTSIDE_INCLUDE}"
+INCLUDE=""
 
-LIBS="-lOpenGL32 -lGdi32 -lpthread -L../ELib/lib -lelib -L lib -ljpeg -L../EToolsFont/lib -lfont"
+DLIB_SOURCES="src/*/*.c"
+DLIB_LIBS="-lOpenGL32 -lGdi32 -lpthread -lelib -ljpeg -lfont"
+
+EXE_SOURCES="main.c"
+EXE_LIBS="-lrender"
 
 OBJ_DIR="obj"
 BIN_DIR="bin"
-EXE_NAME="run"
+LIB_DIR="lib"
+NAME="render"

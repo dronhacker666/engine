@@ -1,4 +1,5 @@
 #include <gui/EGuiText.h>
+#include <render/ERenderOpenGL.h>
 #include <libfont.h>
 
 void EGuiText_render(EGuiTextInstance_p widget, EGuiManager_p manager)
@@ -16,7 +17,12 @@ void EGuiText_setText(EGuiTextInstance_p widget, const wchar_t* text)
 
 	void* buffer = EMem.alloc(sizeof(char)*widget->width*widget->height);
 
-	Libfont.setFont("../data/arial.my", widget->fontSize);
+	char* filename = "../data/arial.my";
+
+	if(!Libfont.setFont(filename, widget->fontSize)){
+		printf("Failed open file\"%s\"\n", filename);
+		exit(1);
+	}
 	Libfont.genText(buffer, text, widget->width, widget->height);
 
 	glBindTexture(GL_TEXTURE_2D, widget->tex);

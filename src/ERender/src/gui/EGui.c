@@ -1,5 +1,6 @@
 #include <gui/EGui.h>
 #include <libfont.h>
+#include <render/ERenderOpenGL.h>
 
 GLuint block_VBO, block_VAO;
 

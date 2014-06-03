@@ -113,8 +113,6 @@ BOOL _initOpenGLProc(void)
 	return TRUE;
 }
 
-ERenderInstance_p render;
-
 
 void changeWindowSize(ERenderInstance_p render, int width, int height)
 {
@@ -126,19 +124,8 @@ void changeWindowSize(ERenderInstance_p render, int width, int height)
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	KeyboardEvent event;
 	switch (uMsg)
 	{
-		case WM_KEYDOWN:
-			event.type = keyDown;
-			event.keyCode = wParam;
-			EEvents.addEvent(render->events, &event);
-		break;
-		case WM_KEYUP:
-			event.type = keyUp;
-			event.keyCode = wParam;
-			EEvents.addEvent(render->events, &event);
-		break;
 		case WM_SIZE:
 			//changeWindowSize(render, LOWORD(lParam), HIWORD(lParam));
 		break;
@@ -153,9 +140,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 {
 	MSG msg;
-	while (PeekMessage(&msg, event->render->gAPI.hWnd, 0, 0, PM_NOREMOVE))
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 	{
-		GetMessage(&msg, event->render->gAPI.hWnd, 0, 0);
+		//GetMessage(&msg, NULL, 0, 0);
+		//PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
@@ -166,6 +154,10 @@ void ERenderOpenGL_onAfterRender(RenderEvent_p event)
 {
 	//glFlush();
 	SwapBuffers(event->render->gAPI.hdc);
+
+	if(GetAsyncKeyState(VK_ESCAPE)){
+		event->render->enabled = false;
+	}
 }
 
 BOOL ERenderOGLInit(ERenderInstance_p render)
@@ -175,6 +167,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 		render->width,
 		render->height
 	);
+
 
 	EEvents.addListener(render->events, beforeRender, (void*)ERenderOpenGL_onBeforeRender);
 	EEvents.addListener(render->events, afterRender, (void*)ERenderOpenGL_onAfterRender);
@@ -192,7 +185,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 		hCursor: NULL,
 		hbrBackground: NULL,
 		lpszMenuName: NULL,
-		lpszClassName: "myclass",
+		lpszClassName: L"myclass",
 		hIconSm: NULL,
 	};
 	RegisterClassEx(&wc);
@@ -200,7 +193,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	int x = 0;// (GetSystemMetrics(SM_CXSCREEN) - render->width)  / 2;
 	int y = 0;// (GetSystemMetrics(SM_CYSCREEN) - render->height) / 2;
 
-	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, "myclass", "Game", WS_VISIBLE|WS_POPUP, x, y, render->width, render->height, 0, 0, 0, 0);
+	gApi->hWnd = CreateWindowEx(WS_EX_TOPMOST, L"myclass", L"Game", WS_VISIBLE|WS_POPUP, x, y, render->width, render->height, 0, 0, 0, 0);
 	gApi->hdc = GetDC(gApi->hWnd);
 
 	PIXELFORMATDESCRIPTOR ppfd;

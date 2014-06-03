@@ -1,0 +1,12 @@
+_BASE=`pwd`
+
+_INCLUDE="\
+-I ${_BASE}/src/ELib/include \
+-I ${_BASE}/src/ERender/include \
+-I ${_BASE}/src/EToolsFont/include \
+"
+LIB_DIRS="\
+-L${_BASE}/src/ELib/lib \
+-L${_BASE}/src/EToolsFont/lib \
+-L${_BASE}/src/ERender/lib \
+"

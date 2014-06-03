@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+cd $1
 . config
 
 rm -rf $OBJ_DIR

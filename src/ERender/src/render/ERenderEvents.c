@@ -52,9 +52,12 @@ void EEvents_removeListener(EEventManager_p manager, EventListener _listener)
 			{
 				manager->_current = listener->_prev;
 			}
-
-			listener->_next->_prev = listener->_prev;
-			listener->_prev->_next = listener->_next;
+			if(listener->_next){
+				listener->_next->_prev = listener->_prev;
+			}
+			if(listener->_prev){
+				listener->_prev->_next = listener->_next;
+			}
 
 			EMem.free(listener);
 			break;

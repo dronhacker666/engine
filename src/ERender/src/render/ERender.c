@@ -1,4 +1,5 @@
 #include <render/ERender.h>
+#include <input/EInput.h>
 #include <render/ERenderOpenGL.h>
 
 void ERender_initRenderRect(void);
@@ -6,22 +7,25 @@ void ERender_initRenderRect(void);
 ERenderInstance_p ERenderCreate(const int width, const int height){
 
 	ERenderInstance_p render = EMem.alloc(sizeof(ERenderInstance));
-
 	render->width = width;
 	render->height = height;
 
 	render->events = EEvents.create();
+	EInput.init(render->events);
 
 	if( !ERenderOGLInit(render) ){
 		return FALSE;
 	}
 
+	render->gui = EGui.create();
 	render->camera = ERenderCamera.create();
 	ERenderCamera.setSize(render->camera, width, height);
 
 	render->scene = ERenderScene.create();
 
 	ERender_initRenderRect();
+
+	render->enabled = true;
 
 	return render;
 }
@@ -119,9 +123,17 @@ void ERenderSetScene(const ERenderInstance_p render, const ERenderSceneInstance_
 
 void ERenderRender(const ERenderInstance_p render)
 {
-	ERenderCamera.renderScene(render->camera, render->scene);
+	RenderEvent event_beforeRender = {type: beforeRender, render: render};
+	RenderEvent event_afterRender = {type: afterRender, render: render};
 
+	EEvents.addEvent(render->events, &event_beforeRender);
+
+	ERenderCamera.renderScene(render->camera, render->scene);
 	ERender_renderRect(render, 0, 0, render->width, render->height, render->camera->color[1]);
+
+	EGui.render(render->gui);
+
+	EEvents.addEvent(render->events, &event_afterRender);
 }
 
 

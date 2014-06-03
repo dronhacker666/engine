@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+cd $1
 . config
 
-cd $BIN_DIR && ./$EXE_NAME
+cd $BIN_DIR && ./$NAME

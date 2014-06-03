@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include <ELib.h>
-#include <ERenderAPI.h>
+#include <render/ERenderShader.h>
 
 typedef struct EGuiManager* EGuiManager_p;
 

@@ -1,4 +1,5 @@
 #include <gui/EGuiButton.h>
+#include <render/ERenderOpenGL.h>
 
 void EGuiButton_render(EGuiButtonInstance_p widget, EGuiManager_p manager)
 {

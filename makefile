@@ -1,20 +1,20 @@
-CC=gcc
 MAKE=mingw32-make
-SOURCES=*.c
-LIBS=-L lib -llua52 -lopengl32
-PARAMS= -s
-OUT=bin/run
 
-all: EScript_static ERender_static ECore_static
+# Engine section
+ENGINE_DIR=src/ERender
+engine_run: engine_build
+	bash run.sh ${ENGINE_DIR}
+engine_build:
+	bash build.sh ${ENGINE_DIR}
+engine_clean:
+	bash clean.sh ${ENGINE_DIR}
 
-ECore:
-	${CC} -o ${OUT} ${SOURCES} ${PARAMS} ${LIBS}
-	${OUT}
-
-EScript_static:
-	cd src/EScript && ${MAKE} static
-	cp src/EScript/lib/* lib
-
-ERender_static:
-	cd src/ERender && ${MAKE} static
-	cp src/ERender/lib/* lib
+# Editor section
+EDITOR_DIR=src/EEditor
+editor_run: editor_build
+	cp ${ENGINE_DIR}/lib/librender.dll ${EDITOR_DIR}/bin/librender.dll
+	bash run.sh ${EDITOR_DIR}
+editor_build: engine_build
+	bash build.sh ${EDITOR_DIR}
+editor_clean:
+	bash clean.sh ${EDITOR_DIR}

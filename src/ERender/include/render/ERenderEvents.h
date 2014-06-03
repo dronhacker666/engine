@@ -10,11 +10,12 @@ typedef enum
 	afterRender,
 
 	// Mouse
+	mouseMove,
 	mouseDown,
 	mouseUp,
-	mouseMove,
 
 	// Keyboard
+	keyPress,
 	keyDown,
 	keyUp,
 

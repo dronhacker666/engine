@@ -1,0 +1,44 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"follow_symlinks": true,
+			"folder_exclude_patterns": ["bin", "lib", "obj"],
+		}
+	],
+	"build_systems":
+	[
+		{
+			"name" : "EEngine",
+			"working_dir": "${project_path:${folder}}",
+			"variants" : [
+				{
+					"name"	: "Engine Run",
+					"cmd"	: ["mingw32-make", "-f", "makefile", "engine_run"],
+				},
+				{
+					"name"	: "Engine Build",
+					"cmd"	: ["mingw32-make", "-f", "makefile", "engine_build"],
+				},
+				{
+					"name"	: "Engine Clean",
+					"cmd"	: ["mingw32-make", "-f", "makefile", "engine_clean"],
+				},
+
+				{
+					"name"	: "Editor Run",
+					"cmd"	: ["mingw32-make", "-f", "makefile", "editor_run"],
+				},
+				{
+					"name"	: "Editor Build",
+					"cmd"	: ["mingw32-make", "-f", "makefile", "editor_build"],
+				},
+				{
+					"name"	: "Editor Clean",
+					"cmd"	: ["mingw32-make", "-f", "makefile", "editor_clean"],
+				},
+			],
+		},
+	]
+}

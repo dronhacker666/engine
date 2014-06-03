@@ -1,29 +1,31 @@
 #ifndef EINPUT_H
 #define EINPUT_H
 
-#include <windows.h>
+#include <stdint.h>
 #include <render/ERenderEvents.h>
 
 typedef struct {
 	EventPrototype;
 	unsigned int 	keyCode;
+	unsigned int 	charCode;
 } KeyboardEvent, *KeyboardEvent_p;
 
 typedef struct {
 	EventPrototype;
-	unsigned int 	x;
-	unsigned int 	y;
-	unsigned int 	dx;
-	unsigned int 	dy;
-	unsigned int 	lbutton;
-	unsigned int 	rbutton;
-	unsigned int 	mbutton;
-	int 			wheel;
+	int 	x;
+	int 	y;
+	int 	dx;
+	int 	dy;
+	int 	lbtn;
+	int 	rbtn;
+	int 	mbtn;
+	int 	wheel;
 } MouseEvent, *MouseEvent_p;
 
+
 typedef struct {
-	void (*init) (void);
-	BOOL (*keyPress) (unsigned int);
+	void (*init) (EEventManager_p);
+	bool (*keyPress) (unsigned int);
 } _EInput;
 extern _EInput EInput;
 
