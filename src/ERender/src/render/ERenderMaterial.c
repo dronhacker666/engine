@@ -1,6 +1,6 @@
 #include <render/ERenderMaterial.h>
 
-unsigned int id=0;
+static unsigned int id=0;
 
 ERenderMaterialInstance_p ERenderMaterial_create(void)
 {

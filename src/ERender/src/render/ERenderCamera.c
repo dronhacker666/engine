@@ -36,13 +36,15 @@ ERenderCameraInstance_p ERenderCamera_create(void)
 	char fragment_src[] = "\
 		#version 140\n\
 		uniform sampler2D iTex0;\n\
+		uniform int iMeshId;\n\
 		in vec2 fragTexcoord;\n\
 		in vec3 fragNormal;\n\
 		out vec4 oColor0;\n\
 		out vec4 oColor1;\n\
 		void main(void)\n\
 		{\n\
-			oColor1 = vec4(texture(iTex0, fragTexcoord).rgb, gl_FragCoord.w);\n\
+			oColor0 = vec4(texture(iTex0, fragTexcoord).rgb, gl_FragCoord.w);\n\
+			oColor1 = vec4(iMeshId, 1.0, 1.0, 1.0);\n\
 		}\n\
 	";
 	camera->shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
@@ -117,6 +119,9 @@ void ERenderCamera_renderModel(ERenderCameraInstance_p camera, ERenderModelInsta
 	glUniformMatrix4fv(glGetUniformLocation(camera->shaderManager->shader_id, "modelMatrix"), 1, GL_TRUE, modelMatrix);
 
 
+	glUniform1i(glGetUniformLocation(camera->shaderManager->shader_id, "iMeshId"), model->_id);
+
+
 	glBindVertexArray(model->VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, model->VBO);
 
@@ -134,6 +139,7 @@ void ERenderCamera_renderModel(ERenderCameraInstance_p camera, ERenderModelInsta
 	glEnableVertexAttribArray(normalLocation);
 
 	// Textures
+
 	if(model->mtl){
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, model->mtl->tex[0]);

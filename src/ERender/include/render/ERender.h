@@ -27,6 +27,10 @@ typedef struct ERenderInstance{
 	ERenderCameraInstance_p camera;
 	ERenderSceneInstance_p 	scene;
 
+	GLuint block_VBO;
+	GLuint block_VAO;
+	ERenderShaderManagerInstance_p shaderManager;
+
 	float timerFix;
 
 } ERenderInstance, *ERenderInstance_p;

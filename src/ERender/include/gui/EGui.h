@@ -2,8 +2,9 @@
 #define EGUI_H
 
 #include <stdio.h>
-
 #include <ELib.h>
+#include <input/EInput.h>
+#include <render/ERenderEvents.h>
 #include <render/ERenderShader.h>
 
 typedef struct EGuiManager* EGuiManager_p;
@@ -11,8 +12,16 @@ typedef struct EGuiManager* EGuiManager_p;
 #define _EGuiItemPrototype\
 	struct EGuiItem* _next;\
 	struct EGuiItem* _prev;\
-	void(*render)(void*, EGuiManager_p);\
-	int x, y, zIndex, width, height, rotate;
+	GLuint texture;\
+	void* buffer;\
+	bool hasChanged;\
+	int x;\
+	int y;\
+	int width;\
+	int height;\
+	int zIndex;\
+	bool isHover;\
+	bool isFocus;
 
 
 typedef struct EGuiItem{
@@ -21,7 +30,15 @@ typedef struct EGuiItem{
 } EGuiItem, *EGuiItem_p;
 
 typedef struct EGuiManager{
-	ERenderShaderManagerInstance_p shaderManager;
+
+	int screen_width;
+	int screen_height;
+
+	EEventManager_p 				events;
+	ERenderShaderManagerInstance_p 	shaderManager;
+
+	GLuint block_VBO;
+	GLuint block_VAO;
 
 	EGuiItem_p _head;
 	EGuiItem_p _current;
@@ -31,11 +48,9 @@ typedef struct {
 	EGuiManager_p 	(*create) 	(void);
 	void 			(*render) 	(EGuiManager_p);
 	void 			(*addItem) 	(EGuiManager_p, EGuiItem_p);
+
+	void 			(*updateView) 	(EGuiManager_p, EGuiItem_p);
 } _EGui;
 extern _EGui EGui;
-
-//WIDGETS
-#include "EGuiText.h"
-#include "EGuiButton.h"
 
 #endif

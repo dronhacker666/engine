@@ -137,7 +137,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
+void ERenderOpenGL_onBeforeRender(RenderEvent_p event, void* attach)
 {
 	MSG msg;
 	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -150,7 +150,7 @@ void ERenderOpenGL_onBeforeRender(RenderEvent_p event)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void ERenderOpenGL_onAfterRender(RenderEvent_p event)
+void ERenderOpenGL_onAfterRender(RenderEvent_p event, void* attach)
 {
 	//glFlush();
 	SwapBuffers(event->render->gAPI.hdc);
@@ -169,8 +169,8 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 	);
 
 
-	EEvents.addListener(render->events, beforeRender, (void*)ERenderOpenGL_onBeforeRender);
-	EEvents.addListener(render->events, afterRender, (void*)ERenderOpenGL_onAfterRender);
+	EEvents.addListener(render->events, beforeRender, (void*)ERenderOpenGL_onBeforeRender, NULL);
+	EEvents.addListener(render->events, afterRender, (void*)ERenderOpenGL_onAfterRender, NULL);
 
 	GAPI* gApi = &render->gAPI;
 

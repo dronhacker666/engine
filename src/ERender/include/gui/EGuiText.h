@@ -8,7 +8,6 @@ typedef struct{
 	// some fields: use in gui elements
 	const wchar_t* text;
 	int fontSize;
-	GLuint tex;
 }EGuiTextInstance, *EGuiTextInstance_p;
 
 typedef struct {

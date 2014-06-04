@@ -4,7 +4,6 @@
 #include <windows.h>
 #include <pthread.h>
 
-
 int ESys_getCoreAmount(void)
 {
 #if (defined __WIN32__)

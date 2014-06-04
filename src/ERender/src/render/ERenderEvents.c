@@ -13,18 +13,20 @@ void EEvents_addEvent(EEventManager_p manager, void* _event)
 	EEventListener_p listener = manager->_head;
 	while(listener){
 		if(listener->type==event->type){
-			listener->listener(event);
+			listener->listener(event, listener->attach);
 		}
 		listener = listener->_next;
 	}
 }
 
-void EEvents_addListener(EEventManager_p manager, EventType type, EventListener listener)
+void EEvents_addListener(EEventManager_p manager, EventType type, EventListener listener, void* _attach)
 {
 	EEventListener_p item = EMem.alloc(sizeof(EEventListener));
 
 	item->type = type;
 	item->listener = listener;
+	item->attach = _attach;
+
 	item->_next = NULL;
 	item->_prev = manager->_current;
 

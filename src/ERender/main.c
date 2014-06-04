@@ -3,13 +3,11 @@
 #include <time.h>
 #include <wchar.h>
 
-ERenderInstance_p render;
 
-EGuiTextInstance_p wcmd;
 wchar_t buff[1024];
 int buff_pos = 0;
 
-void onKeyPress(KeyboardEvent_p event)
+void onKeyPress(KeyboardEvent_p event, EGuiTextInstance_p wcmd)
 {
 	switch(event->keyCode){
 		case 13:
@@ -32,7 +30,7 @@ void onKeyPress(KeyboardEvent_p event)
 	EGuiText.setText(wcmd, buff);
 }
 
-void onBeforeRender(RenderEvent_p event)
+void onBeforeRender(RenderEvent_p event, ERenderInstance_p render)
 {
 	if(EInput.keyPress('W')){
 		render->camera->position.x -= sin(M_PI/180 * render->camera->rotation.y) * 0.1 * render->timerFix;
@@ -56,27 +54,22 @@ void onBeforeRender(RenderEvent_p event)
 	}
 }
 
-void onMouseMove(MouseEvent_p event)
+void onMouseMove(MouseEvent_p event, ERenderInstance_p render)
 {
 	if(event->lbtn){
 		render->camera->rotation.x += (float)event->dy;
 		render->camera->rotation.y += (float)event->dx;
 	}
 }
-void onMouseDown(MouseEvent_p event)
+void onMouseDown(MouseEvent_p event, ERenderInstance_p render)
 {
-	EEvents.addListener(render->events, mouseMove, (void*)onMouseMove);
+	EEvents.addListener(render->events, mouseMove, (void*)onMouseMove, render);
 }
-void onMouseUp(MouseEvent_p event)
+void onMouseUp(MouseEvent_p event, ERenderInstance_p render)
 {
 	EEvents.removeListener(render->events, (void*)onMouseMove);
 }
 
-
-void cback(void* data)
-{
-	printf("%s\n", (char*)data);
-}
 
 
 int main(void)
@@ -100,7 +93,7 @@ int main(void)
 	}
 	*/
 
-	render = ERender.create(800, 600);
+	ERenderInstance_p render = ERender.create(1280, 960);
 
 	ERenderScene.load(render->scene, "../data/model.obj");
 	ERenderObjectInstance_p beretta = ERenderScene.load(render->scene, "../data/beretta.obj");
@@ -108,29 +101,27 @@ int main(void)
 	beretta->position.y = 4;
 
 
-	wcmd = EGuiText.create();
-	EGuiTextInstance_p wfps = EGuiText.create();
-	EGui.addItem(render->gui, (EGuiItem_p)wcmd);
-	EGui.addItem(render->gui, (EGuiItem_p)wfps);
-
-	wfps->x = 10;
-	wfps->y = 10;
-	wfps->width = 200;
-	wfps->height = 100;
-
-	wcmd->fontSize = 10;
+	EGuiTextInstance_p wcmd = EGuiText.create();
 	wcmd->x = 10;
 	wcmd->y = 220;
 	wcmd->width = 700;
 	wcmd->height = 100;
+	wcmd->fontSize = 10;
+	EGui.addItem(render->gui, (EGuiItem_p)wcmd);
 
-	EEvents.addListener(render->events, keyPress, (void*)onKeyPress);
-	EEvents.addListener(render->events, beforeRender, (void*)onBeforeRender);
+	EGuiTextInstance_p wfps = EGuiText.create();
+	wfps->x = 10;
+	wfps->y = 10;
+	wfps->width = 200;
+	wfps->height = 100;
+	wfps->fontSize = 14;
+	EGui.addItem(render->gui, (EGuiItem_p)wfps);
 
+	EEvents.addListener(render->events, keyPress, (void*)onKeyPress, wcmd);
+	EEvents.addListener(render->events, beforeRender, (void*)onBeforeRender, render);
 
-	EEvents.addListener(render->events, mouseDown, (void*)onMouseDown);
-	EEvents.addListener(render->events, mouseUp, (void*)onMouseUp);
-
+	EEvents.addListener(render->events, mouseDown, (void*)onMouseDown, render);
+	EEvents.addListener(render->events, mouseUp, (void*)onMouseUp, render);
 
 	int fps = 0;
 	int s = clock();
