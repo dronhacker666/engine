@@ -83,6 +83,7 @@ void ERender_initRenderRect(ERenderInstance_p render)
 
 	char fragment_src[] = "\
 		#version 140\n\
+		uniform vec2 iResolution;\n\
 		uniform sampler2D iTex0;\n\
 		uniform sampler2D iTex1;\n\
 		uniform sampler2D iTex2;\n\
@@ -91,10 +92,16 @@ void ERender_initRenderRect(ERenderInstance_p render)
 		out vec4 color;\n\
 		void main(void)\n\
 		{\n\
-			vec4 data = texture(iTex0, fragTexcoord);\n\
-			vec3 _color = data.rgb;\n\
-			float _depth = data.a;\n\
-			color = vec4(_color, 1.0);\n\
+			float x = iResolution.x * fragTexcoord.x;\
+			float y = iResolution.y * fragTexcoord.y * 10.0;\
+			vec2 k = vec2(1.0/iResolution.x, 1.0/iResolution.y);\
+			vec4 data0 = texture(iTex0, fragTexcoord);\
+			vec4 data1 = texture(iTex1, fragTexcoord);\
+			vec3 _color = data0.rgb;\
+			float _depth = data0.a;\
+			\
+			color = vec4(_color, 1.0);\
+			\
 			//color.rgb = mix(color.rgb, vec3(1.0), 1.0-_depth);\n\
 		}\n\
 	";
@@ -103,7 +110,6 @@ void ERender_initRenderRect(ERenderInstance_p render)
 	ERenderShaderManager.prepareShaders(render->shaderManager);
 
 	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex0") , 0);
-
 	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex1") , 1);
 	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex2") , 2);
 	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex3") , 3);
@@ -118,13 +124,13 @@ void ERender_initRenderRect(ERenderInstance_p render)
 	glEnableVertexAttribArray(texcoordLocation);
 }
 
-void ERender_renderRect(ERenderInstance_p render, int x, int y, int width, int height, GLint texture)
+void ERender_renderRect(ERenderInstance_p render)
 {
 	ERenderShaderManager.prepareShaders(render->shaderManager);
 
+	glUniform2f(glGetUniformLocation(render->shaderManager->shader_id, "iResolution") , render->width, render->height);
+
 	glBindVertexArray(render->block_VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
@@ -145,7 +151,14 @@ void ERenderRender(const ERenderInstance_p render)
 	EEvents.addEvent(render->events, &event_beforeRender);
 
 	ERenderCamera.renderScene(render->camera, render->scene);
-	ERender_renderRect(render, 0, 0, render->width, render->height, render->camera->color[1]);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, render->camera->color[0]);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, render->camera->color[1]);
+
+	ERender_renderRect(render);
 
 	EGui.render(render->gui);
 

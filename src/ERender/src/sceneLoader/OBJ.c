@@ -1,11 +1,11 @@
 #include <sceneLoader/SceneLoader.h>
 
-EArrayInstance_p vertex;
-EArrayInstance_p texcoord;
-EArrayInstance_p normals;
+static EArrayInstance_p vertex;
+static EArrayInstance_p texcoord;
+static EArrayInstance_p normals;
 
-EHashInstance_p mtl;
-ERenderGroupInstance_p group;
+static EHashInstance_p mtl;
+static ERenderGroupInstance_p group;
 
 bool hasTexcoord;
 bool hasNormals;

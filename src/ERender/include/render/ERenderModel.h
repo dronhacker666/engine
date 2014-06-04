@@ -8,6 +8,8 @@
 typedef struct {
 	ERenderObjectPrototype;
 
+	int _id;
+
 	char* name;
 
 	ERenderMaterialInstance_p mtl;

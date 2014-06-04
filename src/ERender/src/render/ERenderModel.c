@@ -1,10 +1,13 @@
 #include <render/ERenderModel.h>
 #include <render/ERenderOpenGL.h>
 
+static int _id_counter = 0;
+
 ERenderModelInstance_p ERenderModel_create(void)
 {
 	ERenderModelInstance_p model = EMem.alloc(sizeof(ERenderModelInstance));
 	model->type = ERENDEROBJECTTYPE_MODEL;
+	model->_id = _id_counter++;
 	return model;
 }
 
