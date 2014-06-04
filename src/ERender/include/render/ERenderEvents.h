@@ -32,11 +32,12 @@ typedef struct {
 
 //-------------------------------------
 
-typedef void(*EventListener)(Event_p);
+typedef void(*EventListener)(Event_p, void*);
 
 typedef struct EEventListener{
 	EventType type;
 	EventListener listener;
+	void* attach;
 
 	struct EEventListener* _next;
 	struct EEventListener* _prev;
@@ -50,7 +51,7 @@ typedef struct {
 typedef struct {
 	EEventManager_p		(*create)			(void);
 	void 				(*addEvent)			(EEventManager_p, void*);
-	void 				(*addListener)		(EEventManager_p, EventType, EventListener);
+	void 				(*addListener)		(EEventManager_p, EventType, EventListener, void*);
 	void 				(*removeListener)	(EEventManager_p, EventListener);
 } _EEvents;
 extern _EEvents EEvents;

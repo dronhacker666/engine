@@ -2,7 +2,8 @@
 #include <input/EInput.h>
 #include <render/ERenderOpenGL.h>
 
-void ERender_initRenderRect(void);
+void ERender_initRenderRect(ERenderInstance_p);
+void ERender_initEvents(ERenderInstance_p);
 
 ERenderInstance_p ERenderCreate(const int width, const int height){
 
@@ -14,7 +15,7 @@ ERenderInstance_p ERenderCreate(const int width, const int height){
 	EInput.init(render->events);
 
 	if( !ERenderOGLInit(render) ){
-		return FALSE;
+		return false;
 	}
 
 	render->gui = EGui.create();
@@ -23,18 +24,33 @@ ERenderInstance_p ERenderCreate(const int width, const int height){
 
 	render->scene = ERenderScene.create();
 
-	ERender_initRenderRect();
+	ERender_initRenderRect(render);
+	ERender_initEvents(render);
 
 	render->enabled = true;
 
 	return render;
 }
 
-GLuint block_VBO123, block_VAO123;
-ERenderShaderManagerInstance_p shaderManager;
-void ERender_initRenderRect(void)
+
+void ERender_proxyEventToGui(void* event, ERenderInstance_p render)
 {
-	const float block123[] = {
+	EEvents.addEvent(render->gui->events, event);
+}
+
+void ERender_initEvents(ERenderInstance_p render)
+{
+	EEvents.addListener(render->events, keyPress, 	(void*)ERender_proxyEventToGui, render);
+	EEvents.addListener(render->events, keyDown, 	(void*)ERender_proxyEventToGui, render);
+	EEvents.addListener(render->events, keyUp, 		(void*)ERender_proxyEventToGui, render);
+	EEvents.addListener(render->events, mouseDown, 	(void*)ERender_proxyEventToGui, render);
+	EEvents.addListener(render->events, mouseUp, 	(void*)ERender_proxyEventToGui, render);
+	EEvents.addListener(render->events, mouseMove, 	(void*)ERender_proxyEventToGui, render);
+}
+
+void ERender_initRenderRect(ERenderInstance_p render)
+{
+	const float block[] = {
 		-1.0f, -1.0f,  0.0f,0.0f,
 		 1.0f, -1.0f,  1.0f,0.0f,
 		-1.0f,  1.0f,  0.0f,1.0f,
@@ -43,14 +59,14 @@ void ERender_initRenderRect(void)
 		-1.0f,  1.0f,  0.0f,1.0f
 	};
 
-	glGenVertexArrays(1, &block_VAO123);
-	glBindVertexArray(block_VAO123);
+	glGenVertexArrays(1, &render->block_VAO);
+	glBindVertexArray(render->block_VAO);
 
-	glGenBuffers(1, &block_VBO123);
-	glBindBuffer(GL_ARRAY_BUFFER, block_VBO123);
-	glBufferData(GL_ARRAY_BUFFER, 6 * 4 * sizeof(float), block123, GL_STATIC_DRAW);
+	glGenBuffers(1, &render->block_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, render->block_VBO);
+	glBufferData(GL_ARRAY_BUFFER, 6 * 4 * sizeof(float), block, GL_STATIC_DRAW);
 
-	shaderManager = ERenderShaderManager.create();
+	render->shaderManager = ERenderShaderManager.create();
 
 	char vertex_src[] = "\
 		#version 140\n\
@@ -63,7 +79,7 @@ void ERender_initRenderRect(void)
 			gl_Position = vec4(iPosition, 0.0, 1.0);\n\
 		}\n\
 	";
-	shaderManager->vertexShader = ERenderShader.create(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
+	render->shaderManager->vertexShader = ERenderShader.create(vertex_src, sizeof(vertex_src), GL_VERTEX_SHADER);
 
 	char fragment_src[] = "\
 		#version 140\n\
@@ -82,31 +98,31 @@ void ERender_initRenderRect(void)
 			//color.rgb = mix(color.rgb, vec3(1.0), 1.0-_depth);\n\
 		}\n\
 	";
-	shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
+	render->shaderManager->fragmentShader = ERenderShader.create(fragment_src, sizeof(fragment_src), GL_FRAGMENT_SHADER);
 
-	ERenderShaderManager.prepareShaders(shaderManager);
+	ERenderShaderManager.prepareShaders(render->shaderManager);
 
-	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex0") , 0);
+	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex0") , 0);
 
-	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex1") , 1);
-	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex2") , 2);
-	glUniform1i(glGetUniformLocation(shaderManager->shader_id, "iTex3") , 3);
+	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex1") , 1);
+	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex2") , 2);
+	glUniform1i(glGetUniformLocation(render->shaderManager->shader_id, "iTex3") , 3);
 
-	glBindBuffer(GL_ARRAY_BUFFER, block_VBO123);
-	GLint positionLocation = glGetAttribLocation(shaderManager->shader_id, "iPosition");;
+	glBindBuffer(GL_ARRAY_BUFFER, render->block_VBO);
+	GLint positionLocation = glGetAttribLocation(render->shaderManager->shader_id, "iPosition");;
 	glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), 0);
 	glEnableVertexAttribArray(positionLocation);
 
-	GLint texcoordLocation = glGetAttribLocation(shaderManager->shader_id, "iTexcoord");;
+	GLint texcoordLocation = glGetAttribLocation(render->shaderManager->shader_id, "iTexcoord");;
 	glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (const GLvoid*)(sizeof(float)*2) );
 	glEnableVertexAttribArray(texcoordLocation);
 }
 
 void ERender_renderRect(ERenderInstance_p render, int x, int y, int width, int height, GLint texture)
 {
-	ERenderShaderManager.prepareShaders(shaderManager);
+	ERenderShaderManager.prepareShaders(render->shaderManager);
 
-	glBindVertexArray(block_VAO123);
+	glBindVertexArray(render->block_VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 

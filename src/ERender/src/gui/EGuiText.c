@@ -1,21 +1,17 @@
 #include <gui/EGuiText.h>
 #include <render/ERenderOpenGL.h>
 #include <libfont.h>
+#include <stdint.h>
 
-void EGuiText_render(EGuiTextInstance_p widget, EGuiManager_p manager)
+void EGuiText_render(EGuiTextInstance_p widget)
 {
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, widget->tex);
-	glUniform1i(glGetUniformLocation(manager->shaderManager->shader_id, "iTex0") , 0);
-
 }
 
 void EGuiText_setText(EGuiTextInstance_p widget, const wchar_t* text)
 {
 	widget->text = text;
 
-	void* buffer = EMem.alloc(sizeof(char)*widget->width*widget->height);
+	uint8_t* buffer = EMem.alloc(sizeof(uint8_t)*widget->width*widget->height);
 
 	char* filename = "../data/arial.my";
 
@@ -25,34 +21,25 @@ void EGuiText_setText(EGuiTextInstance_p widget, const wchar_t* text)
 	}
 	Libfont.genText(buffer, text, widget->width, widget->height);
 
-	glBindTexture(GL_TEXTURE_2D, widget->tex);
-
-	glTexImage2D(
-		GL_TEXTURE_2D,
-		0,
-		GL_R8,
-		widget->width,
-		widget->height,
-		0,
-		GL_RED,
-		GL_UNSIGNED_BYTE,
-		buffer
-	);
-
+	EMem.free(widget->buffer);
+	widget->buffer = EMem.alloc(sizeof(uint8_t)*4*widget->width*widget->height);
+	int i;
+	int px_size = sizeof(uint8_t)*4;
+	uint8_t* buff = widget->buffer;
+	for(i=0; i<widget->width*widget->height; i++){
+		buff[i*px_size+0] = buffer[i];
+		buff[i*px_size+1] = buffer[i];
+		buff[i*px_size+2] = buffer[i];
+		buff[i*px_size+3] = buffer[i];
+	}
 	EMem.free(buffer);
+
+	widget->hasChanged = true;
 }
 
 EGuiTextInstance_p EGuiText_create(void)
 {
 	EGuiTextInstance_p widget = EMem.alloc(sizeof(EGuiTextInstance));
-	widget->render = (void*)EGuiText_render;
-	widget->fontSize = 14;
-	
-	glGenTextures(1, &widget->tex);
-	glBindTexture(GL_TEXTURE_2D, widget->tex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
 	return widget;
 }
 

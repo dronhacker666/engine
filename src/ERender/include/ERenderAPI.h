@@ -21,5 +21,9 @@
 
 //GUI
 #include <gui/EGui.h>
+//WIDGETS
+#include <gui/EGuiText.h>
+#include <gui/EGuiTextField.h>
+#include <gui/EGuiButton.h>
 
 #endif

@@ -44,7 +44,7 @@ fi
 if [ -n "$DLIB_SOURCES" ]; then
 	echo "Build Dynamic Lib"
 	_PARAMS=$PARAMS
-	PARAMS+=" -fPIC"
+	#PARAMS+=" -fPIC"
 	build "${DLIB_SOURCES}"
 	PARAMS=$_PARAMS
 	if [ $HAVE_CHANGES=true ]; then

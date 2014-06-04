@@ -6,7 +6,7 @@ BYTE keyboardState[256];
 POINT mouseState;
 int timer = 0;
 
-void EInput_updateInput(RenderEvent_p event)
+void EInput_updateInput(RenderEvent_p event, void* attach)
 {
 	KeyboardEvent keyEvent;
 	MouseEvent mouseEvent;
@@ -85,7 +85,7 @@ void EInput_updateInput(RenderEvent_p event)
 void EInput_init(EEventManager_p eventManager)
 {
 	GetKeyboardState(keyboardState);
-	EEvents.addListener(eventManager, beforeRender, (void*)EInput_updateInput);
+	EEvents.addListener(eventManager, beforeRender, (void*)EInput_updateInput, NULL);
 }
 
 bool EInput_keyPress(unsigned int keyCode)
