@@ -31,7 +31,7 @@ int main(void)
 	printf("%s\n", EList.get(list, 1));
 	printf("%s\n", EList.get(list, 2));
 
-	exit(0);
+	CHECK(eHashTest);
 
 	int a;
 	EPipelineInstance_p pip = EPipeline.create(sizeof(int), 3);
@@ -52,7 +52,7 @@ int main(void)
 	printf("%i\n", ETools.hashString("some string"));
 
 	CHECK(eStackTest);
-	CHECK(eHashTest);
+	
 
 
 	EMem.printUsage();

@@ -70,10 +70,9 @@ void onMouseUp(MouseEvent_p event, ERenderInstance_p render)
 	EEvents.removeListener(render->events, (void*)onMouseMove);
 }
 
-
-
 int main(void)
 {
+
 	/*wchar_t* c = L"а привет";
 
 	printf("%X \n", *c);

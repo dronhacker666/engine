@@ -214,7 +214,7 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 		return FALSE;
 	}
 
-	int maj, min;
+	GLint maj, min;
 	glGetIntegerv(GL_MAJOR_VERSION, &maj);
 	glGetIntegerv(GL_MINOR_VERSION, &min);
 	printf("Avaible OpengGL      : %i.%i\n", maj, min);
@@ -239,11 +239,19 @@ BOOL ERenderOGLInit(ERenderInstance_p render)
 		return FALSE;
 	}
 
+	GLint texture_units;
+	GLint max_texture_size;
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &texture_units);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_texture_size);
+
 	printf("OpenGL gApi context information:\n");
 
-	printf("Renderer     : %s\n", (const char*)glGetString(GL_RENDERER));
-	printf("Version      : %s\n", (const char*)glGetString(GL_VERSION));
-	printf("GLSL version : %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+	printf("Renderer         : %s\n", (const char*)glGetString(GL_RENDERER));
+	printf("Version          : %s\n", (const char*)glGetString(GL_VERSION));
+	printf("GLSL version     : %s\n", (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+	printf("Texture units    : %i\n", texture_units);
+	printf("Max texture size : %i\n", max_texture_size);
 
 	glClearDepth(1.0f);
 	glClearColor(0.6, 0.6, 0.6, 0.0);

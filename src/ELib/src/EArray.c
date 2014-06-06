@@ -50,9 +50,7 @@ void* EArray_getData(EArrayInstance_p array)
 }
 
 void EArray_free(EArrayInstance_p array){
-	if(array->length>0){
-		EMem.free(array->_data);
-	}
+	EMem.free(array->_data);
 	EMem.free(array);
 }
 

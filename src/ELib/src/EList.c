@@ -72,7 +72,14 @@ void EList_remove(EListInstance_p list, unsigned int index)
 
 void EList_free(EListInstance_p list)
 {
-
+	void* p;
+	EListItem_p cur = list->head;
+	while(cur){
+		p = cur;
+		cur = cur->next;
+		EMem.free(p);
+	}
+	EMem.free(list);
 }
 
 void* EList_get(EListInstance_p list, unsigned int index)

@@ -25,11 +25,31 @@ void EHash_delete(EHashInstance_p hash, const char* key)
 
 void EHash_free(EHashInstance_p hash)
 {
-
+	void* p;
+	EHashItem_p item = hash->_head;
+	while(item){
+		p = item;
+		item = item->_next;
+		EMem.free(p);
+	}
+	EMem.free(hash);
 }
 void EHash_rfree(EHashInstance_p hash)
 {
-
+	void* p;
+	EHashItem_p item = hash->_head;
+	while(item){
+		if(
+			item->type == HashItem_point &&
+			((EHashInstance_p)item->p_value)->__id__ == HASHINSTANCEID
+		){
+			EHash_rfree(item->p_value);
+		}
+		p = item;
+		item = item->_next;
+		EMem.free(p);
+	}
+	EMem.free(hash);
 }
 
 bool EHash_typeIs(EHashInstance_p hash, const char* key, EHashItemType type)

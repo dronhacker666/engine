@@ -112,6 +112,7 @@ void EGui_addItem(EGuiManager_p manager, EGuiItem_p item)
 	manager->_current = item;
 }
 
+
 void EGui_render(EGuiManager_p manager)
 {
 	ERenderShaderManager.prepareShaders(manager->shaderManager);
