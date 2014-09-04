@@ -18,7 +18,7 @@ bool ETools_loadFile(const char* filename, char** content, int* length)
 		fseek(fp, 0, SEEK_END);
 		size = ftell(fp);
 		rewind(fp);
-		*content = EMem.alloc( sizeof(char)*size );
+		*content = EMem.alloc( sizeof(char)*size+1 );
 		if(*content==NULL){
 			printf("%s\n", "No memory");
 			return false;

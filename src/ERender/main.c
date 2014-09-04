@@ -92,13 +92,12 @@ int main(void)
 	}
 	*/
 
-	ERenderInstance_p render = ERender.create(1280, 960);
+	ERenderInstance_p render = ERender.create(640, 480);
 
 	ERenderScene.load(render->scene, "../data/model.obj");
 	ERenderObjectInstance_p beretta = ERenderScene.load(render->scene, "../data/beretta.obj");
 
 	beretta->position.y = 4;
-
 
 	EGuiTextInstance_p wcmd = EGuiText.create();
 	wcmd->x = 10;
@@ -130,6 +129,8 @@ int main(void)
 	while(render->enabled){
 
 		beretta->rotation.y += 1.0 * render->timerFix;
+		beretta->rotation.z += 0.3 * render->timerFix;
+		beretta->rotation.x += 0.8 * render->timerFix;
 
 
 		ERender.render(render);

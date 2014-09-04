@@ -109,6 +109,7 @@ typedef enum{
 	HashItem_point,
 	HashItem_int,
 	HashItem_float,
+	HashItem_string,
 } EHashItemType;
 
 #define HASHITEMID 0x1234567
@@ -120,6 +121,7 @@ typedef struct EHashItem {
 
 	union{
 		void* p_value;
+		char* s_value;
 		int i_value;
 		float f_value;
 	};
@@ -151,6 +153,12 @@ typedef struct {
 
 	void 				(*set1i) 	(EHashInstance_p, const char*, int);
 	int					(*get1i) 	(EHashInstance_p, const char*);
+
+	void 				(*set1f) 	(EHashInstance_p, const char*, float);
+	float				(*get1f) 	(EHashInstance_p, const char*);
+
+	void 				(*set1s) 	(EHashInstance_p, const char*, char*, size_t);
+	char*				(*get1s) 	(EHashInstance_p, const char*);
 
 	void				(*dump)		(EHashInstance_p);
 

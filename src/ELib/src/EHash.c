@@ -113,6 +113,25 @@ void* EHash_get1p(EHashInstance_p hash, const char* key)
 }
 
 
+void EHash_set1s(EHashInstance_p hash, const char* key, char* value, size_t length)
+{
+	if(!length){
+		length = strlen(value);
+	}
+	char* mem = EMem.alloc(length);
+	memcpy(mem, value, length);
+	mem[length] = '\0';
+	EHashItem_p item = EHash_createItem(hash, key);
+	item->type = HashItem_string;
+	item->s_value = mem;
+}
+char* EHash_get1s(EHashInstance_p hash, const char* key)
+{
+	EHashItem_p item = EHash_get(hash, key);
+	return item->s_value;
+}
+
+
 void EHash_set1i(EHashInstance_p hash, const char* key, int value)
 {
 	EHashItem_p item = EHash_createItem(hash, key);
@@ -124,6 +143,20 @@ int EHash_get1i(EHashInstance_p hash, const char* key)
 	EHashItem_p item = EHash_get(hash, key);
 	return item->i_value;
 }
+
+
+void EHash_set1f(EHashInstance_p hash, const char* key, float value)
+{
+	EHashItem_p item = EHash_createItem(hash, key);
+	item->type = HashItem_float;
+	item->f_value = value;
+}
+float EHash_get1f(EHashInstance_p hash, const char* key)
+{
+	EHashItem_p item = EHash_get(hash, key);
+	return item->f_value;
+}
+
 
 int __EHash_dump_tab=0;
 void EHash_dump(EHashInstance_p hash){
@@ -146,7 +179,10 @@ void EHash_dump(EHashInstance_p hash){
 				printf("%s(int): %i\n", item->key, item->i_value);
 			break;
 			case HashItem_float:
-				printf("%s(float): %i\n", item->key, item->f_value);
+				printf("%s(float): %f\n", item->key, item->f_value);
+			break;
+			case HashItem_string:
+				printf("%s(string): \"%s\"\n", item->key, item->s_value);
 			break;
 		}
 
@@ -173,6 +209,12 @@ _EHash EHash = {
 
 	set1i: EHash_set1i,
 	get1i: EHash_get1i,
+
+	set1f: EHash_set1f,
+	get1f: EHash_get1f,
+
+	set1s: EHash_set1s,
+	get1s: EHash_get1s,
 
 	dump: EHash_dump,
 };
