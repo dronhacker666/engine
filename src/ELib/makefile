@@ -1,5 +1,5 @@
 CC=gcc
-MAKE=mingw32-make
+MAKE=make
 
 INCLUDE=-I include -I src
 SOURCES=src/*.c

@@ -15,37 +15,37 @@
 			"variants" : [
 				{
 					"name"	: "Engine Run",
-					"cmd"	: ["mingw32-make", "engine_run"],
+					"cmd"	: ["make", "engine_run"],
 				},
 				{
 					"name"	: "Engine Build",
-					"cmd"	: ["mingw32-make", "engine_build"],
+					"cmd"	: ["make", "engine_build"],
 				},
 				{
 					"name"	: "Engine Clean",
-					"cmd"	: ["mingw32-make", "engine_clean"],
+					"cmd"	: ["mmake", "engine_clean"],
 				},
 
 				{
 					"name"	: "Editor Run",
-					"cmd"	: ["mingw32-make", "editor_run"],
+					"cmd"	: ["make", "editor_run"],
 				},
 				{
 					"name"	: "Editor Build",
-					"cmd"	: ["mingw32-make", "editor_build"],
+					"cmd"	: ["make", "editor_build"],
 				},
 				{
 					"name"	: "Editor Clean",
-					"cmd"	: ["mingw32-make", "editor_clean"],
+					"cmd"	: ["make", "editor_clean"],
 				},
 
 				{
 					"name"	: "ELib Run",
-					"cmd"	: ["mingw32-make", "-C", "src/ELib/", "run"],
+					"cmd"	: ["make", "-C", "src/ELib/", "run"],
 				},
 				{
 					"name"	: "ELib Build",
-					"cmd"	: ["mingw32-make", "-C", "src/ELib", "build_lib"],
+					"cmd"	: ["make", "-C", "src/ELib", "build_lib"],
 				},
 
 			],

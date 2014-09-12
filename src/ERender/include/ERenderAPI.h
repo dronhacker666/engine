@@ -2,9 +2,12 @@
 #define ERENDERAPI_H
 
 // INCLUDES
-#include <windows.h>
+
+#include <X11/X.h>
+#include <X11/Xlib.h>
+
 #include <malloc.h>
-#include <mem.h>
+#include <memory.h>
 #include <stdio.h>
 #include <GL/gl.h>
 #include <GL/glext.h>

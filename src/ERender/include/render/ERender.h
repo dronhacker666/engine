@@ -3,7 +3,8 @@
 
 struct ERenderInstance;
 
-#include <windows.h>
+#include <X11/X.h>
+#include <X11/Xlib.h>
 #include <gui/EGui.h>
 #include "ERenderEvents.h"
 #include "ERenderScene.h"

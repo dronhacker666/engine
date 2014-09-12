@@ -1,8 +1,5 @@
 #include "../include/ELib.h"
 
-#include <stdlib.h>
-#include <mem.h>
-
 EArrayInstance_p EArray_create(int item_size){
 	EArrayInstance_p array = EMem.alloc(sizeof(EArrayInstance));
 	array->_item_size = item_size;

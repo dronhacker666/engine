@@ -172,7 +172,7 @@ void EHash_dump(EHashInstance_p hash){
 					printf("%s(hash): ", item->key);
 					EHash_dump(item->p_value);
 				}else{
-					printf("%s(point): %i\n", item->key, item->p_value);
+					printf("%s(point): %p\n", item->key, item->p_value);
 				}
 			break;
 			case HashItem_int:

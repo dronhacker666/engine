@@ -2,8 +2,9 @@
 #define ERENDERSHADER_H
 
 
-#include <windows.h>
-#include <GL/GL.h>
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <GL/gl.h>
 #include <GL/wglext.h>
 #include <GL/glext.h>
 #include <ELib.h>
